@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Licence.
+    -->
+    <changeSet id="20190411114955-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="thirdparty_id"
+                                 baseTableName="licence"
+                                 constraintName="fk_licence_thirdparty_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="thirdparty"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_licence_id"
+                                 baseTableName="licence"
+                                 constraintName="fk_licence_user_licence_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_app"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-user-thirdparty-membership-heading" jhiTranslate="projetCsidApp.userThirdpartyMembership.home.createOrEditLabel">Create or edit a User Thirdparty Membership</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!userThirdpartyMembership.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="userThirdpartyMembership.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetCsidApp.userThirdpartyMembership.fonction" for="field_fonction">Fonction</label>
+                    <input type="text" class="form-control" name="fonction" id="field_fonction"
+                        [(ngModel)]="userThirdpartyMembership.fonction" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetCsidApp.userThirdpartyMembership.specialite" for="field_specialite">Specialite</label>
+                    <input type="text" class="form-control" name="specialite" id="field_specialite"
+                        [(ngModel)]="userThirdpartyMembership.specialite" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetCsidApp.userThirdpartyMembership.thirdparty" for="field_thirdparty">Thirdparty</label>
+                    <select class="form-control" id="field_thirdparty" name="thirdparty" [(ngModel)]="userThirdpartyMembership.thirdparty" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="thirdpartyOption.id === userThirdpartyMembership.thirdparty?.id ? userThirdpartyMembership.thirdparty : thirdpartyOption" *ngFor="let thirdpartyOption of thirdparties; trackBy: trackThirdpartyById">{{thirdpartyOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

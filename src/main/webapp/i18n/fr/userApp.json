@@ -1,0 +1,24 @@
+{
+    "projetCsidApp": {
+        "userApp": {
+            "home": {
+                "title": "UserApps",
+                "createLabel": "Créer un nouveau User App",
+                "createOrEditLabel": "Créer ou éditer un User App"
+            },
+            "created": "Un nouveau User App a été créé avec l'identifiant {{ param }}",
+            "updated": "Le User App avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le User App avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le User App {{ id }} ?"
+            },
+            "detail": {
+                "title": "User App"
+            },
+            "assigmentUser": "Assigment User",
+            "incidentClient": "Incident Client",
+            "userThirdpartyMembership": "User Thirdparty Membership",
+            "user": "User"
+        }
+    }
+}

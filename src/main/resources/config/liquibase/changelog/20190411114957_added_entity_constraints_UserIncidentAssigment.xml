@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity UserIncidentAssigment.
+    -->
+    <changeSet id="20190411114957-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_app_id"
+                                 baseTableName="user_incident_assigment"
+                                 constraintName="fk_user_incident_assigment_user_app_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_app"/>
+
+        <addForeignKeyConstraint baseColumnNames="incident_id"
+                                 baseTableName="user_incident_assigment"
+                                 constraintName="fk_user_incident_assigment_incident_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="incident"/>
+
+    </changeSet>
+</databaseChangeLog>

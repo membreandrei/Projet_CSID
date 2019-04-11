@@ -1,0 +1,44 @@
+{
+    "name": "UserIncidentAssigment",
+    "fields": [
+        {
+            "fieldName": "dateDebut",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateFin",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "commentaire",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "userApp",
+            "otherEntityName": "userApp",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "incident",
+            "otherEntityName": "incident",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190411114957",
+    "entityTableName": "user_incident_assigment",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

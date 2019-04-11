@@ -1,0 +1,24 @@
+{
+    "projetCsidApp": {
+        "licence": {
+            "home": {
+                "title": "Licences",
+                "createLabel": "Créer un nouveau Licence",
+                "createOrEditLabel": "Créer ou éditer un Licence"
+            },
+            "created": "Un nouveau Licence a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Licence avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Licence avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Licence {{ id }} ?"
+            },
+            "detail": {
+                "title": "Licence"
+            },
+            "titre": "Titre",
+            "prix": "Prix",
+            "thirdparty": "Thirdparty",
+            "userLicence": "User Licence"
+        }
+    }
+}

@@ -38,6 +38,18 @@ public class CacheConfiguration {
             cm.createCache(com.mycompany.myapp.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.mycompany.myapp.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.mycompany.myapp.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.UserApp.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.UserApp.class.getName() + ".assigmentUsers", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.UserApp.class.getName() + ".incidentClients", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.UserThirdpartyMembership.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.UserThirdpartyMembership.class.getName() + ".userMemberShips", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Thirdparty.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Thirdparty.class.getName() + ".thirdpartyMemberShips", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Thirdparty.class.getName() + ".thirdpartyLicences", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Licence.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Incident.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Incident.class.getName() + ".assigmentIncidents", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.UserIncidentAssigment.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

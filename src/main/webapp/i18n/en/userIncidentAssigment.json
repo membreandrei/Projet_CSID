@@ -1,0 +1,26 @@
+{
+    "projetCsidApp": {
+        "userIncidentAssigment": {
+            "home": {
+                "title": "User Incident Assigments",
+                "createLabel": "Create a new User Incident Assigment",
+                "createOrEditLabel": "Create or edit a User Incident Assigment"
+            },
+            "created": "A new User Incident Assigment is created with identifier {{ param }}",
+            "updated": "A User Incident Assigment is updated with identifier {{ param }}",
+            "deleted": "A User Incident Assigment is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete User Incident Assigment {{ id }}?"
+            },
+            "detail": {
+                "title": "User Incident Assigment"
+            },
+            "dateDebut": "Date Debut",
+            "dateFin": "Date Fin",
+            "commentaire": "Commentaire",
+            "status": "Status",
+            "userApp": "User App",
+            "incident": "Incident"
+        }
+    }
+}

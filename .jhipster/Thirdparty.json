@@ -1,0 +1,36 @@
+{
+    "name": "Thirdparty",
+    "fields": [
+        {
+            "fieldName": "denomination",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "siret",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "userThirdpartyMembership",
+            "otherEntityRelationshipName": "thirdparty",
+            "relationshipName": "thirdpartyMemberShip"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "licence",
+            "otherEntityRelationshipName": "thirdparty",
+            "relationshipName": "thirdpartyLicence"
+        }
+    ],
+    "changelogDate": "20190411114954",
+    "entityTableName": "thirdparty",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,60 @@
+{
+    "name": "Incident",
+    "fields": [
+        {
+            "fieldName": "titre",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "statut",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "priorite",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "sujet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "categorie",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateDebut",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateFin",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "userApp",
+            "otherEntityName": "userApp",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "userIncidentAssigment",
+            "otherEntityRelationshipName": "incident",
+            "relationshipName": "assigmentIncident"
+        }
+    ],
+    "changelogDate": "20190411114956",
+    "entityTableName": "incident",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

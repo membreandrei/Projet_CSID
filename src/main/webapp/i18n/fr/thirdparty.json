@@ -1,0 +1,24 @@
+{
+    "projetCsidApp": {
+        "thirdparty": {
+            "home": {
+                "title": "Thirdparties",
+                "createLabel": "Créer un nouveau Thirdparty",
+                "createOrEditLabel": "Créer ou éditer un Thirdparty"
+            },
+            "created": "Un nouveau Thirdparty a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Thirdparty avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Thirdparty avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Thirdparty {{ id }} ?"
+            },
+            "detail": {
+                "title": "Thirdparty"
+            },
+            "denomination": "Denomination",
+            "siret": "Siret",
+            "thirdpartyMemberShip": "Thirdparty Member Ship",
+            "thirdpartyLicence": "Thirdparty Licence"
+        }
+    }
+}

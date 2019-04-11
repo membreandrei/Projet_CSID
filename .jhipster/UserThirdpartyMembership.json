@@ -1,0 +1,36 @@
+{
+    "name": "UserThirdpartyMembership",
+    "fields": [
+        {
+            "fieldName": "fonction",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "specialite",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "userApp",
+            "otherEntityRelationshipName": "userThirdpartyMembership",
+            "relationshipName": "userMemberShip"
+        },
+        {
+            "relationshipName": "thirdparty",
+            "otherEntityName": "thirdparty",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190411114953",
+    "entityTableName": "user_thirdparty_membership",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

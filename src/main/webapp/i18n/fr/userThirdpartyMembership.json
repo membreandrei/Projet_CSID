@@ -1,0 +1,24 @@
+{
+    "projetCsidApp": {
+        "userThirdpartyMembership": {
+            "home": {
+                "title": "UserThirdpartyMemberships",
+                "createLabel": "Créer un nouveau User Thirdparty Membership",
+                "createOrEditLabel": "Créer ou éditer un User Thirdparty Membership"
+            },
+            "created": "Un nouveau User Thirdparty Membership a été créé avec l'identifiant {{ param }}",
+            "updated": "Le User Thirdparty Membership avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le User Thirdparty Membership avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le User Thirdparty Membership {{ id }} ?"
+            },
+            "detail": {
+                "title": "User Thirdparty Membership"
+            },
+            "fonction": "Fonction",
+            "specialite": "Specialite",
+            "userMemberShip": "User Member Ship",
+            "thirdparty": "Thirdparty"
+        }
+    }
+}

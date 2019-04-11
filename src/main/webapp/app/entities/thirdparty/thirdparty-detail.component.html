@@ -1,0 +1,31 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="thirdparty">
+            <h2><span jhiTranslate="projetCsidApp.thirdparty.detail.title">Thirdparty</span> {{thirdparty.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="projetCsidApp.thirdparty.denomination">Denomination</span></dt>
+                <dd>
+                    <span>{{thirdparty.denomination}}</span>
+                </dd>
+                <dt><span jhiTranslate="projetCsidApp.thirdparty.siret">Siret</span></dt>
+                <dd>
+                    <span>{{thirdparty.siret}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/thirdparty', thirdparty.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

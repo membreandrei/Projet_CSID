@@ -1,0 +1,30 @@
+{
+    "projetCsidApp": {
+        "incident": {
+            "home": {
+                "title": "Incidents",
+                "createLabel": "Créer un nouveau Incident",
+                "createOrEditLabel": "Créer ou éditer un Incident"
+            },
+            "created": "Un nouveau Incident a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Incident avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Incident avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Incident {{ id }} ?"
+            },
+            "detail": {
+                "title": "Incident"
+            },
+            "titre": "Titre",
+            "statut": "Statut",
+            "priorite": "Priorite",
+            "sujet": "Sujet",
+            "categorie": "Categorie",
+            "description": "Description",
+            "dateDebut": "Date Debut",
+            "dateFin": "Date Fin",
+            "userApp": "User App",
+            "assigmentIncident": "Assigment Incident"
+        }
+    }
+}

@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userApp">
+            <h2><span jhiTranslate="projetCsidApp.userApp.detail.title">User App</span> {{userApp.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="projetCsidApp.userApp.userThirdpartyMembership">User Thirdparty Membership</span></dt>
+                <dd>
+                    <div *ngIf="userApp.userThirdpartyMembership">
+                        <a [routerLink]="['/user-thirdparty-membership', userApp.userThirdpartyMembership?.id, 'view']">{{userApp.userThirdpartyMembership?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="projetCsidApp.userApp.user">User</span></dt>
+                <dd>
+                    {{userApp.user?.login}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-app', userApp.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
