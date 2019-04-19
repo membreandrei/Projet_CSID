@@ -40,7 +40,7 @@
                 <td>{{incident.dateFin}}</td>
                 <td>
                     <div *ngIf="incident.userApp">
-                        <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.id}}</a>
+                        <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
                     </div>
                 </td>
                 <td class="text-right">
