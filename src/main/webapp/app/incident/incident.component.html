@@ -1,4 +1,4 @@
-<div>
+<div class="col-sm">
     <h2 id="page-heading">
         <span jhiTranslate="projetCsidApp.incident.home.title">Incidents</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/incident/new']">
@@ -10,7 +10,7 @@
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="incidents">
+    <div class="table-responsive col-sm" *ngIf="incidents">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -40,7 +40,7 @@
                 <td>{{incident.dateFin}}</td>
                 <td>
                     <div *ngIf="incident.userApp">
-                        <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.id}}</a>
+                        <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

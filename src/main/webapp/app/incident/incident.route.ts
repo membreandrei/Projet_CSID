@@ -3,7 +3,7 @@ import { UserRouteAccessService } from 'app/core';
 import { IncidentComponent } from './incident.component';
 
 export const INCIDENT_ROUTE: Route = {
-    path: 'test',
+    path: 'incident',
     component: IncidentComponent,
     data: {
         authorities: ['ROLE_USER'],
