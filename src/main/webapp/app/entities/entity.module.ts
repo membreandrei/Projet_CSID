@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
                 loadChildren: './licence/licence.module#ProjetCsidLicenceModule'
             },
             {
-                path: 'incident-entity',
+                path: 'incident',
                 loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
             },
             {
