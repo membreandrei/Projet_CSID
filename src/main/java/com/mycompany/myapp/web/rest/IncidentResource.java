@@ -1,8 +1,10 @@
 package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.Incident;
-import com.mycompany.myapp.repository.IncidentRepository;
+import com.mycompany.myapp.service.IncidentService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
+import com.mycompany.myapp.service.dto.IncidentCriteria;
+import com.mycompany.myapp.service.IncidentQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,13 @@ public class IncidentResource {
 
     private static final String ENTITY_NAME = "incident";
 
-    private final IncidentRepository incidentRepository;
+    private final IncidentService incidentService;
 
-    public IncidentResource(IncidentRepository incidentRepository) {
-        this.incidentRepository = incidentRepository;
+    private final IncidentQueryService incidentQueryService;
+
+    public IncidentResource(IncidentService incidentService, IncidentQueryService incidentQueryService) {
+        this.incidentService = incidentService;
+        this.incidentQueryService = incidentQueryService;
     }
 
     /**
@@ -45,7 +50,7 @@ public class IncidentResource {
         if (incident.getId() != null) {
             throw new BadRequestAlertException("A new incident cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Incident result = incidentRepository.save(incident);
+        Incident result = incidentService.save(incident);
         return ResponseEntity.created(new URI("/api/incidents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -66,7 +71,7 @@ public class IncidentResource {
         if (incident.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Incident result = incidentRepository.save(incident);
+        Incident result = incidentService.save(incident);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, incident.getId().toString()))
             .body(result);
@@ -75,12 +80,26 @@ public class IncidentResource {
     /**
      * GET  /incidents : get all the incidents.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of incidents in body
      */
     @GetMapping("/incidents")
-    public List<Incident> getAllIncidents() {
-        log.debug("REST request to get all Incidents");
-        return incidentRepository.findAll();
+    public ResponseEntity<List<Incident>> getAllIncidents(IncidentCriteria criteria) {
+        log.debug("REST request to get Incidents by criteria: {}", criteria);
+        List<Incident> entityList = incidentQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /incidents/count : count all the incidents.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/incidents/count")
+    public ResponseEntity<Long> countIncidents(IncidentCriteria criteria) {
+        log.debug("REST request to count Incidents by criteria: {}", criteria);
+        return ResponseEntity.ok().body(incidentQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -92,7 +111,7 @@ public class IncidentResource {
     @GetMapping("/incidents/{id}")
     public ResponseEntity<Incident> getIncident(@PathVariable Long id) {
         log.debug("REST request to get Incident : {}", id);
-        Optional<Incident> incident = incidentRepository.findById(id);
+        Optional<Incident> incident = incidentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(incident);
     }
 
@@ -105,7 +124,7 @@ public class IncidentResource {
     @DeleteMapping("/incidents/{id}")
     public ResponseEntity<Void> deleteIncident(@PathVariable Long id) {
         log.debug("REST request to delete Incident : {}", id);
-        incidentRepository.deleteById(id);
+        incidentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

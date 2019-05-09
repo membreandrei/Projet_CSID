@@ -15,15 +15,59 @@ import { IncidentService } from './incident.service';
 })
 export class IncidentComponent implements OnInit, OnDestroy {
     incidents: IIncident[];
+    allIncidents: IIncident[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    Sujet: any;
+    value: any;
 
     constructor(
-        protected incidentService: IncidentService,
+        private incidentService: IncidentService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
         protected accountService: AccountService
     ) {}
+
+    incident(event: any) {
+        this.Sujet = event.target.value;
+        if (this.Sujet !== 'all') {
+            this.incidentService
+                .query({
+                    'sujet.equals': this.Sujet
+                })
+                .pipe(
+                    filter((res: HttpResponse<IIncident[]>) => res.ok),
+                    map((res: HttpResponse<IIncident[]>) => res.body)
+                )
+                .subscribe(
+                    (res: IIncident[]) => {
+                        this.incidents = res;
+                    },
+                    (res: HttpErrorResponse) => this.onError(res.message)
+                );
+        } else {
+            this.loadAll();
+        }
+    }
+
+    getSearchIncident(value) {
+        this.value = value;
+
+        this.incidentService
+            .query({
+                'titre.contains': this.value
+            })
+            .pipe(
+                filter((res: HttpResponse<IIncident[]>) => res.ok),
+                map((res: HttpResponse<IIncident[]>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.incidents = res;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
 
     loadAll() {
         this.incidentService
@@ -35,6 +79,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IIncident[]) => {
                     this.incidents = res;
+                    this.allIncidents = res;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );

@@ -7,7 +7,7 @@ import { IncidentUpdateComponent } from './incident-update.component';
 import { INCIDENT_ROUTE } from './incident.route';
 
 @NgModule({
-    imports: [ProjetCsidSharedModule, RouterModule.forRoot(INCIDENT_ROUTE)],
+    imports: [ProjetCsidSharedModule, RouterModule.forRoot([INCIDENT_ROUTE])],
     entryComponents: [],
     declarations: [IncidentComponent, IncidentUpdateComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
