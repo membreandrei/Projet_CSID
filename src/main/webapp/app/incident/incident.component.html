@@ -1,13 +1,13 @@
 <div class="col-sm">
     <br>
     <div class="row col-sm">
-        <div class="col-sm">
+        <div class="col-sm-auto">
             <h2 id="page-heading">
                 <span jhiTranslate="projetCsidApp.incident.home.title">Incidents</span>
             </h2>
         </div>
-        <div class="col-sm-2">
-            <div class="input-group mb-3">
+        <div class="col-sm-auto">
+            <div class="input-group mb-2">
 
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">Utilisateur</label>
@@ -18,7 +18,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-auto">
             <div class="input-group mb-3">
 
                 <div class="input-group-prepend">
@@ -30,23 +30,24 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-auto">
             <input #box (keyup)="getSearchIncident(box.value)" type="text" class="form-control" placeholder="Search by titre"/>
         </div>
-        <div class="col-sm"><button (click)="show = !show"  class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/ticket']">
-            <div *ngIf="show; else elseBlock1">
-                <span  >
-                trié par ID
-                </span>
-            </div>
-            <ng-template #elseBlock1>
-                     <span  >
-                trié par Date
-                </span>
-            </ng-template>
-        </button>
+        <div class="col-sm-auto">
+            <button (click)="show = !show"  class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/ticket']">
+                <div *ngIf="show; else elseBlock1">
+                    <span  >
+                    trié par ID
+                    </span>
+                </div>
+                <ng-template #elseBlock1>
+                         <span  >
+                    trié par Date
+                    </span>
+                </ng-template>
+            </button>
         </div>
-        <div class="col-sm">
+        <div class="col-sm-auto">
             <h2 id="page-heading">
                 <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/incident/new']">
                     <fa-icon [icon]="'plus'"></fa-icon>
