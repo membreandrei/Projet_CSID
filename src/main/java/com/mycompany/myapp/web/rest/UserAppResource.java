@@ -1,8 +1,10 @@
 package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.UserApp;
-import com.mycompany.myapp.repository.UserAppRepository;
+import com.mycompany.myapp.service.UserAppService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
+import com.mycompany.myapp.service.dto.UserAppCriteria;
+import com.mycompany.myapp.service.UserAppQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,13 @@ public class UserAppResource {
 
     private static final String ENTITY_NAME = "userApp";
 
-    private final UserAppRepository userAppRepository;
+    private final UserAppService userAppService;
 
-    public UserAppResource(UserAppRepository userAppRepository) {
-        this.userAppRepository = userAppRepository;
+    private final UserAppQueryService userAppQueryService;
+
+    public UserAppResource(UserAppService userAppService, UserAppQueryService userAppQueryService) {
+        this.userAppService = userAppService;
+        this.userAppQueryService = userAppQueryService;
     }
 
     /**
@@ -45,7 +50,7 @@ public class UserAppResource {
         if (userApp.getId() != null) {
             throw new BadRequestAlertException("A new userApp cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserApp result = userAppRepository.save(userApp);
+        UserApp result = userAppService.save(userApp);
         return ResponseEntity.created(new URI("/api/user-apps/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -66,7 +71,7 @@ public class UserAppResource {
         if (userApp.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        UserApp result = userAppRepository.save(userApp);
+        UserApp result = userAppService.save(userApp);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userApp.getId().toString()))
             .body(result);
@@ -75,12 +80,26 @@ public class UserAppResource {
     /**
      * GET  /user-apps : get all the userApps.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of userApps in body
      */
     @GetMapping("/user-apps")
-    public List<UserApp> getAllUserApps() {
-        log.debug("REST request to get all UserApps");
-        return userAppRepository.findAll();
+    public ResponseEntity<List<UserApp>> getAllUserApps(UserAppCriteria criteria) {
+        log.debug("REST request to get UserApps by criteria: {}", criteria);
+        List<UserApp> entityList = userAppQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /user-apps/count : count all the userApps.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/user-apps/count")
+    public ResponseEntity<Long> countUserApps(UserAppCriteria criteria) {
+        log.debug("REST request to count UserApps by criteria: {}", criteria);
+        return ResponseEntity.ok().body(userAppQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -92,7 +111,7 @@ public class UserAppResource {
     @GetMapping("/user-apps/{id}")
     public ResponseEntity<UserApp> getUserApp(@PathVariable Long id) {
         log.debug("REST request to get UserApp : {}", id);
-        Optional<UserApp> userApp = userAppRepository.findById(id);
+        Optional<UserApp> userApp = userAppService.findOne(id);
         return ResponseUtil.wrapOrNotFound(userApp);
     }
 
@@ -105,7 +124,7 @@ public class UserAppResource {
     @DeleteMapping("/user-apps/{id}")
     public ResponseEntity<Void> deleteUserApp(@PathVariable Long id) {
         log.debug("REST request to delete UserApp : {}", id);
-        userAppRepository.deleteById(id);
+        userAppService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

@@ -27,6 +27,7 @@
         "ng-jhipster": "0.9.1",
         "ngx-cookie": "2.0.1",
         "ngx-infinite-scroll": "7.0.1",
+        "ngx-order-pipe": "^2.0.2",
         "ngx-webstorage": "2.0.1",
         "rxjs": "6.4.0",
         "swagger-ui": "2.2.10",
@@ -35,7 +36,7 @@
     },
     "devDependencies": {
         "@angular/cli": "7.3.1",
-        "@angular/compiler-cli": "7.2.4",
+        "@angular/compiler-cli": "^7.2.12",
         "@ngtools/webpack": "7.3.1",
         "@types/jest": "24.0.0",
         "@types/node": "10.12.24",
@@ -64,6 +65,7 @@
         "mini-css-extract-plugin": "0.5.0",
         "moment-locales-webpack-plugin": "1.0.7",
         "optimize-css-assets-webpack-plugin": "5.0.1",
+        "postcss-loader": "3.0.0",
         "prettier": "1.16.4",
         "reflect-metadata": "0.1.13",
         "rimraf": "2.6.3",
@@ -77,8 +79,6 @@
         "tslint-config-prettier": "1.18.0",
         "tslint-loader": "3.6.0",
         "typescript": "3.2.4",
-        "postcss-loader": "3.0.0",
-        "xml2js": "0.4.19",
         "webpack": "4.29.3",
         "webpack-cli": "3.2.3",
         "webpack-dev-server": "3.1.14",
@@ -86,7 +86,8 @@
         "webpack-notifier": "1.7.0",
         "webpack-visualizer-plugin": "0.1.11",
         "workbox-webpack-plugin": "3.6.3",
-        "write-file-webpack-plugin": "4.5.0"
+        "write-file-webpack-plugin": "4.5.0",
+        "xml2js": "0.4.19"
     },
     "engines": {
         "node": ">=8.9.0"

@@ -3,8 +3,13 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.ProjetCsidApp;
 
 import com.mycompany.myapp.domain.Incident;
+import com.mycompany.myapp.domain.UserApp;
+import com.mycompany.myapp.domain.UserIncidentAssigment;
 import com.mycompany.myapp.repository.IncidentRepository;
+import com.mycompany.myapp.service.IncidentService;
 import com.mycompany.myapp.web.rest.errors.ExceptionTranslator;
+import com.mycompany.myapp.service.dto.IncidentCriteria;
+import com.mycompany.myapp.service.IncidentQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +73,12 @@ public class IncidentResourceIntTest {
     private IncidentRepository incidentRepository;
 
     @Autowired
+    private IncidentService incidentService;
+
+    @Autowired
+    private IncidentQueryService incidentQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -89,7 +100,7 @@ public class IncidentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IncidentResource incidentResource = new IncidentResource(incidentRepository);
+        final IncidentResource incidentResource = new IncidentResource(incidentService, incidentQueryService);
         this.restIncidentMockMvc = MockMvcBuilders.standaloneSetup(incidentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -210,6 +221,397 @@ public class IncidentResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllIncidentsByTitreIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where titre equals to DEFAULT_TITRE
+        defaultIncidentShouldBeFound("titre.equals=" + DEFAULT_TITRE);
+
+        // Get all the incidentList where titre equals to UPDATED_TITRE
+        defaultIncidentShouldNotBeFound("titre.equals=" + UPDATED_TITRE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByTitreIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where titre in DEFAULT_TITRE or UPDATED_TITRE
+        defaultIncidentShouldBeFound("titre.in=" + DEFAULT_TITRE + "," + UPDATED_TITRE);
+
+        // Get all the incidentList where titre equals to UPDATED_TITRE
+        defaultIncidentShouldNotBeFound("titre.in=" + UPDATED_TITRE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByTitreIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where titre is not null
+        defaultIncidentShouldBeFound("titre.specified=true");
+
+        // Get all the incidentList where titre is null
+        defaultIncidentShouldNotBeFound("titre.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByStatutIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where statut equals to DEFAULT_STATUT
+        defaultIncidentShouldBeFound("statut.equals=" + DEFAULT_STATUT);
+
+        // Get all the incidentList where statut equals to UPDATED_STATUT
+        defaultIncidentShouldNotBeFound("statut.equals=" + UPDATED_STATUT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByStatutIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where statut in DEFAULT_STATUT or UPDATED_STATUT
+        defaultIncidentShouldBeFound("statut.in=" + DEFAULT_STATUT + "," + UPDATED_STATUT);
+
+        // Get all the incidentList where statut equals to UPDATED_STATUT
+        defaultIncidentShouldNotBeFound("statut.in=" + UPDATED_STATUT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByStatutIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where statut is not null
+        defaultIncidentShouldBeFound("statut.specified=true");
+
+        // Get all the incidentList where statut is null
+        defaultIncidentShouldNotBeFound("statut.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByPrioriteIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where priorite equals to DEFAULT_PRIORITE
+        defaultIncidentShouldBeFound("priorite.equals=" + DEFAULT_PRIORITE);
+
+        // Get all the incidentList where priorite equals to UPDATED_PRIORITE
+        defaultIncidentShouldNotBeFound("priorite.equals=" + UPDATED_PRIORITE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByPrioriteIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where priorite in DEFAULT_PRIORITE or UPDATED_PRIORITE
+        defaultIncidentShouldBeFound("priorite.in=" + DEFAULT_PRIORITE + "," + UPDATED_PRIORITE);
+
+        // Get all the incidentList where priorite equals to UPDATED_PRIORITE
+        defaultIncidentShouldNotBeFound("priorite.in=" + UPDATED_PRIORITE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByPrioriteIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where priorite is not null
+        defaultIncidentShouldBeFound("priorite.specified=true");
+
+        // Get all the incidentList where priorite is null
+        defaultIncidentShouldNotBeFound("priorite.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsBySujetIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where sujet equals to DEFAULT_SUJET
+        defaultIncidentShouldBeFound("sujet.equals=" + DEFAULT_SUJET);
+
+        // Get all the incidentList where sujet equals to UPDATED_SUJET
+        defaultIncidentShouldNotBeFound("sujet.equals=" + UPDATED_SUJET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsBySujetIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where sujet in DEFAULT_SUJET or UPDATED_SUJET
+        defaultIncidentShouldBeFound("sujet.in=" + DEFAULT_SUJET + "," + UPDATED_SUJET);
+
+        // Get all the incidentList where sujet equals to UPDATED_SUJET
+        defaultIncidentShouldNotBeFound("sujet.in=" + UPDATED_SUJET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsBySujetIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where sujet is not null
+        defaultIncidentShouldBeFound("sujet.specified=true");
+
+        // Get all the incidentList where sujet is null
+        defaultIncidentShouldNotBeFound("sujet.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByCategorieIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where categorie equals to DEFAULT_CATEGORIE
+        defaultIncidentShouldBeFound("categorie.equals=" + DEFAULT_CATEGORIE);
+
+        // Get all the incidentList where categorie equals to UPDATED_CATEGORIE
+        defaultIncidentShouldNotBeFound("categorie.equals=" + UPDATED_CATEGORIE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByCategorieIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where categorie in DEFAULT_CATEGORIE or UPDATED_CATEGORIE
+        defaultIncidentShouldBeFound("categorie.in=" + DEFAULT_CATEGORIE + "," + UPDATED_CATEGORIE);
+
+        // Get all the incidentList where categorie equals to UPDATED_CATEGORIE
+        defaultIncidentShouldNotBeFound("categorie.in=" + UPDATED_CATEGORIE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByCategorieIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where categorie is not null
+        defaultIncidentShouldBeFound("categorie.specified=true");
+
+        // Get all the incidentList where categorie is null
+        defaultIncidentShouldNotBeFound("categorie.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where description equals to DEFAULT_DESCRIPTION
+        defaultIncidentShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the incidentList where description equals to UPDATED_DESCRIPTION
+        defaultIncidentShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
+        defaultIncidentShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
+
+        // Get all the incidentList where description equals to UPDATED_DESCRIPTION
+        defaultIncidentShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where description is not null
+        defaultIncidentShouldBeFound("description.specified=true");
+
+        // Get all the incidentList where description is null
+        defaultIncidentShouldNotBeFound("description.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDateDebutIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where dateDebut equals to DEFAULT_DATE_DEBUT
+        defaultIncidentShouldBeFound("dateDebut.equals=" + DEFAULT_DATE_DEBUT);
+
+        // Get all the incidentList where dateDebut equals to UPDATED_DATE_DEBUT
+        defaultIncidentShouldNotBeFound("dateDebut.equals=" + UPDATED_DATE_DEBUT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDateDebutIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where dateDebut in DEFAULT_DATE_DEBUT or UPDATED_DATE_DEBUT
+        defaultIncidentShouldBeFound("dateDebut.in=" + DEFAULT_DATE_DEBUT + "," + UPDATED_DATE_DEBUT);
+
+        // Get all the incidentList where dateDebut equals to UPDATED_DATE_DEBUT
+        defaultIncidentShouldNotBeFound("dateDebut.in=" + UPDATED_DATE_DEBUT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDateDebutIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where dateDebut is not null
+        defaultIncidentShouldBeFound("dateDebut.specified=true");
+
+        // Get all the incidentList where dateDebut is null
+        defaultIncidentShouldNotBeFound("dateDebut.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDateFinIsEqualToSomething() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where dateFin equals to DEFAULT_DATE_FIN
+        defaultIncidentShouldBeFound("dateFin.equals=" + DEFAULT_DATE_FIN);
+
+        // Get all the incidentList where dateFin equals to UPDATED_DATE_FIN
+        defaultIncidentShouldNotBeFound("dateFin.equals=" + UPDATED_DATE_FIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDateFinIsInShouldWork() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where dateFin in DEFAULT_DATE_FIN or UPDATED_DATE_FIN
+        defaultIncidentShouldBeFound("dateFin.in=" + DEFAULT_DATE_FIN + "," + UPDATED_DATE_FIN);
+
+        // Get all the incidentList where dateFin equals to UPDATED_DATE_FIN
+        defaultIncidentShouldNotBeFound("dateFin.in=" + UPDATED_DATE_FIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByDateFinIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        incidentRepository.saveAndFlush(incident);
+
+        // Get all the incidentList where dateFin is not null
+        defaultIncidentShouldBeFound("dateFin.specified=true");
+
+        // Get all the incidentList where dateFin is null
+        defaultIncidentShouldNotBeFound("dateFin.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByUserAppIsEqualToSomething() throws Exception {
+        // Initialize the database
+        UserApp userApp = UserAppResourceIntTest.createEntity(em);
+        em.persist(userApp);
+        em.flush();
+        incident.setUserApp(userApp);
+        incidentRepository.saveAndFlush(incident);
+        Long userAppId = userApp.getId();
+
+        // Get all the incidentList where userApp equals to userAppId
+        defaultIncidentShouldBeFound("userAppId.equals=" + userAppId);
+
+        // Get all the incidentList where userApp equals to userAppId + 1
+        defaultIncidentShouldNotBeFound("userAppId.equals=" + (userAppId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllIncidentsByAssigmentIncidentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        UserIncidentAssigment assigmentIncident = UserIncidentAssigmentResourceIntTest.createEntity(em);
+        em.persist(assigmentIncident);
+        em.flush();
+        incident.addAssigmentIncident(assigmentIncident);
+        incidentRepository.saveAndFlush(incident);
+        Long assigmentIncidentId = assigmentIncident.getId();
+
+        // Get all the incidentList where assigmentIncident equals to assigmentIncidentId
+        defaultIncidentShouldBeFound("assigmentIncidentId.equals=" + assigmentIncidentId);
+
+        // Get all the incidentList where assigmentIncident equals to assigmentIncidentId + 1
+        defaultIncidentShouldNotBeFound("assigmentIncidentId.equals=" + (assigmentIncidentId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultIncidentShouldBeFound(String filter) throws Exception {
+        restIncidentMockMvc.perform(get("/api/incidents?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(incident.getId().intValue())))
+            .andExpect(jsonPath("$.[*].titre").value(hasItem(DEFAULT_TITRE)))
+            .andExpect(jsonPath("$.[*].statut").value(hasItem(DEFAULT_STATUT)))
+            .andExpect(jsonPath("$.[*].priorite").value(hasItem(DEFAULT_PRIORITE)))
+            .andExpect(jsonPath("$.[*].sujet").value(hasItem(DEFAULT_SUJET)))
+            .andExpect(jsonPath("$.[*].categorie").value(hasItem(DEFAULT_CATEGORIE)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].dateDebut").value(hasItem(DEFAULT_DATE_DEBUT)))
+            .andExpect(jsonPath("$.[*].dateFin").value(hasItem(DEFAULT_DATE_FIN)));
+
+        // Check, that the count call also returns 1
+        restIncidentMockMvc.perform(get("/api/incidents/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultIncidentShouldNotBeFound(String filter) throws Exception {
+        restIncidentMockMvc.perform(get("/api/incidents?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restIncidentMockMvc.perform(get("/api/incidents/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
+
+    @Test
+    @Transactional
     public void getNonExistingIncident() throws Exception {
         // Get the incident
         restIncidentMockMvc.perform(get("/api/incidents/{id}", Long.MAX_VALUE))
@@ -220,7 +622,7 @@ public class IncidentResourceIntTest {
     @Transactional
     public void updateIncident() throws Exception {
         // Initialize the database
-        incidentRepository.saveAndFlush(incident);
+        incidentService.save(incident);
 
         int databaseSizeBeforeUpdate = incidentRepository.findAll().size();
 
@@ -279,7 +681,7 @@ public class IncidentResourceIntTest {
     @Transactional
     public void deleteIncident() throws Exception {
         // Initialize the database
-        incidentRepository.saveAndFlush(incident);
+        incidentService.save(incident);
 
         int databaseSizeBeforeDelete = incidentRepository.findAll().size();
 
