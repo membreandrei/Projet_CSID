@@ -47,11 +47,11 @@ export class IncidentDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.incident = incident;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate(['/incident', { outlets: { popup: null } }]);
+                        this.router.navigate(['/ticket', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate(['/incident', { outlets: { popup: null } }]);
+                        this.router.navigate(['/ticket', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

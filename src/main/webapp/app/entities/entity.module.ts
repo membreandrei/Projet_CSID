@@ -51,6 +51,10 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'incident',
                 loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
+            },
+            {
+                path: 'user-app',
+                loadChildren: './user-app/user-app.module#ProjetCsidUserAppModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])

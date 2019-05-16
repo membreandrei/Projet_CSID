@@ -54,7 +54,7 @@
                     <label class="form-control-label" jhiTranslate="projetCsidApp.incident.userApp" for="field_userApp">User App</label>
                     <select class="form-control" id="field_userApp" name="userApp" [(ngModel)]="incident.userApp" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="userAppOption.id === incident.userApp?.id ? incident.userApp : userAppOption" *ngFor="let userAppOption of userapps; trackBy: trackUserAppById">{{userAppOption.id}}</option>
+                        <option [ngValue]="userAppOption.id === incident.userApp?.id ? incident.userApp : userAppOption" *ngFor="let userAppOption of userapps; trackBy: trackUserAppById">{{userAppOption.user.firstName}} - {{userAppOption.user.lastName}}</option>
                     </select>
                 </div>
             </div>
