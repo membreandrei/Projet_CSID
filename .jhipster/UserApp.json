@@ -39,9 +39,9 @@
     "changelogDate": "20190411114952",
     "dto": "no",
     "searchEngine": false,
-    "service": "no",
+    "service": "serviceClass",
     "entityTableName": "user_app",
     "databaseType": "sql",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "pagination": "no"
 }

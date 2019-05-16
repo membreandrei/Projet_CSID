@@ -34,7 +34,7 @@ public class UserApp implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Incident> incidentClients = new HashSet<>();
     @ManyToOne
-    @JsonIgnoreProperties("userMemberShips")
+    @JsonIgnoreProperties("userApps")
     private UserThirdpartyMembership userThirdpartyMembership;
 
     @OneToOne
