@@ -6,7 +6,7 @@ export const ADMINISTRATION_ROUTE: Route = {
     path: 'portailAdministration',
     component: AdministrationComponent,
     data: {
-        authorities: ['ROLE_USER'],
+        authorities: ['ROLE_USER_ADMIN'],
         pageTitle: 'projetCsidApp.portailAdministration.home.title'
     },
     canActivate: [UserRouteAccessService]
