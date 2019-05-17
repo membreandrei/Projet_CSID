@@ -47,6 +47,7 @@ export class IncidentUpdateComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.incident.id !== undefined) {
+            console.log(this.incident.dateDebut.toString());
             this.subscribeToSaveResponse(this.incidentService.update(this.incident));
         } else {
             this.subscribeToSaveResponse(this.incidentService.create(this.incident));
