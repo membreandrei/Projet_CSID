@@ -3,7 +3,12 @@
         "portailAdministration": {
             "home": {
                 "title": "Portail d'administration"
-            }
+            },
+
+            "fonction": "Fonction",
+            "specialite": "Specialite",
+            "nomComplet": "Nom complet",
+            "login": "login"
         }
     }
 }

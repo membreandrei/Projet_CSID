@@ -1,3 +1,77 @@
-<p>
-  administration works!
-</p>
+<div class="col-sm">
+    <br>
+    <div class="row col-sm">
+        <div class="col-sm-auto">
+            <h2 id="page-heading">
+                <span jhiTranslate="projetCsidApp.portailAdministration.home.title">Portail d'administration </span>
+            </h2>
+        </div>
+
+        <div class="col-sm-auto">
+            <h2 id="page-heading">
+                <span>{{entreprise}}</span>
+            </h2>
+        </div>
+
+        <div class="col-sm">
+            <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-app" [routerLink]="['/user-app/new']">
+                <fa-icon [icon]="'plus'"></fa-icon>
+                <span  jhiTranslate="projetCsidApp.userApp.home.createLabel">
+                Create new User App
+                </span>
+            </button>
+        </div>
+    </div>
+
+
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="userApps">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+
+                <th><span jhiTranslate="projetCsidApp.portailAdministration.nomComplet">Nom complet</span></th>
+                <th><span jhiTranslate="projetCsidApp.portailAdministration.fonction">Fonction</span></th>
+                <th><span jhiTranslate="projetCsidApp.portailAdministration.specialite">Specialité</span></th>
+                <th><span jhiTranslate="projetCsidApp.portailAdministration.login">login</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let userApp of userApps ;trackBy: trackId">
+
+                <td>
+                    {{userApp.user?.firstName}} - {{userApp.user?.lastName}}
+                </td>
+                <td>
+                    {{userApp.userThirdpartyMembership.fonction}}
+                </td>
+                <td>
+                    {{userApp.userThirdpartyMembership.specialite}}
+                </td>
+                <td>
+                    {{userApp.user?.login}}
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/user-app', userApp.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'user-app', { outlets: { popup: userApp.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
