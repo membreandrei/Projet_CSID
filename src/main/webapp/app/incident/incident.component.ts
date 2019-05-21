@@ -7,6 +7,8 @@ import { OrderPipe } from 'ngx-order-pipe';
 import { IIncident } from 'app/shared/model/incident.model';
 import { Account, AccountService } from 'app/core';
 import { IncidentService } from './incident.service';
+import { UserAppService } from 'app/entities/user-app';
+import { IUserApp } from 'app/shared/model/user-app.model';
 
 @Component({
     selector: 'jhi-incident',
@@ -15,7 +17,8 @@ import { IncidentService } from './incident.service';
 })
 export class IncidentComponent implements OnInit, OnDestroy {
     incidents: IIncident[];
-    allIncidents: IIncident[];
+    userAppId: any;
+    accountId: any;
     currentAccount: any;
     eventSubscriber: Subscription;
     Sujet: any;
@@ -24,6 +27,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
     user: any;
     show = true;
     constructor(
+        protected userAppService: UserAppService,
         private incidentService: IncidentService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
@@ -31,25 +35,47 @@ export class IncidentComponent implements OnInit, OnDestroy {
     ) {}
 
     incident(event: any) {
-        this.Sujet = event.target.value;
-        if (this.Sujet !== 'all') {
-            this.incidentService
-                .query({
-                    'sujet.equals': this.Sujet
-                })
-                .pipe(
-                    filter((res: HttpResponse<IIncident[]>) => res.ok),
-                    map((res: HttpResponse<IIncident[]>) => res.body)
-                )
-                .subscribe(
-                    (res: IIncident[]) => {
-                        this.incidents = res;
-                    },
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
+        this.user = event.target.value;
+        console.log(event);
+        if (this.user !== 'all') {
+            switch (this.user) {
+                case 'Majeure': {
+                    this.subscribePriorite('Majeure');
+                    break;
+                }
+                case 'Elevee': {
+                    this.subscribePriorite('Elevee');
+                    break;
+                }
+                case 'Normale': {
+                    this.subscribePriorite('Normale');
+                    break;
+                }
+                case 'Basse': {
+                    this.subscribePriorite('Basse');
+                    break;
+                }
+            }
         } else {
             this.loadAll();
         }
+    }
+
+    subscribePriorite(req: any) {
+        this.incidentService
+            .query({
+                'priorite.equals': req
+            })
+            .pipe(
+                filter((res: HttpResponse<IIncident[]>) => res.ok),
+                map((res: HttpResponse<IIncident[]>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.incidents = res;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     getSearchIncident(value) {
@@ -81,42 +107,120 @@ export class IncidentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IIncident[]) => {
                     this.incidents = res;
-                    this.allIncidents = res;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+
     incidentUser(event: any) {
         this.user = event.target.value;
+        console.log(event);
         if (this.user !== 'all') {
-            this.incidentService
-                .query({
-                    'userAppId.equals': this.user
-                })
-                .pipe(
-                    filter((res: HttpResponse<IIncident[]>) => res.ok),
-                    map((res: HttpResponse<IIncident[]>) => res.body)
-                )
-                .subscribe(
-                    (res: IIncident[]) => {
-                        this.incidents = res;
-                    },
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
+            switch (this.user) {
+                case 'mesIncidents': {
+                    this.subscribeMesIncident();
+                    break;
+                }
+                case 'mesIncidentsResolu': {
+                    this.subscribeIncident('Resolu');
+                    break;
+                }
+                case 'mesIncidentsNonResolu': {
+                    this.subscribeIncident('Non Resolu');
+                    break;
+                }
+                case 'mesIncidentsCours': {
+                    this.subscribeIncident('En cours');
+                    break;
+                }
+            }
         } else {
             this.loadAll();
         }
+    }
+    subscribeMesIncident() {
+        this.incidentService
+            .query({
+                'userAppId.equals': this.userAppId
+            })
+            .pipe(
+                filter((res: HttpResponse<IIncident[]>) => res.ok),
+                map((res: HttpResponse<IIncident[]>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.incidents = res;
+                    console.log(this.incidents);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    subscribeIncident(req: any) {
+        this.incidentService
+            .query({
+                'userAppId.equals': this.userAppId,
+                'statut.equals': req
+            })
+            .pipe(
+                filter((res: HttpResponse<IIncident[]>) => res.ok),
+                map((res: HttpResponse<IIncident[]>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.incidents = res;
+                    console.log(this.incidents);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    getUserAppId() {
+        this.userAppService
+            .query()
+            .pipe(
+                filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                map((res: HttpResponse<IUserApp[]>) => res.body)
+            )
+            .subscribe(
+                (res: IUserApp[]) => {
+                    const userApps = res;
+                    for (let userApp of userApps) {
+                        if (userApp.user.id == this.accountId) {
+                            this.userAppId = userApp.id;
+                        }
+                    }
+                    this.incidentService
+                        .query({
+                            'userAppId.equals': this.userAppId
+                        })
+                        .pipe(
+                            filter((res: HttpResponse<IIncident[]>) => res.ok),
+                            map((res: HttpResponse<IIncident[]>) => res.body)
+                        )
+                        .subscribe(
+                            (res: IIncident[]) => {
+                                this.incidents = res;
+                                console.log(this.incidents);
+                            },
+                            (res: HttpErrorResponse) => this.onError(res.message)
+                        );
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     isAuthenticated() {
         return this.accountService.isAuthenticated();
     }
+
     ngOnInit() {
-        this.loadAll();
-        this.accountService.identity().then((account: Account) => {
+        this.accountService.identity().then(account => {
             this.currentAccount = account;
+            this.accountId = account.id;
         });
         this.registerChangeInIncidents();
+        this.getUserAppId();
     }
 
     ngOnDestroy() {

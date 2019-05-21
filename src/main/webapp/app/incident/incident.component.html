@@ -10,11 +10,14 @@
             <div class="input-group mb-2">
 
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Utilisateur</label>
+                    <label class="input-group-text" for="inputGroupSelect01">Vues</label>
                 </div>
                 <select class="custom-select" id="inputGroupSelect01" (change)="incidentUser($event)">
-                    <option selected value="all">Tous les incidents</option>
-                    <option *ngFor="let incident of allIncidents" value="{{incident.userApp?.id}}">{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</option>
+                    <option selected value="mesIncidents">Mes incidents</option>
+                    <option value="mesIncidentsResolu">Mes incidents résolu</option>
+                    <option value="mesIncidentsNonResolu">Mes incidents non résolu</option>
+                    <option value="mesIncidentsCours">Mes incidents en cours</option>
+                    <option value="all">Tous les incidents</option>
                 </select>
             </div>
         </div>
@@ -22,11 +25,14 @@
             <div class="input-group mb-3">
 
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Sujet</label>
+                    <label class="input-group-text" for="inputGroupSelect01">Priorité</label>
                 </div>
                 <select class="custom-select" id="inputGroupSelect01" (change)="incident($event)">
                     <option selected value="all">Tous les incidents</option>
-                    <option *ngFor="let incident of allIncidents" value="{{incident.sujet}}">{{incident.sujet}}</option>
+                    <option value="Majeure" >Majeure</option>
+                    <option value="Elevee" >Élevée</option>
+                    <option value="Normale" >Normale</option>
+                    <option value="Basse" >Basse</option>
                 </select>
             </div>
         </div>

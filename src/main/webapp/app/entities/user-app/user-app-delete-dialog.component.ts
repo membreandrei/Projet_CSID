@@ -47,11 +47,11 @@ export class UserAppDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.userApp = userApp;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate(['/user-app', { outlets: { popup: null } }]);
+                        this.router.navigate(['/portailAdministration', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate(['/user-app', { outlets: { popup: null } }]);
+                        this.router.navigate(['/portailAdministration', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );
