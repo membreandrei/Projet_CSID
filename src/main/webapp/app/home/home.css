@@ -533,9 +533,9 @@ section h2 {
     }
 }
 
-header.masthead {
-    padding-top: calc(6rem + 15px);
-    padding-bottom: 6rem;
+header {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 header.masthead h1 {

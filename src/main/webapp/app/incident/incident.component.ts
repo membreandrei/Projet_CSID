@@ -177,7 +177,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IIncident[]) => {
                     this.incidents = res;
-                    console.log(this.incidents);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -196,7 +195,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IIncident[]) => {
                     this.incidents = res;
-                    console.log(this.incidents);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -212,7 +210,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IUserApp[]) => {
                     const userApps = res;
-                    for (let userApp of userApps) {
+                    for (const userApp of userApps) {
                         if (userApp.user.id == this.accountId) {
                             this.userAppId = userApp.id;
                         }
@@ -228,7 +226,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         .subscribe(
                             (res: IIncident[]) => {
                                 this.incidents = res;
-                                console.log(this.incidents);
                             },
                             (res: HttpErrorResponse) => this.onError(res.message)
                         );

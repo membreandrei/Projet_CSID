@@ -1,61 +1,65 @@
-<div class="row justify-content-center">
-    <div class="col-8">
-        <div *ngIf="incident">
-            <h2><span jhiTranslate="projetCsidApp.incident.detail.title">Incident</span> {{incident.id}}</h2>
-            <hr>
-            <jhi-alert-error></jhi-alert-error>
-            <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></dt>
-                <dd>
-                    <span>{{incident.titre}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></dt>
-                <dd>
-                    <span>{{incident.statut}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></dt>
-                <dd>
-                    <span>{{incident.priorite}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></dt>
-                <dd>
-                    <span>{{incident.sujet}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></dt>
-                <dd>
-                    <span>{{incident.categorie}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.description">Description</span></dt>
-                <dd>
-                    <span>{{incident.description}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></dt>
-                <dd>
-                    <span>{{incident.dateDebut}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></dt>
-                <dd>
-                    <span>{{incident.dateFin}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></dt>
-                <dd>
-                    <div *ngIf="incident.userApp">
-                        <a [routerLink]="['/user-app', incident.userApp?.id, 'view']">{{incident.userApp?.id}}</a>
-                    </div>
-                </dd>
-            </dl>
+<div class="container-fluid">
+    <div class="card">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div *ngIf="incident">
+                    <h2><span jhiTranslate="projetCsidApp.incident.detail.title">Incident</span> {{incident.id}}</h2>
+                    <hr>
+                    <jhi-alert-error></jhi-alert-error>
+                    <dl class="row-md jh-entity-details">
+                        <dt><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></dt>
+                        <dd>
+                            <span>{{incident.titre}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></dt>
+                        <dd>
+                            <span>{{incident.statut}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></dt>
+                        <dd>
+                            <span>{{incident.priorite}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></dt>
+                        <dd>
+                            <span>{{incident.sujet}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></dt>
+                        <dd>
+                            <span>{{incident.categorie}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.description">Description</span></dt>
+                        <dd>
+                            <span>{{incident.description}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></dt>
+                        <dd>
+                            <span>{{incident.dateDebut}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></dt>
+                        <dd>
+                            <span>{{incident.dateFin}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></dt>
+                        <dd>
+                            <div *ngIf="incident.userApp">
+                                <a [routerLink]="['/user-app', incident.userApp?.id, 'view']">{{incident.userApp?.id}}</a>
+                            </div>
+                        </dd>
+                    </dl>
 
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-            </button>
+                    <button type="submit"
+                            (click)="previousState()"
+                            class="btn btn-info">
+                        <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                    </button>
 
-            <button type="button"
-                    [routerLink]="['/incident', incident.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-            </button>
+                    <button type="button"
+                            [routerLink]="['/incident', incident.id, 'edit']"
+                            class="btn btn-primary">
+                        <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

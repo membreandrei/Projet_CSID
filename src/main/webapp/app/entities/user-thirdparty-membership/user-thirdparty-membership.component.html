@@ -1,62 +1,66 @@
-<div>
-    <h2 id="page-heading">
-        <span jhiTranslate="projetCsidApp.userThirdpartyMembership.home.title">User Thirdparty Memberships</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-thirdparty-membership" [routerLink]="['/user-thirdparty-membership/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="projetCsidApp.userThirdpartyMembership.home.createLabel">
-            Create new User Thirdparty Membership
-            </span>
-        </button>
-    </h2>
-    <jhi-alert></jhi-alert>
-    <br/>
-    <div class="table-responsive" *ngIf="userThirdpartyMemberships">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.fonction">Fonction</span></th>
-            <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.specialite">Specialite</span></th>
-            <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.thirdparty">Thirdparty</span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let userThirdpartyMembership of userThirdpartyMemberships ;trackBy: trackId">
-                <td><a [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'view' ]">{{userThirdpartyMembership.id}}</a></td>
-                <td>{{userThirdpartyMembership.fonction}}</td>
-                <td>{{userThirdpartyMembership.specialite}}</td>
-                <td>
-                    <div *ngIf="userThirdpartyMembership.thirdparty">
-                        <a [routerLink]="['../thirdparty', userThirdpartyMembership.thirdparty?.id, 'view' ]" >{{userThirdpartyMembership.thirdparty?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', 'user-thirdparty-membership', { outlets: { popup: userThirdpartyMembership.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<div class="container-fluid">
+    <div class="card">
+        <div>
+            <h2 id="page-heading">
+                <span jhiTranslate="projetCsidApp.userThirdpartyMembership.home.title">User Thirdparty Memberships</span>
+                <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-thirdparty-membership" [routerLink]="['/user-thirdparty-membership/new']">
+                    <fa-icon [icon]="'plus'"></fa-icon>
+                    <span  jhiTranslate="projetCsidApp.userThirdpartyMembership.home.createLabel">
+                    Create new User Thirdparty Membership
+                    </span>
+                </button>
+            </h2>
+            <jhi-alert></jhi-alert>
+            <br/>
+            <div class="table-responsive" *ngIf="userThirdpartyMemberships">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.fonction">Fonction</span></th>
+                    <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.specialite">Specialite</span></th>
+                    <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.thirdparty">Thirdparty</span></th>
+                    <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let userThirdpartyMembership of userThirdpartyMemberships ;trackBy: trackId">
+                        <td><a [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'view' ]">{{userThirdpartyMembership.id}}</a></td>
+                        <td>{{userThirdpartyMembership.fonction}}</td>
+                        <td>{{userThirdpartyMembership.specialite}}</td>
+                        <td>
+                            <div *ngIf="userThirdpartyMembership.thirdparty">
+                                <a [routerLink]="['../thirdparty', userThirdpartyMembership.thirdparty?.id, 'view' ]" >{{userThirdpartyMembership.thirdparty?.id}}</a>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'view' ]"
+                                        class="btn btn-info btn-sm">
+                                    <fa-icon [icon]="'eye'"></fa-icon>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'edit']"
+                                        class="btn btn-primary btn-sm">
+                                    <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', 'user-thirdparty-membership', { outlets: { popup: userThirdpartyMembership.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-danger btn-sm">
+                                    <fa-icon [icon]="'times'"></fa-icon>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

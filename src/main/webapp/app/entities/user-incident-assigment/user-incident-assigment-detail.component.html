@@ -1,51 +1,55 @@
-<div class="row justify-content-center">
-    <div class="col-8">
-        <div *ngIf="userIncidentAssigment">
-            <h2><span jhiTranslate="projetCsidApp.userIncidentAssigment.detail.title">User Incident Assigment</span> {{userIncidentAssigment.id}}</h2>
-            <hr>
-            <jhi-alert-error></jhi-alert-error>
-            <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.dateDebut">Date Debut</span></dt>
-                <dd>
-                    <span>{{userIncidentAssigment.dateDebut}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.dateFin">Date Fin</span></dt>
-                <dd>
-                    <span>{{userIncidentAssigment.dateFin}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.commentaire">Commentaire</span></dt>
-                <dd>
-                    <span>{{userIncidentAssigment.commentaire}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.status">Status</span></dt>
-                <dd>
-                    <span>{{userIncidentAssigment.status}}</span>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.userApp">User App</span></dt>
-                <dd>
-                    <div *ngIf="userIncidentAssigment.userApp">
-                        <a [routerLink]="['/user-app', userIncidentAssigment.userApp?.id, 'view']">{{userIncidentAssigment.userApp?.id}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.incident">Incident</span></dt>
-                <dd>
-                    <div *ngIf="userIncidentAssigment.incident">
-                        <a [routerLink]="['/incident', userIncidentAssigment.incident?.id, 'view']">{{userIncidentAssigment.incident?.id}}</a>
-                    </div>
-                </dd>
-            </dl>
+<div class="container-fluid">
+    <div class="card">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div *ngIf="userIncidentAssigment">
+                    <h2><span jhiTranslate="projetCsidApp.userIncidentAssigment.detail.title">User Incident Assigment</span> {{userIncidentAssigment.id}}</h2>
+                    <hr>
+                    <jhi-alert-error></jhi-alert-error>
+                    <dl class="row-md jh-entity-details">
+                        <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.dateDebut">Date Debut</span></dt>
+                        <dd>
+                            <span>{{userIncidentAssigment.dateDebut}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.dateFin">Date Fin</span></dt>
+                        <dd>
+                            <span>{{userIncidentAssigment.dateFin}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.commentaire">Commentaire</span></dt>
+                        <dd>
+                            <span>{{userIncidentAssigment.commentaire}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.status">Status</span></dt>
+                        <dd>
+                            <span>{{userIncidentAssigment.status}}</span>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.userApp">User App</span></dt>
+                        <dd>
+                            <div *ngIf="userIncidentAssigment.userApp">
+                                <a [routerLink]="['/user-app', userIncidentAssigment.userApp?.id, 'view']">{{userIncidentAssigment.userApp?.id}}</a>
+                            </div>
+                        </dd>
+                        <dt><span jhiTranslate="projetCsidApp.userIncidentAssigment.incident">Incident</span></dt>
+                        <dd>
+                            <div *ngIf="userIncidentAssigment.incident">
+                                <a [routerLink]="['/incident', userIncidentAssigment.incident?.id, 'view']">{{userIncidentAssigment.incident?.id}}</a>
+                            </div>
+                        </dd>
+                    </dl>
 
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-            </button>
+                    <button type="submit"
+                            (click)="previousState()"
+                            class="btn btn-info">
+                        <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                    </button>
 
-            <button type="button"
-                    [routerLink]="['/user-incident-assigment', userIncidentAssigment.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-            </button>
+                    <button type="button"
+                            [routerLink]="['/user-incident-assigment', userIncidentAssigment.id, 'edit']"
+                            class="btn btn-primary">
+                        <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

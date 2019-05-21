@@ -1,152 +1,82 @@
-<div class="col-sm">
-    <br>
-    <div class="row col-sm">
-        <div class="col-sm-auto">
-            <h2 id="page-heading">
-                <span jhiTranslate="projetCsidApp.incident.home.title">Incidents</span>
-            </h2>
-        </div>
-        <div class="col-sm-auto">
-            <div class="input-group mb-2">
-
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Vues</label>
+<div class="container-fluid">
+    <div class="card-header bg-white">
+        <div class="col-sm">
+            <br>
+            <div class="row col-sm">
+                <div class="col-sm-auto">
+                    <h2 id="page-heading">
+                        <span jhiTranslate="projetCsidApp.incident.home.title">Incidents</span>
+                    </h2>
                 </div>
-                <select class="custom-select" id="inputGroupSelect01" (change)="incidentUser($event)">
-                    <option selected value="mesIncidents">Mes incidents</option>
-                    <option value="mesIncidentsResolu">Mes incidents résolu</option>
-                    <option value="mesIncidentsNonResolu">Mes incidents non résolu</option>
-                    <option value="mesIncidentsCours">Mes incidents en cours</option>
-                    <option value="all">Tous les incidents</option>
-                </select>
+                <div class="col-sm-auto">
+                    <div class="input-group mb-2">
+
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Vues</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" (change)="incidentUser($event)">
+                            <option selected value="mesIncidents">Mes incidents</option>
+                            <option value="mesIncidentsResolu">Mes incidents résolu</option>
+                            <option value="mesIncidentsNonResolu">Mes incidents non résolu</option>
+                            <option value="mesIncidentsCours">Mes incidents en cours</option>
+                            <option value="all">Tous les incidents</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="input-group mb-3">
+
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Priorité</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" (change)="incident($event)">
+                            <option selected value="all">Tous les incidents</option>
+                            <option value="Majeure" >Majeure</option>
+                            <option value="Elevee" >Élevée</option>
+                            <option value="Normale" >Normale</option>
+                            <option value="Basse" >Basse</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <input #box (keyup)="getSearchIncident(box.value)" type="text" class="form-control" placeholder="Search by titre"/>
+                </div>
+                <div class="col-sm-auto">
+                    <button (click)="show = !show"  class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/ticket']">
+                        <div *ngIf="show; else elseBlock1">
+                            <span  >
+                            trié par ID
+                            </span>
+                        </div>
+                        <ng-template #elseBlock1>
+                                 <span  >
+                            trié par Date
+                            </span>
+                        </ng-template>
+                    </button>
+                </div>
+                <div class="col-sm-auto">
+                    <h2 id="page-heading">
+                        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/incident/new']">
+                            <fa-icon [icon]="'plus'"></fa-icon>
+                            <span  jhiTranslate="projetCsidApp.incident.home.createLabel">
+                            Create new Incident
+                            </span>
+                        </button>
+                    </h2>
+                </div>
             </div>
         </div>
-        <div class="col-sm-auto">
-            <div class="input-group mb-3">
 
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Priorité</label>
-                </div>
-                <select class="custom-select" id="inputGroupSelect01" (change)="incident($event)">
-                    <option selected value="all">Tous les incidents</option>
-                    <option value="Majeure" >Majeure</option>
-                    <option value="Elevee" >Élevée</option>
-                    <option value="Normale" >Normale</option>
-                    <option value="Basse" >Basse</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-auto">
-            <input #box (keyup)="getSearchIncident(box.value)" type="text" class="form-control" placeholder="Search by titre"/>
-        </div>
-        <div class="col-sm-auto">
-            <button (click)="show = !show"  class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/ticket']">
-                <div *ngIf="show; else elseBlock1">
-                    <span  >
-                    trié par ID
-                    </span>
-                </div>
-                <ng-template #elseBlock1>
-                         <span  >
-                    trié par Date
-                    </span>
-                </ng-template>
-            </button>
-        </div>
-        <div class="col-sm-auto">
-            <h2 id="page-heading">
-                <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/incident/new']">
-                    <fa-icon [icon]="'plus'"></fa-icon>
-                    <span  jhiTranslate="projetCsidApp.incident.home.createLabel">
-                    Create new Incident
-                    </span>
-                </button>
-            </h2>
-        </div>
-    </div>
-</div>
+            <jhi-alert></jhi-alert>
+            <br/>
+            <div class="table-responsive col-sm" *ngIf="incidents">
 
-    <jhi-alert></jhi-alert>
-    <br/>
-    <div class="table-responsive col-sm" *ngIf="incidents">
-
-    <div *ngIf="show; else elseBlock">
-    <div class="table-responsive" *ngIf="incidents">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.description">Description</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></th>
-            <th><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <tr *ngFor="let incident of (incidents | orderBy:'dateDebut');trackBy: trackId">
-                <td><a [routerLink]="['/incident', incident.id, 'view' ]">{{incident.id}}</a></td>
-                <td>{{incident.titre}}</td>
-                <td>{{incident.statut}}</td>
-                <td>{{incident.priorite}}</td>
-                <td>{{incident.sujet}}</td>
-                <td>{{incident.categorie}}</td>
-                <td>{{incident.description}}</td>
-                <td>{{incident.dateDebut }}</td>
-                <td>{{incident.dateFin }}</td>
-                <td>
-                    <div *ngIf="incident.userApp">
-                        <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group mr-3 flex-btn-group-container" *ngIf="incident.statut == 'En cours'">
-                        <button type="submit"
-                                class="btn btn-secondary " (click)="saveNonResolu(incident)">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline"></span>
-                        </button>
-                        <button type="submit"
-                                class="btn btn-success " (click)="saveResolu(incident)">
-                            <i class="fas fa-check"></i>
-                            <span class="d-none d-md-inline"></span>
-                        </button>
-                    </div>
-                        <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['/incident', incident.id, 'edit']"
-                                class="btn btn-primary ">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline"></span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger ">
-                            <i class="far fa-trash-alt"></i>
-                            <span class="d-none d-md-inline"></span>
-                        </button>
-                    </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    </div>
-    <ng-template #elseBlock>
-        <div class="table-responsive" *ngIf="incidents">
-            <table class="table table-striped">
-                <thead>
-                <tr>
+            <div *ngIf="show; else elseBlock">
+            <div class="table-responsive" *ngIf="incidents">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
                     <th><span jhiTranslate="global.field.id">ID</span></th>
                     <th><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></th>
                     <th><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></th>
@@ -158,28 +88,28 @@
                     <th><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></th>
                     <th><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></th>
                     <th></th>
-                </tr>
-                </thead>
-                <tbody>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                <tr *ngFor="let incident of incidents;trackBy: trackId">
-                    <td><a [routerLink]="['/incident', incident.id, 'view' ]">{{incident.id}}</a></td>
-                    <td>{{incident.titre}}</td>
-                    <td>{{incident.statut}}</td>
-                    <td>{{incident.priorite}}</td>
-                    <td>{{incident.sujet}}</td>
-                    <td>{{incident.categorie}}</td>
-                    <td>{{incident.description}}</td>
-                    <td>{{incident.dateDebut }}</td>
-                    <td>{{incident.dateFin }}</td>
-                    <td>
-                        <div *ngIf="incident.userApp">
-                            <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
-                        </div>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
-                            <div class="btn-group mr-3 flex-btn-group-container" *ngIf="incident.statut == 'En cours'" >
+                    <tr *ngFor="let incident of (incidents | orderBy:'dateDebut');trackBy: trackId">
+                        <td><a [routerLink]="['/incident', incident.id, 'view' ]">{{incident.id}}</a></td>
+                        <td>{{incident.titre}}</td>
+                        <td>{{incident.statut}}</td>
+                        <td>{{incident.priorite}}</td>
+                        <td>{{incident.sujet}}</td>
+                        <td>{{incident.categorie}}</td>
+                        <td>{{incident.description}}</td>
+                        <td>{{incident.dateDebut }}</td>
+                        <td>{{incident.dateFin }}</td>
+                        <td>
+                            <div *ngIf="incident.userApp">
+                                <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-3 flex-btn-group-container" *ngIf="incident.statut == 'En cours'">
                                 <button type="submit"
                                         class="btn btn-secondary " (click)="saveNonResolu(incident)">
                                     <fa-icon [icon]="'times'"></fa-icon>
@@ -191,7 +121,7 @@
                                     <span class="d-none d-md-inline"></span>
                                 </button>
                             </div>
-                            <div class="btn-group flex-btn-group-container">
+                                <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
                                         [routerLink]="['/incident', incident.id, 'edit']"
                                         class="btn btn-primary ">
@@ -207,12 +137,86 @@
                                     <span class="d-none d-md-inline"></span>
                                 </button>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </ng-template>
-</div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
 
+            <ng-template #elseBlock>
+                <div class="table-responsive" *ngIf="incidents">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th><span jhiTranslate="global.field.id">ID</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.description">Description</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></th>
+                            <th><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr *ngFor="let incident of incidents;trackBy: trackId">
+                            <td><a [routerLink]="['/incident', incident.id, 'view' ]">{{incident.id}}</a></td>
+                            <td>{{incident.titre}}</td>
+                            <td>{{incident.statut}}</td>
+                            <td>{{incident.priorite}}</td>
+                            <td>{{incident.sujet}}</td>
+                            <td>{{incident.categorie}}</td>
+                            <td>{{incident.description}}</td>
+                            <td>{{incident.dateDebut }}</td>
+                            <td>{{incident.dateFin }}</td>
+                            <td>
+                                <div *ngIf="incident.userApp">
+                                    <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
+                                    <div class="btn-group mr-3 flex-btn-group-container" *ngIf="incident.statut == 'En cours'" >
+                                        <button type="submit"
+                                                class="btn btn-secondary " (click)="saveNonResolu(incident)">
+                                            <fa-icon [icon]="'times'"></fa-icon>
+                                            <span class="d-none d-md-inline"></span>
+                                        </button>
+                                        <button type="submit"
+                                                class="btn btn-success " (click)="saveResolu(incident)">
+                                            <i class="fas fa-check"></i>
+                                            <span class="d-none d-md-inline"></span>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group flex-btn-group-container">
+                                        <button type="submit"
+                                                [routerLink]="['/incident', incident.id, 'edit']"
+                                                class="btn btn-primary ">
+                                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                            <span class="d-none d-md-inline"></span>
+                                        </button>
+                                        <button type="submit"
+                                                [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
+                                                replaceUrl="true"
+                                                queryParamsHandling="merge"
+                                                class="btn btn-danger ">
+                                            <i class="far fa-trash-alt"></i>
+                                            <span class="d-none d-md-inline"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
