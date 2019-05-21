@@ -23,7 +23,6 @@ export class AdministrationComponent implements OnInit, OnDestroy {
     entrepiseId: any;
 
     constructor(
-        private userService: UserService,
         protected userAppService: UserAppService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
