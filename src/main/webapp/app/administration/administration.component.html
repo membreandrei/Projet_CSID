@@ -34,6 +34,7 @@
                 <th><span jhiTranslate="projetCsidApp.portailAdministration.nomComplet">Nom complet</span></th>
                 <th><span jhiTranslate="projetCsidApp.portailAdministration.fonction">Fonction</span></th>
                 <th><span jhiTranslate="projetCsidApp.portailAdministration.specialite">Specialité</span></th>
+                <th><span jhiTranslate="projetCsidApp.portailAdministration.email">email</span></th>
                 <th><span jhiTranslate="projetCsidApp.portailAdministration.login">login</span></th>
                 <th></th>
             </tr>
@@ -49,6 +50,9 @@
                 </td>
                 <td>
                     {{userApp.userThirdpartyMembership.specialite}}
+                </td>
+                <td>
+                    {{userApp.user?.email}}
                 </td>
                 <td>
                     {{userApp.user?.login}}

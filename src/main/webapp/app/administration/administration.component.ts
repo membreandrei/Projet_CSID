@@ -5,7 +5,7 @@ import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IUserApp } from 'app/shared/model/user-app.model';
-import { AccountService } from 'app/core';
+import { AccountService, User, UserService } from 'app/core';
 import { UserAppService } from 'app/entities/user-app/user-app.service';
 
 @Component({
@@ -19,9 +19,11 @@ export class AdministrationComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
     entreprise: any;
     accountId: any;
+    users: User[];
     entrepiseId: any;
 
     constructor(
+        private userService: UserService,
         protected userAppService: UserAppService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
@@ -52,9 +54,7 @@ export class AdministrationComponent implements OnInit, OnDestroy {
                         ) {
                             this.userApps.splice(i, 1);
 
-                            console.log(i);
                             i--;
-                            console.log(this.userApps);
                         }
                     }
                 },

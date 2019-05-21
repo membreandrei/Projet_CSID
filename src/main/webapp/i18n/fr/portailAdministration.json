@@ -8,7 +8,10 @@
             "fonction": "Fonction",
             "specialite": "Specialite",
             "nomComplet": "Nom complet",
-            "login": "login"
+            "login": "Login",
+            "email": "Email",
+            "mdp": "Mot de passe",
+            "role": "Role de l'utilisateur"
         }
     }
 }
