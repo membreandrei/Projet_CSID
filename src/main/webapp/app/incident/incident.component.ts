@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { OrderPipe } from 'ngx-order-pipe';
@@ -9,6 +9,7 @@ import { Account, AccountService } from 'app/core';
 import { IncidentService } from './incident.service';
 import { UserAppService } from 'app/entities/user-app';
 import { IUserApp } from 'app/shared/model/user-app.model';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'jhi-incident',
@@ -26,6 +27,8 @@ export class IncidentComponent implements OnInit, OnDestroy {
     account: Account;
     user: any;
     show = true;
+    incidentUpdate: IIncident;
+    isSaving: boolean;
     constructor(
         protected userAppService: UserAppService,
         private incidentService: IncidentService,
@@ -60,7 +63,31 @@ export class IncidentComponent implements OnInit, OnDestroy {
             this.loadAll();
         }
     }
+    saveResolu(val: any) {
+        this.incidentUpdate = val;
+        this.isSaving = true;
+        this.incidentUpdate.statut = 'Resolu';
+        this.incidentUpdate.dateFin = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
+        this.subscribeToSaveResponse(this.incidentService.update(this.incidentUpdate));
+    }
+    saveNonResolu(val: any) {
+        this.incidentUpdate = val;
+        this.isSaving = true;
+        this.incidentUpdate.statut = 'Non Resolu';
+        this.incidentUpdate.dateFin = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
+        this.subscribeToSaveResponse(this.incidentService.update(this.incidentUpdate));
+    }
 
+    protected onSaveSuccess() {
+        this.isSaving = false;
+    }
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IIncident>>) {
+        result.subscribe((res: HttpResponse<IIncident>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+    }
+
+    protected onSaveError() {
+        this.isSaving = false;
+    }
     subscribePriorite(req: any) {
         this.incidentService
             .query({
@@ -215,6 +242,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.isSaving = false;
         this.accountService.identity().then(account => {
             this.currentAccount = account;
             this.accountId = account.id;
