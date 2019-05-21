@@ -17,17 +17,14 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetCsidApp.incident.statut" for="field_statut">Statut</label>
                     <select class="form-control" id="field_statut" name="statut" [(ngModel)]="incident.statut" >
-                        <option [ngValue]="null"></option>
                         <option [ngValue]="'En cours'" >En cours</option>
                         <option [ngValue]="'Resolu'" >Résolu</option>
-                        <option [ngValue]="'Ferme'" >Fermé</option>
                         <option [ngValue]="'Non Resolu'" >Non Résolu</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetCsidApp.incident.priorite" for="field_priorite">Priorite</label>
                     <select class="form-control" id="field_priorite" name="priorite" [(ngModel)]="incident.priorite" >
-                        <option [ngValue]="null"></option>
                         <option [ngValue]="'Majeure'" >Majeure</option>
                         <option [ngValue]="'Elevee'" >Élevée</option>
                         <option [ngValue]="'Normale'" >Normale</option>

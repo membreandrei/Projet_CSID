@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { IIncident } from 'app/shared/model/incident.model';
 import { IncidentService } from 'app/incident/incident.service';
 import { LoginModalService, AccountService, Account } from 'app/core';
@@ -16,42 +16,74 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     allIncidents: IIncident[];
-    title = 'app';
-    public pieChartLabels: string[] = ['Pending', 'InProgress', 'OnHold', 'Complete', 'Cancelled'];
-    public pieChartData: number[] = [21, 39, 10, 14, 16];
-    public pieChartType = 'pie';
-    public pieChartOptions: any = { backgroundColor: ['#FF6384', '#4BC0C0', '#FFCE56', '#E7E9ED', '#36A2EB'] };
-
-    // events on slice click
-    public chartClicked(e: any): void {
-        console.log(e);
-    }
-
-    // event on pie chart slice hover
-    public chartHovered(e: any): void {
-        console.log(e);
-    }
+    numberResolu: any;
+    numberNonResolu: any;
+    numberEnCours: any;
     constructor(
         private incidentService: IncidentService,
         private accountService: AccountService,
+        protected jhiAlertService: JhiAlertService,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager
     ) {}
 
-    ngOnInit() {
+    public incidentResolu() {
         this.incidentService
-            .query({})
+            .queryCount({ 'statut.equals': 'Resolu' })
             .pipe(
-                filter((res: HttpResponse<IIncident[]>) => res.ok),
-                map((res: HttpResponse<IIncident[]>) => res.body)
+                filter((res: HttpResponse<any>) => res.ok),
+                map((res: HttpResponse<any>) => res.body)
             )
-            .subscribe((res: IIncident[]) => {
-                this.allIncidents = res;
-            });
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.numberResolu = res;
+                    console.log(this.numberResolu);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        console.log(this.numberResolu);
+    }
+    public incidentNonResolu() {
+        this.incidentService
+            .queryCount({ 'statut.equals': 'Non Resolu' })
+            .pipe(
+                filter((res: HttpResponse<any>) => res.ok),
+                map((res: HttpResponse<any>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.numberNonResolu = res;
+                    console.log(this.numberNonResolu);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+    public incidentEnCours() {
+        this.incidentService
+            .queryCount({ 'statut.equals': 'En Cours' })
+            .pipe(
+                filter((res: HttpResponse<any>) => res.ok),
+                map((res: HttpResponse<any>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.numberEnCours = res;
+                    console.log(this.numberEnCours);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+    ngOnInit() {
+        this.incidentResolu();
+        this.incidentNonResolu();
+        this.incidentEnCours();
         this.accountService.identity().then((account: Account) => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+    }
+    protected onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 
     registerAuthenticationSuccess() {

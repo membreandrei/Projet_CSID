@@ -8,6 +8,7 @@ import { IIncident } from 'app/shared/model/incident.model';
 
 type EntityResponseType = HttpResponse<IIncident>;
 type EntityArrayResponseType = HttpResponse<IIncident[]>;
+type EntityNumberResponseType = HttpResponse<any>;
 
 @Injectable({ providedIn: 'root' })
 export class IncidentService {
@@ -30,6 +31,10 @@ export class IncidentService {
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http.get<IIncident[]>(this.resourceUrl, { params: options, observe: 'response' });
+    }
+    queryCount(req?: any): Observable<EntityNumberResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<any>(this.resourceUrl + '/count', { params: options, observe: 'response' });
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
