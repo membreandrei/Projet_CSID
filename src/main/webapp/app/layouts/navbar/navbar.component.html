@@ -16,7 +16,6 @@
                     </span>
                 </a>
             </li>
-<<<<<<< HEAD
             <li class="nav-item" *ngSwitchCase="false" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <i class="fas fa-euro-sign"></i>
@@ -26,9 +25,7 @@
                 </a>
             </li>
             <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-=======
             <li *jhiHasAnyAuthority="'ROLE_USER_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
->>>>>>> 958d396ced1e2793244021ef8996459967ea3e54
                 <a class="nav-link" routerLink="portailAdministration" href="javascript:void(0);" id="entity-menu">
                     <span>
                         <span>Portail d'administration</span>
