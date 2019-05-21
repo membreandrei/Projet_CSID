@@ -106,10 +106,23 @@
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-3 flex-btn-group-container" *ngIf="incident.statut == 'En cours'">
+                        <button type="submit"
+                                class="btn btn-secondary " (click)="saveNonResolu(incident)">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline"></span>
+                        </button>
+                        <button type="submit"
+                                class="btn btn-success " (click)="saveResolu(incident)">
+                            <i class="fas fa-check"></i>
+                            <span class="d-none d-md-inline"></span>
+                        </button>
+                    </div>
+                        <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['/incident', incident.id, 'edit']"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary ">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline"></span>
                         </button>
@@ -117,10 +130,11 @@
                                 [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
+                                class="btn btn-danger ">
+                            <i class="far fa-trash-alt"></i>
                             <span class="d-none d-md-inline"></span>
                         </button>
+                    </div>
                     </div>
                 </td>
             </tr>
@@ -164,22 +178,35 @@
                         </div>
                     </td>
                     <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-
-                            <button type="submit"
-                                    [routerLink]="['/incident', incident.id, 'edit']"
-                                    class="btn btn-primary btn-sm">
-                                <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                                <span class="d-none d-md-inline" ></span>
-                            </button>
-                            <button type="submit"
-                                    [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
-                                    replaceUrl="true"
-                                    queryParamsHandling="merge"
-                                    class="btn btn-danger btn-sm">
-                                <fa-icon [icon]="'times'"></fa-icon>
-                                <span class="d-none d-md-inline" ></span>
-                            </button>
+                        <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-3 flex-btn-group-container" *ngIf="incident.statut == 'En cours'" >
+                                <button type="submit"
+                                        class="btn btn-secondary " (click)="saveNonResolu(incident)">
+                                    <fa-icon [icon]="'times'"></fa-icon>
+                                    <span class="d-none d-md-inline"></span>
+                                </button>
+                                <button type="submit"
+                                        class="btn btn-success " (click)="saveResolu(incident)">
+                                    <i class="fas fa-check"></i>
+                                    <span class="d-none d-md-inline"></span>
+                                </button>
+                            </div>
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['/incident', incident.id, 'edit']"
+                                        class="btn btn-primary ">
+                                    <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                    <span class="d-none d-md-inline"></span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-danger ">
+                                    <i class="far fa-trash-alt"></i>
+                                    <span class="d-none d-md-inline"></span>
+                                </button>
+                            </div>
                         </div>
                     </td>
                 </tr>
