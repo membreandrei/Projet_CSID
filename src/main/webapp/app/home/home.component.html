@@ -3,14 +3,17 @@
     <div class="container-fluid">
         <div class="card">
             <div *ngSwitchCase="true">
-                <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
-                    [translateValues]="{username: account.login}" class="alert alert-success"> You are logged in as user "{{account.login}}". </span>
-            </div>
-            <div *ngSwitchCase="true">
                 <div class="content-wrapper" >
                     <h1 class="text-center">Dashboard</h1>
                     <br/>
+
+                    <div *ngSwitchCase="true">
+                <P id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
+                      [translateValues]="{username: account.login}" class="text-center"> Bienvenue {{account.login}}. </P>
+                    </div>
+
                     <br/>
+
                     <div class="container-fluid">
                         <div class="row">
 
