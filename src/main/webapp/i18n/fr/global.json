@@ -3,12 +3,12 @@
         "title": "Projet_CSID",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
-            "home": "Accueil",
+            "home": "Tableau De Bord",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
                 "userApp": "User App",
-                "userThirdpartyMembership": "User Thirdparty Membership",
+                "userThirdpartyMembership": "Membership",
                 "thirdparty": "Thirdparty",
                 "licence": "Licence",
                 "incident": "Incident",

@@ -1,12 +1,15 @@
 <jhi-page-ribbon></jhi-page-ribbon>
-<div>
+<div id="wrapper">
     <router-outlet name="navbar"></router-outlet>
-</div>
-<header class="masthead"></header>
-<div class="jh">
-    <router-outlet></router-outlet>
-    <router-outlet name="popup"></router-outlet>
-</div>
+
+    <div id="content-wrapper" class="d-flex flex-column jh">
+        <div id="content">
+            <router-outlet></router-outlet>
+            <router-outlet name="popup"></router-outlet>
 
 
-<jhi-footer></jhi-footer>
+            <jhi-footer></jhi-footer>
+        </div>
+    </div>
+
+</div>
