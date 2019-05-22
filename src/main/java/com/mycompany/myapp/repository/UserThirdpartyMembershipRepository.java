@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UserThirdpartyMembershipRepository extends JpaRepository<UserThirdpartyMembership, Long> {
+public interface UserThirdpartyMembershipRepository extends JpaRepository<UserThirdpartyMembership, Long>, JpaSpecificationExecutor<UserThirdpartyMembership> {
 
 }

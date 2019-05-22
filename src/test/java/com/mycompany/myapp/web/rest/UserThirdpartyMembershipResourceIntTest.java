@@ -3,8 +3,13 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.ProjetCsidApp;
 
 import com.mycompany.myapp.domain.UserThirdpartyMembership;
+import com.mycompany.myapp.domain.UserApp;
+import com.mycompany.myapp.domain.Thirdparty;
 import com.mycompany.myapp.repository.UserThirdpartyMembershipRepository;
+import com.mycompany.myapp.service.UserThirdpartyMembershipService;
 import com.mycompany.myapp.web.rest.errors.ExceptionTranslator;
+import com.mycompany.myapp.service.dto.UserThirdpartyMembershipCriteria;
+import com.mycompany.myapp.service.UserThirdpartyMembershipQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +55,12 @@ public class UserThirdpartyMembershipResourceIntTest {
     private UserThirdpartyMembershipRepository userThirdpartyMembershipRepository;
 
     @Autowired
+    private UserThirdpartyMembershipService userThirdpartyMembershipService;
+
+    @Autowired
+    private UserThirdpartyMembershipQueryService userThirdpartyMembershipQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +82,7 @@ public class UserThirdpartyMembershipResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UserThirdpartyMembershipResource userThirdpartyMembershipResource = new UserThirdpartyMembershipResource(userThirdpartyMembershipRepository);
+        final UserThirdpartyMembershipResource userThirdpartyMembershipResource = new UserThirdpartyMembershipResource(userThirdpartyMembershipService, userThirdpartyMembershipQueryService);
         this.restUserThirdpartyMembershipMockMvc = MockMvcBuilders.standaloneSetup(userThirdpartyMembershipResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -168,6 +179,157 @@ public class UserThirdpartyMembershipResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllUserThirdpartyMembershipsByFonctionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+
+        // Get all the userThirdpartyMembershipList where fonction equals to DEFAULT_FONCTION
+        defaultUserThirdpartyMembershipShouldBeFound("fonction.equals=" + DEFAULT_FONCTION);
+
+        // Get all the userThirdpartyMembershipList where fonction equals to UPDATED_FONCTION
+        defaultUserThirdpartyMembershipShouldNotBeFound("fonction.equals=" + UPDATED_FONCTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsByFonctionIsInShouldWork() throws Exception {
+        // Initialize the database
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+
+        // Get all the userThirdpartyMembershipList where fonction in DEFAULT_FONCTION or UPDATED_FONCTION
+        defaultUserThirdpartyMembershipShouldBeFound("fonction.in=" + DEFAULT_FONCTION + "," + UPDATED_FONCTION);
+
+        // Get all the userThirdpartyMembershipList where fonction equals to UPDATED_FONCTION
+        defaultUserThirdpartyMembershipShouldNotBeFound("fonction.in=" + UPDATED_FONCTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsByFonctionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+
+        // Get all the userThirdpartyMembershipList where fonction is not null
+        defaultUserThirdpartyMembershipShouldBeFound("fonction.specified=true");
+
+        // Get all the userThirdpartyMembershipList where fonction is null
+        defaultUserThirdpartyMembershipShouldNotBeFound("fonction.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsBySpecialiteIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+
+        // Get all the userThirdpartyMembershipList where specialite equals to DEFAULT_SPECIALITE
+        defaultUserThirdpartyMembershipShouldBeFound("specialite.equals=" + DEFAULT_SPECIALITE);
+
+        // Get all the userThirdpartyMembershipList where specialite equals to UPDATED_SPECIALITE
+        defaultUserThirdpartyMembershipShouldNotBeFound("specialite.equals=" + UPDATED_SPECIALITE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsBySpecialiteIsInShouldWork() throws Exception {
+        // Initialize the database
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+
+        // Get all the userThirdpartyMembershipList where specialite in DEFAULT_SPECIALITE or UPDATED_SPECIALITE
+        defaultUserThirdpartyMembershipShouldBeFound("specialite.in=" + DEFAULT_SPECIALITE + "," + UPDATED_SPECIALITE);
+
+        // Get all the userThirdpartyMembershipList where specialite equals to UPDATED_SPECIALITE
+        defaultUserThirdpartyMembershipShouldNotBeFound("specialite.in=" + UPDATED_SPECIALITE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsBySpecialiteIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+
+        // Get all the userThirdpartyMembershipList where specialite is not null
+        defaultUserThirdpartyMembershipShouldBeFound("specialite.specified=true");
+
+        // Get all the userThirdpartyMembershipList where specialite is null
+        defaultUserThirdpartyMembershipShouldNotBeFound("specialite.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsByUserMemberShipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        UserApp userMemberShip = UserAppResourceIntTest.createEntity(em);
+        em.persist(userMemberShip);
+        em.flush();
+        userThirdpartyMembership.addUserMemberShip(userMemberShip);
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+        Long userMemberShipId = userMemberShip.getId();
+
+        // Get all the userThirdpartyMembershipList where userMemberShip equals to userMemberShipId
+        defaultUserThirdpartyMembershipShouldBeFound("userMemberShipId.equals=" + userMemberShipId);
+
+        // Get all the userThirdpartyMembershipList where userMemberShip equals to userMemberShipId + 1
+        defaultUserThirdpartyMembershipShouldNotBeFound("userMemberShipId.equals=" + (userMemberShipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllUserThirdpartyMembershipsByThirdpartyIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Thirdparty thirdparty = ThirdpartyResourceIntTest.createEntity(em);
+        em.persist(thirdparty);
+        em.flush();
+        userThirdpartyMembership.setThirdparty(thirdparty);
+        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+        Long thirdpartyId = thirdparty.getId();
+
+        // Get all the userThirdpartyMembershipList where thirdparty equals to thirdpartyId
+        defaultUserThirdpartyMembershipShouldBeFound("thirdpartyId.equals=" + thirdpartyId);
+
+        // Get all the userThirdpartyMembershipList where thirdparty equals to thirdpartyId + 1
+        defaultUserThirdpartyMembershipShouldNotBeFound("thirdpartyId.equals=" + (thirdpartyId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultUserThirdpartyMembershipShouldBeFound(String filter) throws Exception {
+        restUserThirdpartyMembershipMockMvc.perform(get("/api/user-thirdparty-memberships?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(userThirdpartyMembership.getId().intValue())))
+            .andExpect(jsonPath("$.[*].fonction").value(hasItem(DEFAULT_FONCTION)))
+            .andExpect(jsonPath("$.[*].specialite").value(hasItem(DEFAULT_SPECIALITE)));
+
+        // Check, that the count call also returns 1
+        restUserThirdpartyMembershipMockMvc.perform(get("/api/user-thirdparty-memberships/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultUserThirdpartyMembershipShouldNotBeFound(String filter) throws Exception {
+        restUserThirdpartyMembershipMockMvc.perform(get("/api/user-thirdparty-memberships?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restUserThirdpartyMembershipMockMvc.perform(get("/api/user-thirdparty-memberships/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
+
+    @Test
+    @Transactional
     public void getNonExistingUserThirdpartyMembership() throws Exception {
         // Get the userThirdpartyMembership
         restUserThirdpartyMembershipMockMvc.perform(get("/api/user-thirdparty-memberships/{id}", Long.MAX_VALUE))
@@ -178,7 +340,7 @@ public class UserThirdpartyMembershipResourceIntTest {
     @Transactional
     public void updateUserThirdpartyMembership() throws Exception {
         // Initialize the database
-        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+        userThirdpartyMembershipService.save(userThirdpartyMembership);
 
         int databaseSizeBeforeUpdate = userThirdpartyMembershipRepository.findAll().size();
 
@@ -225,7 +387,7 @@ public class UserThirdpartyMembershipResourceIntTest {
     @Transactional
     public void deleteUserThirdpartyMembership() throws Exception {
         // Initialize the database
-        userThirdpartyMembershipRepository.saveAndFlush(userThirdpartyMembership);
+        userThirdpartyMembershipService.save(userThirdpartyMembership);
 
         int databaseSizeBeforeDelete = userThirdpartyMembershipRepository.findAll().size();
 

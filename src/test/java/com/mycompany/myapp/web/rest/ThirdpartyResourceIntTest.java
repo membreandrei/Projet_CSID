@@ -3,8 +3,13 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.ProjetCsidApp;
 
 import com.mycompany.myapp.domain.Thirdparty;
+import com.mycompany.myapp.domain.UserThirdpartyMembership;
+import com.mycompany.myapp.domain.Licence;
 import com.mycompany.myapp.repository.ThirdpartyRepository;
+import com.mycompany.myapp.service.ThirdpartyService;
 import com.mycompany.myapp.web.rest.errors.ExceptionTranslator;
+import com.mycompany.myapp.service.dto.ThirdpartyCriteria;
+import com.mycompany.myapp.service.ThirdpartyQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +55,12 @@ public class ThirdpartyResourceIntTest {
     private ThirdpartyRepository thirdpartyRepository;
 
     @Autowired
+    private ThirdpartyService thirdpartyService;
+
+    @Autowired
+    private ThirdpartyQueryService thirdpartyQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +82,7 @@ public class ThirdpartyResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ThirdpartyResource thirdpartyResource = new ThirdpartyResource(thirdpartyRepository);
+        final ThirdpartyResource thirdpartyResource = new ThirdpartyResource(thirdpartyService, thirdpartyQueryService);
         this.restThirdpartyMockMvc = MockMvcBuilders.standaloneSetup(thirdpartyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -168,6 +179,184 @@ public class ThirdpartyResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllThirdpartiesByDenominationIsEqualToSomething() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where denomination equals to DEFAULT_DENOMINATION
+        defaultThirdpartyShouldBeFound("denomination.equals=" + DEFAULT_DENOMINATION);
+
+        // Get all the thirdpartyList where denomination equals to UPDATED_DENOMINATION
+        defaultThirdpartyShouldNotBeFound("denomination.equals=" + UPDATED_DENOMINATION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesByDenominationIsInShouldWork() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where denomination in DEFAULT_DENOMINATION or UPDATED_DENOMINATION
+        defaultThirdpartyShouldBeFound("denomination.in=" + DEFAULT_DENOMINATION + "," + UPDATED_DENOMINATION);
+
+        // Get all the thirdpartyList where denomination equals to UPDATED_DENOMINATION
+        defaultThirdpartyShouldNotBeFound("denomination.in=" + UPDATED_DENOMINATION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesByDenominationIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where denomination is not null
+        defaultThirdpartyShouldBeFound("denomination.specified=true");
+
+        // Get all the thirdpartyList where denomination is null
+        defaultThirdpartyShouldNotBeFound("denomination.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesBySiretIsEqualToSomething() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where siret equals to DEFAULT_SIRET
+        defaultThirdpartyShouldBeFound("siret.equals=" + DEFAULT_SIRET);
+
+        // Get all the thirdpartyList where siret equals to UPDATED_SIRET
+        defaultThirdpartyShouldNotBeFound("siret.equals=" + UPDATED_SIRET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesBySiretIsInShouldWork() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where siret in DEFAULT_SIRET or UPDATED_SIRET
+        defaultThirdpartyShouldBeFound("siret.in=" + DEFAULT_SIRET + "," + UPDATED_SIRET);
+
+        // Get all the thirdpartyList where siret equals to UPDATED_SIRET
+        defaultThirdpartyShouldNotBeFound("siret.in=" + UPDATED_SIRET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesBySiretIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where siret is not null
+        defaultThirdpartyShouldBeFound("siret.specified=true");
+
+        // Get all the thirdpartyList where siret is null
+        defaultThirdpartyShouldNotBeFound("siret.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesBySiretIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where siret greater than or equals to DEFAULT_SIRET
+        defaultThirdpartyShouldBeFound("siret.greaterOrEqualThan=" + DEFAULT_SIRET);
+
+        // Get all the thirdpartyList where siret greater than or equals to UPDATED_SIRET
+        defaultThirdpartyShouldNotBeFound("siret.greaterOrEqualThan=" + UPDATED_SIRET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesBySiretIsLessThanSomething() throws Exception {
+        // Initialize the database
+        thirdpartyRepository.saveAndFlush(thirdparty);
+
+        // Get all the thirdpartyList where siret less than or equals to DEFAULT_SIRET
+        defaultThirdpartyShouldNotBeFound("siret.lessThan=" + DEFAULT_SIRET);
+
+        // Get all the thirdpartyList where siret less than or equals to UPDATED_SIRET
+        defaultThirdpartyShouldBeFound("siret.lessThan=" + UPDATED_SIRET);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesByThirdpartyMemberShipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        UserThirdpartyMembership thirdpartyMemberShip = UserThirdpartyMembershipResourceIntTest.createEntity(em);
+        em.persist(thirdpartyMemberShip);
+        em.flush();
+        thirdparty.addThirdpartyMemberShip(thirdpartyMemberShip);
+        thirdpartyRepository.saveAndFlush(thirdparty);
+        Long thirdpartyMemberShipId = thirdpartyMemberShip.getId();
+
+        // Get all the thirdpartyList where thirdpartyMemberShip equals to thirdpartyMemberShipId
+        defaultThirdpartyShouldBeFound("thirdpartyMemberShipId.equals=" + thirdpartyMemberShipId);
+
+        // Get all the thirdpartyList where thirdpartyMemberShip equals to thirdpartyMemberShipId + 1
+        defaultThirdpartyShouldNotBeFound("thirdpartyMemberShipId.equals=" + (thirdpartyMemberShipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllThirdpartiesByThirdpartyLicenceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Licence thirdpartyLicence = LicenceResourceIntTest.createEntity(em);
+        em.persist(thirdpartyLicence);
+        em.flush();
+        thirdparty.addThirdpartyLicence(thirdpartyLicence);
+        thirdpartyRepository.saveAndFlush(thirdparty);
+        Long thirdpartyLicenceId = thirdpartyLicence.getId();
+
+        // Get all the thirdpartyList where thirdpartyLicence equals to thirdpartyLicenceId
+        defaultThirdpartyShouldBeFound("thirdpartyLicenceId.equals=" + thirdpartyLicenceId);
+
+        // Get all the thirdpartyList where thirdpartyLicence equals to thirdpartyLicenceId + 1
+        defaultThirdpartyShouldNotBeFound("thirdpartyLicenceId.equals=" + (thirdpartyLicenceId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultThirdpartyShouldBeFound(String filter) throws Exception {
+        restThirdpartyMockMvc.perform(get("/api/thirdparties?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(thirdparty.getId().intValue())))
+            .andExpect(jsonPath("$.[*].denomination").value(hasItem(DEFAULT_DENOMINATION)))
+            .andExpect(jsonPath("$.[*].siret").value(hasItem(DEFAULT_SIRET)));
+
+        // Check, that the count call also returns 1
+        restThirdpartyMockMvc.perform(get("/api/thirdparties/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultThirdpartyShouldNotBeFound(String filter) throws Exception {
+        restThirdpartyMockMvc.perform(get("/api/thirdparties?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restThirdpartyMockMvc.perform(get("/api/thirdparties/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
+
+    @Test
+    @Transactional
     public void getNonExistingThirdparty() throws Exception {
         // Get the thirdparty
         restThirdpartyMockMvc.perform(get("/api/thirdparties/{id}", Long.MAX_VALUE))
@@ -178,7 +367,7 @@ public class ThirdpartyResourceIntTest {
     @Transactional
     public void updateThirdparty() throws Exception {
         // Initialize the database
-        thirdpartyRepository.saveAndFlush(thirdparty);
+        thirdpartyService.save(thirdparty);
 
         int databaseSizeBeforeUpdate = thirdpartyRepository.findAll().size();
 
@@ -225,7 +414,7 @@ public class ThirdpartyResourceIntTest {
     @Transactional
     public void deleteThirdparty() throws Exception {
         // Initialize the database
-        thirdpartyRepository.saveAndFlush(thirdparty);
+        thirdpartyService.save(thirdparty);
 
         int databaseSizeBeforeDelete = thirdpartyRepository.findAll().size();
 

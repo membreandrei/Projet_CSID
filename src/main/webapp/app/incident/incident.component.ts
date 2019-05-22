@@ -225,7 +225,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         )
                         .subscribe(
                             (res1: IIncident[]) => {
-                                this.incidents = res;
+                                this.incidents = res1;
                             },
                             (res1: HttpErrorResponse) => this.onError(res1.message)
                         );

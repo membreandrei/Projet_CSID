@@ -1,8 +1,10 @@
 package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.UserThirdpartyMembership;
-import com.mycompany.myapp.repository.UserThirdpartyMembershipRepository;
+import com.mycompany.myapp.service.UserThirdpartyMembershipService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
+import com.mycompany.myapp.service.dto.UserThirdpartyMembershipCriteria;
+import com.mycompany.myapp.service.UserThirdpartyMembershipQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,13 @@ public class UserThirdpartyMembershipResource {
 
     private static final String ENTITY_NAME = "userThirdpartyMembership";
 
-    private final UserThirdpartyMembershipRepository userThirdpartyMembershipRepository;
+    private final UserThirdpartyMembershipService userThirdpartyMembershipService;
 
-    public UserThirdpartyMembershipResource(UserThirdpartyMembershipRepository userThirdpartyMembershipRepository) {
-        this.userThirdpartyMembershipRepository = userThirdpartyMembershipRepository;
+    private final UserThirdpartyMembershipQueryService userThirdpartyMembershipQueryService;
+
+    public UserThirdpartyMembershipResource(UserThirdpartyMembershipService userThirdpartyMembershipService, UserThirdpartyMembershipQueryService userThirdpartyMembershipQueryService) {
+        this.userThirdpartyMembershipService = userThirdpartyMembershipService;
+        this.userThirdpartyMembershipQueryService = userThirdpartyMembershipQueryService;
     }
 
     /**
@@ -45,7 +50,7 @@ public class UserThirdpartyMembershipResource {
         if (userThirdpartyMembership.getId() != null) {
             throw new BadRequestAlertException("A new userThirdpartyMembership cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserThirdpartyMembership result = userThirdpartyMembershipRepository.save(userThirdpartyMembership);
+        UserThirdpartyMembership result = userThirdpartyMembershipService.save(userThirdpartyMembership);
         return ResponseEntity.created(new URI("/api/user-thirdparty-memberships/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -66,7 +71,7 @@ public class UserThirdpartyMembershipResource {
         if (userThirdpartyMembership.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        UserThirdpartyMembership result = userThirdpartyMembershipRepository.save(userThirdpartyMembership);
+        UserThirdpartyMembership result = userThirdpartyMembershipService.save(userThirdpartyMembership);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userThirdpartyMembership.getId().toString()))
             .body(result);
@@ -75,12 +80,26 @@ public class UserThirdpartyMembershipResource {
     /**
      * GET  /user-thirdparty-memberships : get all the userThirdpartyMemberships.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of userThirdpartyMemberships in body
      */
     @GetMapping("/user-thirdparty-memberships")
-    public List<UserThirdpartyMembership> getAllUserThirdpartyMemberships() {
-        log.debug("REST request to get all UserThirdpartyMemberships");
-        return userThirdpartyMembershipRepository.findAll();
+    public ResponseEntity<List<UserThirdpartyMembership>> getAllUserThirdpartyMemberships(UserThirdpartyMembershipCriteria criteria) {
+        log.debug("REST request to get UserThirdpartyMemberships by criteria: {}", criteria);
+        List<UserThirdpartyMembership> entityList = userThirdpartyMembershipQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /user-thirdparty-memberships/count : count all the userThirdpartyMemberships.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/user-thirdparty-memberships/count")
+    public ResponseEntity<Long> countUserThirdpartyMemberships(UserThirdpartyMembershipCriteria criteria) {
+        log.debug("REST request to count UserThirdpartyMemberships by criteria: {}", criteria);
+        return ResponseEntity.ok().body(userThirdpartyMembershipQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -92,7 +111,7 @@ public class UserThirdpartyMembershipResource {
     @GetMapping("/user-thirdparty-memberships/{id}")
     public ResponseEntity<UserThirdpartyMembership> getUserThirdpartyMembership(@PathVariable Long id) {
         log.debug("REST request to get UserThirdpartyMembership : {}", id);
-        Optional<UserThirdpartyMembership> userThirdpartyMembership = userThirdpartyMembershipRepository.findById(id);
+        Optional<UserThirdpartyMembership> userThirdpartyMembership = userThirdpartyMembershipService.findOne(id);
         return ResponseUtil.wrapOrNotFound(userThirdpartyMembership);
     }
 
@@ -105,7 +124,7 @@ public class UserThirdpartyMembershipResource {
     @DeleteMapping("/user-thirdparty-memberships/{id}")
     public ResponseEntity<Void> deleteUserThirdpartyMembership(@PathVariable Long id) {
         log.debug("REST request to delete UserThirdpartyMembership : {}", id);
-        userThirdpartyMembershipRepository.deleteById(id);
+        userThirdpartyMembershipService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

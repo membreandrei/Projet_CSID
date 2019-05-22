@@ -1,8 +1,10 @@
 package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.Thirdparty;
-import com.mycompany.myapp.repository.ThirdpartyRepository;
+import com.mycompany.myapp.service.ThirdpartyService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
+import com.mycompany.myapp.service.dto.ThirdpartyCriteria;
+import com.mycompany.myapp.service.ThirdpartyQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,13 @@ public class ThirdpartyResource {
 
     private static final String ENTITY_NAME = "thirdparty";
 
-    private final ThirdpartyRepository thirdpartyRepository;
+    private final ThirdpartyService thirdpartyService;
 
-    public ThirdpartyResource(ThirdpartyRepository thirdpartyRepository) {
-        this.thirdpartyRepository = thirdpartyRepository;
+    private final ThirdpartyQueryService thirdpartyQueryService;
+
+    public ThirdpartyResource(ThirdpartyService thirdpartyService, ThirdpartyQueryService thirdpartyQueryService) {
+        this.thirdpartyService = thirdpartyService;
+        this.thirdpartyQueryService = thirdpartyQueryService;
     }
 
     /**
@@ -45,7 +50,7 @@ public class ThirdpartyResource {
         if (thirdparty.getId() != null) {
             throw new BadRequestAlertException("A new thirdparty cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Thirdparty result = thirdpartyRepository.save(thirdparty);
+        Thirdparty result = thirdpartyService.save(thirdparty);
         return ResponseEntity.created(new URI("/api/thirdparties/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -66,7 +71,7 @@ public class ThirdpartyResource {
         if (thirdparty.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Thirdparty result = thirdpartyRepository.save(thirdparty);
+        Thirdparty result = thirdpartyService.save(thirdparty);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, thirdparty.getId().toString()))
             .body(result);
@@ -75,12 +80,26 @@ public class ThirdpartyResource {
     /**
      * GET  /thirdparties : get all the thirdparties.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of thirdparties in body
      */
     @GetMapping("/thirdparties")
-    public List<Thirdparty> getAllThirdparties() {
-        log.debug("REST request to get all Thirdparties");
-        return thirdpartyRepository.findAll();
+    public ResponseEntity<List<Thirdparty>> getAllThirdparties(ThirdpartyCriteria criteria) {
+        log.debug("REST request to get Thirdparties by criteria: {}", criteria);
+        List<Thirdparty> entityList = thirdpartyQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /thirdparties/count : count all the thirdparties.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/thirdparties/count")
+    public ResponseEntity<Long> countThirdparties(ThirdpartyCriteria criteria) {
+        log.debug("REST request to count Thirdparties by criteria: {}", criteria);
+        return ResponseEntity.ok().body(thirdpartyQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -92,7 +111,7 @@ public class ThirdpartyResource {
     @GetMapping("/thirdparties/{id}")
     public ResponseEntity<Thirdparty> getThirdparty(@PathVariable Long id) {
         log.debug("REST request to get Thirdparty : {}", id);
-        Optional<Thirdparty> thirdparty = thirdpartyRepository.findById(id);
+        Optional<Thirdparty> thirdparty = thirdpartyService.findOne(id);
         return ResponseUtil.wrapOrNotFound(thirdparty);
     }
 
@@ -105,7 +124,7 @@ public class ThirdpartyResource {
     @DeleteMapping("/thirdparties/{id}")
     public ResponseEntity<Void> deleteThirdparty(@PathVariable Long id) {
         log.debug("REST request to delete Thirdparty : {}", id);
-        thirdpartyRepository.deleteById(id);
+        thirdpartyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

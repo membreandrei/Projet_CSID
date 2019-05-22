@@ -21,14 +21,6 @@
                             <input type="text" class="form-control" name="specialite" id="field_specialite"
                                 [(ngModel)]="userThirdpartyMembership.specialite" />
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-control-label" jhiTranslate="projetCsidApp.userThirdpartyMembership.thirdparty" for="field_thirdparty">Thirdparty</label>
-                            <select class="form-control" id="field_thirdparty" name="thirdparty" [(ngModel)]="userThirdpartyMembership.thirdparty" >
-                                <option [ngValue]="null"></option>
-                                <option [ngValue]="thirdpartyOption.id === userThirdpartyMembership.thirdparty?.id ? userThirdpartyMembership.thirdparty : thirdpartyOption" *ngFor="let thirdpartyOption of thirdparties; trackBy: trackThirdpartyById">{{thirdpartyOption.id}}</option>
-                            </select>
-                        </div>
                     </div>
                     <div>
                         <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

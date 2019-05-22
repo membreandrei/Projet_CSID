@@ -7,7 +7,9 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IUserThirdpartyMembership } from 'app/shared/model/user-thirdparty-membership.model';
 import { UserThirdpartyMembershipService } from './user-thirdparty-membership.service';
 import { IThirdparty } from 'app/shared/model/thirdparty.model';
-import { ThirdpartyService } from 'app/entities/thirdparty';
+import { AccountService } from 'app/core';
+import { IUserApp } from 'app/shared/model/user-app.model';
+import { UserAppService } from 'app/entities/user-app';
 
 @Component({
     selector: 'jhi-user-thirdparty-membership-update',
@@ -16,28 +18,48 @@ import { ThirdpartyService } from 'app/entities/thirdparty';
 export class UserThirdpartyMembershipUpdateComponent implements OnInit {
     userThirdpartyMembership: IUserThirdpartyMembership;
     isSaving: boolean;
-
+    currentAccount: any;
+    accountId: any;
     thirdparties: IThirdparty[];
+    userapps: any;
+    userAppsEntreprise: any;
 
     constructor(
+        protected userAppService: UserAppService,
+        protected accountService: AccountService,
         protected jhiAlertService: JhiAlertService,
         protected userThirdpartyMembershipService: UserThirdpartyMembershipService,
-        protected thirdpartyService: ThirdpartyService,
         protected activatedRoute: ActivatedRoute
     ) {}
+
+    loadAll() {
+        this.userAppService
+            .query({
+                'userId.equals': this.accountId
+            })
+            .pipe(
+                filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                map((res: HttpResponse<IUserApp[]>) => res.body)
+            )
+            .subscribe(
+                (res: IUserApp[]) => {
+                    this.userapps = res;
+                    this.userAppsEntreprise = this.userapps[0].userThirdpartyMembership.thirdparty;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
 
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ userThirdpartyMembership }) => {
             this.userThirdpartyMembership = userThirdpartyMembership;
         });
-        this.thirdpartyService
-            .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<IThirdparty[]>) => mayBeOk.ok),
-                map((response: HttpResponse<IThirdparty[]>) => response.body)
-            )
-            .subscribe((res: IThirdparty[]) => (this.thirdparties = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.accountService.identity().then(account => {
+            this.currentAccount = account;
+            this.accountId = account.id;
+            this.loadAll();
+        });
     }
 
     previousState() {
@@ -49,6 +71,7 @@ export class UserThirdpartyMembershipUpdateComponent implements OnInit {
         if (this.userThirdpartyMembership.id !== undefined) {
             this.subscribeToSaveResponse(this.userThirdpartyMembershipService.update(this.userThirdpartyMembership));
         } else {
+            this.userThirdpartyMembership.thirdparty = this.userAppsEntreprise;
             this.subscribeToSaveResponse(this.userThirdpartyMembershipService.create(this.userThirdpartyMembership));
         }
     }

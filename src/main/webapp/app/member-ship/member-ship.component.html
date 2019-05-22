@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="col-sm">
+            <br>
+            <div class="row col-sm">
+                <div class="col-sm-auto">
+                    <h2 id="page-heading">
+                        <span jhiTranslate="projetCsidApp.userThirdpartyMembership.home.title">User Thirdparty Memberships</span>
+                    </h2>
+                </div>
+                <div class="col-sm">
+                    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-thirdparty-membership" [routerLink]="['/user-thirdparty-membership/new']">
+                        <fa-icon [icon]="'plus'"></fa-icon>
+                        <span  jhiTranslate="projetCsidApp.userThirdpartyMembership.home.createLabel">
+                            Create new User Thirdparty Membership
+                            </span>
+                    </button>
+                </div>
+            </div>
+
+            <jhi-alert></jhi-alert>
+            <br/>
+            <div class="table-responsive" *ngIf="userThirdpartyMemberships">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span jhiTranslate="global.field.id">ID</span></th>
+                        <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.fonction">Fonction</span></th>
+                        <th><span jhiTranslate="projetCsidApp.userThirdpartyMembership.specialite">Specialite</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let userThirdpartyMembership of userThirdpartyMemberships ;trackBy: trackId">
+                        <td><a [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'view' ]">{{userThirdpartyMembership.id}}</a></td>
+                        <td>{{userThirdpartyMembership.fonction}}</td>
+                        <td>{{userThirdpartyMembership.specialite}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'edit']"
+                                        class="btn btn-primary btn-sm">
+                                    <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', 'user-thirdparty-membership', { outlets: { popup: userThirdpartyMembership.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-danger btn-sm">
+                                    <fa-icon [icon]="'times'"></fa-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
