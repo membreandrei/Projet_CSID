@@ -211,7 +211,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                 (res: IUserApp[]) => {
                     const userApps = res;
                     for (const userApp of userApps) {
-                        if (userApp.user.id == this.accountId) {
+                        if (userApp.user.id === this.accountId) {
                             this.userAppId = userApp.id;
                         }
                     }
@@ -220,14 +220,14 @@ export class IncidentComponent implements OnInit, OnDestroy {
                             'userAppId.equals': this.userAppId
                         })
                         .pipe(
-                            filter((res: HttpResponse<IIncident[]>) => res.ok),
-                            map((res: HttpResponse<IIncident[]>) => res.body)
+                            filter((res1: HttpResponse<IIncident[]>) => res1.ok),
+                            map((res1: HttpResponse<IIncident[]>) => res1.body)
                         )
                         .subscribe(
-                            (res: IIncident[]) => {
+                            (res1: IIncident[]) => {
                                 this.incidents = res;
                             },
-                            (res: HttpErrorResponse) => this.onError(res.message)
+                            (res1: HttpErrorResponse) => this.onError(res1.message)
                         );
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
