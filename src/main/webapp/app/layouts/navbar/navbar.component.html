@@ -15,7 +15,7 @@
                         <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a>
                     </li>
                     <li class="nav-item mx-0 mx-lg-1">
-                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a>
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger " href="#contact">Contact</a>
                     </li>
 
                     <li class="nav-item mx-0 mx-lg-1" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -60,12 +60,11 @@
     </nav>
 
     <nav *ngSwitchCase="true" class="sidebar">
-        <ul class="navbar-nav bg-gradient-primary fixed-top sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary navbar-fixed-left fixed-top sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center navbar-brand logo" routerLink="/" [ngSwitch]="isAuthenticated()">
                 <div class="sidebar-brand-icon">
                     <span class="logo-img"></span>
                 </div>
-                <div class="sidebar-brand-text mx-3">I-Start</div>
             </a>
             <!--
             <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
@@ -147,7 +146,7 @@
                         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Gestion des entités :</h6>
-                                <a class="collapse-item" routerLink="user-app" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a class="collapse-item " routerLink="user-app" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                     <span jhiTranslate="global.menu.entities.userApp">User App</span>
                                 </a>
                                 <a class="collapse-item" routerLink="user-thirdparty-membership" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
@@ -264,15 +263,15 @@
                         </div>
 
                     </li>
-
-            </div>
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div (click)="loadJS()" class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div (click)="loadJS()" class="text-center ">
+                    <button class=" text-center rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
             </div>
 
         </ul>

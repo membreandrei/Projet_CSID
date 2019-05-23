@@ -23,7 +23,7 @@ export class MemberShipComponent implements OnInit, OnDestroy {
 
     constructor(
         protected userAppService: UserAppService,
-        protected MembershipService: MembershipService,
+        protected membershipService: MembershipService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
         protected accountService: AccountService
@@ -44,9 +44,10 @@ export class MemberShipComponent implements OnInit, OnDestroy {
                             this.userAppEntrepriseId = userApp.userThirdpartyMembership.thirdparty.id;
                         }
                     }
-                    this.MembershipService.query({
-                        'thirdpartyId.equals': this.userAppEntrepriseId
-                    })
+                    this.membershipService
+                        .query({
+                            'thirdpartyId.equals': this.userAppEntrepriseId
+                        })
                         .pipe(
                             filter((res1: HttpResponse<IUserThirdpartyMembership[]>) => res1.ok),
                             map((res1: HttpResponse<IUserThirdpartyMembership[]>) => res1.body)
