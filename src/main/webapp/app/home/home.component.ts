@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
     modalRef: NgbModalRef;
     allIncidents: IIncident[];
     numberResolu: any;
+    pourcentageResolu: any;
+    nombreIncident: any;
     numberNonResolu: any;
     numberEnCours: any;
     constructor(
@@ -37,11 +39,22 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberResolu = res;
-                    console.log(this.numberResolu);
+                    this.incidentService
+                        .queryCount()
+                        .pipe(
+                            filter((res1: HttpResponse<any>) => res1.ok),
+                            map((res1: HttpResponse<any>) => res1.body)
+                        )
+                        .subscribe(
+                            (res1: IIncident[]) => {
+                                this.nombreIncident = res1;
+                                this.pourcentageResolu = Math.round((this.numberResolu / this.nombreIncident) * 100);
+                            },
+                            (res1: HttpErrorResponse) => this.onError(res1.message)
+                        );
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
-        console.log(this.numberResolu);
     }
     public incidentNonResolu() {
         this.incidentService
@@ -53,7 +66,6 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberNonResolu = res;
-                    console.log(this.numberNonResolu);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -68,7 +80,6 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberEnCours = res;
-                    console.log(this.numberEnCours);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
