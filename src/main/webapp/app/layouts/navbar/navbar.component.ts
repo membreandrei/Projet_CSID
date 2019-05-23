@@ -89,6 +89,13 @@ export class NavbarComponent implements OnInit {
                     );
                 e.preventDefault();
             });
+
+            $(document).ready(function() {
+                $('#sidebarToggle').click(function() {
+                    $('#sidebarToggle').toggleClass('rotated');
+                });
+            });
+
             // @ts-ignore
         })(jQuery); // End of use strict
     }

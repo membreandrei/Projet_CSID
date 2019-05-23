@@ -11691,6 +11691,7 @@ a:focus {
     color: #3a3b45;
     text-decoration: none;
     border-radius: 0.35rem;
+    font-weight: 400;
     white-space: nowrap;
 }
 
