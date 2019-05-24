@@ -85,13 +85,14 @@ export class HomeComponent implements OnInit {
             );
     }
     ngOnInit() {
-        this.incidentResolu();
-        this.incidentNonResolu();
-        this.incidentEnCours();
         this.accountService.identity().then((account: Account) => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+
+        this.incidentResolu();
+        this.incidentNonResolu();
+        this.incidentEnCours();
     }
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
