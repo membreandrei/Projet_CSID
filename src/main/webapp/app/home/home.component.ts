@@ -22,9 +22,12 @@ export class HomeComponent implements OnInit {
     nombreIncident: any;
     numberNonResolu: any;
     numberEnCours: any;
-    lineChart: any;
-    data: any;
-    options: any;
+    dataArea: any;
+    optionsArea: any;
+    dataDonut: any;
+    optionsDonut: any;
+    dataBar: any;
+    optionsBar: any;
 
     constructor(
         private incidentService: IncidentService,
@@ -34,9 +37,9 @@ export class HomeComponent implements OnInit {
         private eventManager: JhiEventManager
     ) {}
 
-    test() {
-        this.data = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    chartArea() {
+        this.dataArea = {
+            labels: ['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
             datasets: [
                 {
                     label: 'Earnings',
@@ -55,8 +58,7 @@ export class HomeComponent implements OnInit {
                 }
             ]
         };
-        this.options = {
-            maintainAspectRatio: false,
+        this.optionsArea = {
             scales: {
                 xAxes: [
                     {
@@ -91,6 +93,87 @@ export class HomeComponent implements OnInit {
             legend: {
                 display: false
             }
+        };
+    }
+
+    chartDonut() {
+        this.dataDonut = {
+            labels: ['Direct', 'Referra', 'Social'],
+            datasets: [
+                {
+                    data: [55, 30, 15],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: 'rgba(234, 236, 244, 1)'
+                }
+            ]
+        };
+
+        this.optionsDonut = {
+            tooltips: {
+                bodyFontColor: '#858796',
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                caretPadding: 10
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80
+        };
+    }
+
+    chartBar() {
+        this.dataBar = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [
+                {
+                    label: 'My First dataset',
+                    backgroundColor: '#4e73df',
+                    borderColor: '#1E88E5',
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: 'My Second dataset',
+                    backgroundColor: '#1cc88a',
+                    borderColor: '#7CB342',
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
+            ]
+        };
+
+        this.optionsBar = {
+            scales: {
+                xAxes: [
+                    {
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    }
+                ],
+                yAxes: [
+                    {
+                        ticks: {
+                            maxTicksLimit: 10,
+                            padding: 10
+                        },
+                        gridLines: {
+                            color: 'rgb(234, 236, 244)',
+                            zeroLineColor: 'rgb(234, 236, 244)',
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }
+                ]
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80
         };
     }
 
@@ -158,7 +241,9 @@ export class HomeComponent implements OnInit {
         this.incidentResolu();
         this.incidentNonResolu();
         this.incidentEnCours();
-        this.test();
+        this.chartArea();
+        this.chartDonut();
+        this.chartBar();
     }
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);

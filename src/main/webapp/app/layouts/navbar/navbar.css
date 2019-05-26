@@ -130,17 +130,9 @@ Logo styles
     color: #fff;
 }
 
-#mainNav .navbar-nav li.nav-item a.nav-link:hover {
-    color: #18bc9c;
-}
-
 #mainNav .navbar-nav li.nav-item a.nav-link:active,
 #mainNav .navbar-nav li.nav-item a.nav-link:focus {
     color: #fff;
-}
-
-#mainNav .navbar-nav li.nav-item a.nav-link.active {
-    color: #18bc9c;
 }
 
 #mainNav .navbar-toggler {
@@ -163,16 +155,7 @@ Logo styles
     #mainNav .navbar-nav {
         margin-top: 0;
     }
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active {
-        color: #fff;
-        background: #18bc9c;
-    }
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active,
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus,
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
-        color: #fff;
-        background: #18bc9c;
-    }
+
     #mainNav.navbar-shrink {
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
@@ -228,11 +211,6 @@ hr.star-dark:after {
 
 hr.star-light {
     border-color: #fff;
-}
-
-hr.star-light:after {
-    color: #fff;
-    background-color: #18bc9c;
 }
 
 hr.star-dark {
@@ -306,19 +284,10 @@ section h2 {
     color: #fff;
 }
 
-#mainNav .navbar-nav li.nav-item a.nav-link:hover {
-    color: #18bc9c;
-}
-
 #mainNav .navbar-nav li.nav-item a.nav-link:active,
 #mainNav .navbar-nav li.nav-item a.nav-link:focus {
     color: #fff;
 }
-
-#mainNav .navbar-nav li.nav-item a.nav-link.active {
-    color: #18bc9c;
-}
-
 #mainNav .navbar-toggler {
     font-size: 80%;
     padding: 0.8rem;
@@ -338,16 +307,6 @@ section h2 {
     }
     #mainNav .navbar-nav {
         margin-top: 0;
-    }
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active {
-        color: #fff;
-        background: #18bc9c;
-    }
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active,
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus,
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
-        color: #fff;
-        background: #18bc9c;
     }
     #mainNav.navbar-shrink {
         padding-top: 0.5rem;
@@ -502,10 +461,6 @@ header.masthead h2 {
     opacity: 1;
 }
 
-.floating-label-form-group-with-focus label {
-    color: #18bc9c;
-}
-
 form .row:first-child .floating-label-form-group {
     border-top: 1px solid #e9ecef;
 }
@@ -521,10 +476,6 @@ form .row:first-child .floating-label-form-group {
     background-color: #1a252f;
 }
 
-a {
-    color: #18bc9c;
-}
-
 a:focus,
 a:hover,
 a:active {
@@ -535,25 +486,12 @@ a:active {
     border-width: 2px;
 }
 
-.bg-primary {
-    background-color: #18bc9c !important;
-}
-
 .bg-secondary {
     background-color: #2c3e50 !important;
 }
 
-.text-primary {
-    color: #18bc9c !important;
-}
-
 .text-secondary {
     color: #2c3e50 !important;
-}
-
-.btn-primary {
-    background-color: #18bc9c;
-    border-color: #18bc9c;
 }
 
 .btn-primary:hover,
