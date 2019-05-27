@@ -5379,7 +5379,6 @@ input[type='button'].btn-block {
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    border: 1px solid #e3e6f0;
     border-radius: 0.35rem;
     margin-top: 1.5rem;
 }
@@ -7539,10 +7538,6 @@ a.bg-primary:focus,
 button.bg-primary:hover,
 button.bg-primary:focus {
     background-color: #2653d4 !important;
-}
-
-.bg-secondary {
-    background-color: #858796 !important;
 }
 
 a.bg-secondary:hover,
