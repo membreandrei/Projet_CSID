@@ -24,7 +24,6 @@ import { MemberShipModule } from 'app/member-ship/member-ship.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
-import { MemberShipComponent } from './member-ship/member-ship.component';
 
 @NgModule({
     imports: [
