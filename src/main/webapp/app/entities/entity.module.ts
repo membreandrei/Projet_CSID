@@ -33,26 +33,6 @@ import { RouterModule } from '@angular/router';
                 loadChildren: './user-app/user-app.module#ProjetCsidUserAppModule'
             },
             {
-                path: 'incident',
-                loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
-            },
-            {
-                path: 'incident',
-                loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
-            },
-            {
-                path: 'incident',
-                loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
-            },
-            {
-                path: 'incident',
-                loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
-            },
-            {
-                path: 'incident',
-                loadChildren: './incident/incident.module#ProjetCsidIncidentModule'
-            },
-            {
                 path: 'user-app',
                 loadChildren: './user-app/user-app.module#ProjetCsidUserAppModule'
             },

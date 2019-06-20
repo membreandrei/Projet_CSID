@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="col-sm">
-                    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-app" [routerLink]="['/user-app/new']">
+                    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-app" [routerLink]="['/portailAdministration/mesUtilisateurs/new']">
                         <fa-icon [icon]="'plus'"></fa-icon>
                         <span  jhiTranslate="projetCsidApp.userApp.home.createLabel">
                         Create new User App
@@ -61,12 +61,12 @@
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
-                                        [routerLink]="['/user-app', userApp.id, 'edit']"
+                                        [routerLink]="['/portailAdministration/mesUtilisateurs', userApp.id, 'edit']"
                                         class="btn btn-primary btn-sm">
                                     <fa-icon [icon]="'pencil-alt'"></fa-icon>
                                 </button>
                                 <button type="submit"
-                                        [routerLink]="['/', 'user-app', { outlets: { popup: userApp.id + '/delete'} }]"
+                                        [routerLink]="['/portailAdministration/mesUtilisateurs', { outlets: { popup: userApp.id + '/delete'} }]"
                                         replaceUrl="true"
                                         queryParamsHandling="merge"
                                         class="btn btn-danger btn-sm">

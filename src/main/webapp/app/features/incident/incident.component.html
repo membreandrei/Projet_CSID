@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-sm-auto">
                     <h2 id="page-heading">
-                        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/incident/new']">
+                        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-incident" [routerLink]="['/ticket/new']">
                             <fa-icon [icon]="'plus'"></fa-icon>
                             <span  jhiTranslate="projetCsidApp.incident.home.createLabel">
                             Create new Incident
@@ -92,7 +92,7 @@
                     <tbody>
 
                     <tr *ngFor="let incident of (incidents | orderBy:'dateDebut');trackBy: trackId">
-                        <td><a [routerLink]="['/incident', incident.id, 'view' ]">{{incident.id}}</a></td>
+                        <td><a [routerLink]="['/ticket', incident.id, 'view' ]">{{incident.id}}</a></td>
                         <td>{{incident.titre}}</td>
                         <td>{{incident.statut}}</td>
                         <td>{{incident.priorite}}</td>
@@ -122,13 +122,13 @@
                             </div>
                                 <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
-                                        [routerLink]="['/incident', incident.id, 'edit']"
+                                        [routerLink]="['/ticket', incident.id, 'edit']"
                                         class="btn btn-primary ">
                                     <fa-icon [icon]="'pencil-alt'"></fa-icon>
                                     <span class="d-none d-md-inline"></span>
                                 </button>
                                 <button type="submit"
-                                        [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
+                                        [routerLink]="['/', 'ticket', { outlets: { popup: incident.id + '/delete'} }]"
                                         replaceUrl="true"
                                         queryParamsHandling="merge"
                                         class="btn btn-danger ">
@@ -165,7 +165,7 @@
                         <tbody>
 
                         <tr *ngFor="let incident of incidents;trackBy: trackId">
-                            <td><a [routerLink]="['/incident', incident.id, 'view' ]">{{incident.id}}</a></td>
+                            <td><a [routerLink]="['/ticket', incident.id, 'view' ]">{{incident.id}}</a></td>
                             <td>{{incident.titre}}</td>
                             <td>{{incident.statut}}</td>
                             <td>{{incident.priorite}}</td>
@@ -195,13 +195,13 @@
                                     </div>
                                     <div class="btn-group flex-btn-group-container">
                                         <button type="submit"
-                                                [routerLink]="['/incident', incident.id, 'edit']"
+                                                [routerLink]="['/ticket', incident.id, 'edit']"
                                                 class="btn btn-primary ">
                                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                                             <span class="d-none d-md-inline"></span>
                                         </button>
                                         <button type="submit"
-                                                [routerLink]="['/', 'incident', { outlets: { popup: incident.id + '/delete'} }]"
+                                                [routerLink]="['/', 'ticket', { outlets: { popup: incident.id + '/delete'} }]"
                                                 replaceUrl="true"
                                                 queryParamsHandling="merge"
                                                 class="btn btn-danger ">

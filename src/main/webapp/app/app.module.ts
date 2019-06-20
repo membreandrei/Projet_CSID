@@ -17,9 +17,10 @@ import { ProjetCsidAppRoutingModule } from './app-routing.module';
 import { ProjetCsidHomeModule } from './home/home.module';
 import { ProjetCsidAccountModule } from './account/account.module';
 import { ProjetCsidEntityModule } from './entities/entity.module';
-import { IncidentModule } from './incident/incident.module';
-import { AdministrationModule } from 'app/administration/administration.module';
-import { MemberShipModule } from 'app/member-ship/member-ship.module';
+import { ProjetCsidFeatureModule } from './features/feature.module';
+import { ProjetCsidIncidentModule } from './features/incident/incident.module';
+import { ProjetCsidAdministrationModule } from 'app/features/administration/administration.module';
+import { ProjetCsidMembershipModule } from 'app/features/member-ship/member-ship.module';
 
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
@@ -40,9 +41,10 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         ProjetCsidCoreModule,
         ProjetCsidHomeModule,
         ProjetCsidAccountModule,
-        IncidentModule,
-        AdministrationModule,
-        MemberShipModule,
+        ProjetCsidIncidentModule,
+        ProjetCsidAdministrationModule,
+        ProjetCsidMembershipModule,
+        ProjetCsidFeatureModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         ProjetCsidEntityModule,
         ProjetCsidAppRoutingModule

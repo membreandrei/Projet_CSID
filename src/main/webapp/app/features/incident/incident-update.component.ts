@@ -8,6 +8,8 @@ import { IIncident } from 'app/shared/model/incident.model';
 import { IncidentService } from './incident.service';
 import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from 'app/entities/user-app';
+import { AccountService } from 'app/core';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'jhi-incident-update',
@@ -16,28 +18,48 @@ import { UserAppService } from 'app/entities/user-app';
 export class IncidentUpdateComponent implements OnInit {
     incident: IIncident;
     isSaving: boolean;
-
     userapps: IUserApp[];
+    userAppsConnected: any;
+    currentAccount: any;
+    accountId: any;
 
     constructor(
+        protected accountService: AccountService,
         protected jhiAlertService: JhiAlertService,
         protected incidentService: IncidentService,
         protected userAppService: UserAppService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
+    loadAll() {
+        this.userAppService
+            .query({
+                'userId.equals': this.accountId
+            })
+            .pipe(
+                filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                map((res: HttpResponse<IUserApp[]>) => res.body)
+            )
+            .subscribe(
+                (res: IUserApp[]) => {
+                    this.userapps = res;
+                    this.userAppsConnected = this.userapps[0];
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ incident }) => {
             this.incident = incident;
         });
-        this.userAppService
-            .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<IUserApp[]>) => mayBeOk.ok),
-                map((response: HttpResponse<IUserApp[]>) => response.body)
-            )
-            .subscribe((res: IUserApp[]) => (this.userapps = res), (res: HttpErrorResponse) => this.onError(res.message));
+
+        this.accountService.identity().then(account => {
+            this.currentAccount = account;
+            this.accountId = account.id;
+            this.loadAll();
+        });
     }
 
     previousState() {
@@ -47,9 +69,10 @@ export class IncidentUpdateComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.incident.id !== undefined) {
-            console.log(this.incident.dateDebut.toString());
             this.subscribeToSaveResponse(this.incidentService.update(this.incident));
         } else {
+            this.incident.userApp = this.userAppsConnected;
+            this.incident.dateDebut = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
             this.subscribeToSaveResponse(this.incidentService.create(this.incident));
         }
     }
