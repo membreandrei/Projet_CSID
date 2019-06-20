@@ -39,14 +39,14 @@ export class AdministrationComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IUserApp[]) => {
                     this.userApps = res;
-                    for (let userApp of this.userApps) {
-                        if (userApp.user.id == this.accountId) {
+                    for (const userApp of this.userApps) {
+                        if (userApp.user.id === this.accountId) {
                             this.entreprise = userApp.userThirdpartyMembership.thirdparty.denomination;
                             this.entrepiseId = userApp.userThirdpartyMembership.thirdparty.id;
                         }
                     }
 
-                    for (var i = 0; i < this.userApps.length; i++) {
+                    for (let i = 0; i < this.userApps.length; i++) {
                         if (
                             this.userApps[i].userThirdpartyMembership === null ||
                             this.userApps[i].userThirdpartyMembership.thirdparty.id !== this.entrepiseId

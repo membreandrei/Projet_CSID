@@ -10,7 +10,7 @@ type EntityResponseType = HttpResponse<IUserApp>;
 type EntityArrayResponseType = HttpResponse<IUserApp[]>;
 
 @Injectable({ providedIn: 'root' })
-export class UserAppService {
+export class AdministrationService {
     public resourceUrl = SERVER_API_URL + 'api/user-apps';
 
     constructor(protected http: HttpClient) {}

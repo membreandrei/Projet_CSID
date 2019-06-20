@@ -8,7 +8,7 @@
                     </h2>
                 </div>
                 <div class="col-sm">
-                    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-thirdparty-membership" [routerLink]="['/user-thirdparty-membership/new']">
+                    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-thirdparty-membership" [routerLink]="['/portailAdministration/memberShip/new']">
                         <fa-icon [icon]="'plus'"></fa-icon>
                         <span  jhiTranslate="projetCsidApp.userThirdpartyMembership.home.createLabel">
                             Create new User Thirdparty Membership
@@ -31,18 +31,18 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let userThirdpartyMembership of userThirdpartyMemberships ;trackBy: trackId">
-                        <td><a [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'view' ]">{{userThirdpartyMembership.id}}</a></td>
+                        <td><a [routerLink]="['/portailAdministration/memberShip', userThirdpartyMembership.id, 'view' ]">{{userThirdpartyMembership.id}}</a></td>
                         <td>{{userThirdpartyMembership.fonction}}</td>
                         <td>{{userThirdpartyMembership.specialite}}</td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
-                                        [routerLink]="['/user-thirdparty-membership', userThirdpartyMembership.id, 'edit']"
+                                        [routerLink]="['/portailAdministration/memberShip', userThirdpartyMembership.id, 'edit']"
                                         class="btn btn-primary btn-sm">
                                     <fa-icon [icon]="'pencil-alt'"></fa-icon>
                                 </button>
                                 <button type="submit"
-                                        [routerLink]="['/', 'user-thirdparty-membership', { outlets: { popup: userThirdpartyMembership.id + '/delete'} }]"
+                                        [routerLink]="['/portailAdministration/memberShip', { outlets: { popup: userThirdpartyMembership.id + '/delete'} }]"
                                         replaceUrl="true"
                                         queryParamsHandling="merge"
                                         class="btn btn-danger btn-sm">

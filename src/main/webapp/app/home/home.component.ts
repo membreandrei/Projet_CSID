@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { IIncident } from 'app/shared/model/incident.model';
-import { IncidentService } from 'app/incident/incident.service';
+import { IncidentService } from 'app/features/incident/incident.service';
 import { LoginModalService, AccountService, Account } from 'app/core';
 import { filter, map } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
