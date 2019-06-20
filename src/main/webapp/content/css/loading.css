@@ -86,7 +86,7 @@
 }
 
 .app-loading {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Verdana', Helvetica, Arial, sans-serif;
     position: relative;
     display: flex;
     flex-direction: column;
