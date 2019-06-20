@@ -34,7 +34,7 @@ export const AdministrationAppRoute: Routes = [
         component: AdministrationComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.userApp.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -46,7 +46,7 @@ export const AdministrationAppRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.userApp.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -58,7 +58,7 @@ export const AdministrationAppRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.userApp.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -70,7 +70,7 @@ export const AdministrationAppRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.userApp.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     }
@@ -85,7 +85,7 @@ export const AdministrationPopupRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.userApp.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'

@@ -34,7 +34,7 @@ export const MembershipRoute: Routes = [
         component: MemberShipComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.thirdparty.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -46,7 +46,7 @@ export const MembershipRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.thirdparty.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -58,7 +58,7 @@ export const MembershipRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.thirdparty.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -70,7 +70,7 @@ export const MembershipRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.thirdparty.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService]
     }
@@ -85,7 +85,7 @@ export const MembershipPopupRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'projetCsidApp.thirdparty.home.title'
+            pageTitle: 'projetCsidApp.portailAdministration.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
