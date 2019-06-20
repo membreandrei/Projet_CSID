@@ -5,14 +5,6 @@
                 <div class="content-wrapper">
 
                     <!-- Page Heading -->
-                    <div class="text-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
-
-                    <div *ngSwitchCase="true">
-                    <P id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
-                      [translateValues]="{username: account.login}" class="text-center"> Bienvenue {{account.login}}. </P>
-                    </div>
 
                     <br/>
                     <div class="container-fluid">
@@ -91,7 +83,7 @@
                                 </div>
                             </div>
                         </div>
-
+<br/>
                         <!-- Content Row -->
 
                         <div class="row">
