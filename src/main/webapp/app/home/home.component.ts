@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
 
     chartDonut() {
         this.dataDonut = {
-            labels: ['Direct', 'Referra', 'Social'],
+            labels: ['Incident Non résolu', 'Incident En Cours', 'Incident résolu'],
             datasets: [
                 {
                     data: [55, 30, 15],
@@ -196,6 +196,7 @@ export class HomeComponent implements OnInit {
                         .subscribe(
                             (res1: IIncident[]) => {
                                 this.nombreIncident = res1;
+                                this.dataDonut.datasets[0].data[2] = this.numberResolu;
                                 this.pourcentageResolu = Math.round((this.numberResolu / this.nombreIncident) * 100);
                             },
                             (res1: HttpErrorResponse) => this.onError(res1.message)
@@ -214,6 +215,7 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberNonResolu = res;
+                    this.dataDonut.datasets[0].data[0] = this.numberNonResolu;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -228,6 +230,7 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberEnCours = res;
+                    this.dataDonut.datasets[0].data[1] = this.numberEnCours;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -237,7 +240,6 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-
         this.incidentResolu();
         this.incidentNonResolu();
         this.incidentEnCours();
