@@ -16,6 +16,10 @@ import { ProjetCsidIncidentModule } from 'app/features/incident/incident.module'
             {
                 path: 'portailAdministration/memberShip',
                 loadChildren: './member-ship/member-ship.module#ProjetCsidMembershipModule'
+            },
+            {
+                path: 'assignement',
+                loadChildren: './user-assignment/user-assignment.module#ProjetCsidUserAssignmentModule'
             }
         ])
     ],

@@ -10,6 +10,8 @@ import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from 'app/entities/user-app';
 import { AccountService } from 'app/core';
 import { formatDate } from '@angular/common';
+import { UserIncidentAssigmentService } from 'app/entities/user-incident-assigment';
+import { IUserIncidentAssigment } from 'app/shared/model/user-incident-assigment.model';
 
 @Component({
     selector: 'jhi-incident-update',
@@ -28,6 +30,7 @@ export class IncidentUpdateComponent implements OnInit {
         protected jhiAlertService: JhiAlertService,
         protected incidentService: IncidentService,
         protected userAppService: UserAppService,
+        protected userIncidentAssigmentService: UserIncidentAssigmentService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
@@ -48,7 +51,6 @@ export class IncidentUpdateComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
-
     ngOnInit() {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ incident }) => {

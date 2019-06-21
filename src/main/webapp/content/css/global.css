@@ -11747,7 +11747,7 @@ a:focus {
 .sidebar .nav-item .collapsing .collapse-inner .collapse-header {
     margin: 0;
     white-space: nowrap;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
     text-transform: uppercase;
     font-weight: 800;
     font-size: 0.65rem;
@@ -11756,7 +11756,7 @@ a:focus {
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0rem;
     margin: 0 0.5rem;
     display: block;
     color: #3a3b45;
@@ -11862,7 +11862,7 @@ a:focus {
         margin-right: 0.25rem;
     }
     .sidebar .nav-item .nav-link span {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         display: inline;
     }
     .sidebar .nav-item .nav-link[data-toggle='collapse']::after {

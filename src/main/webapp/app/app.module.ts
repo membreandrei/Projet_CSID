@@ -25,6 +25,7 @@ import { ProjetCsidMembershipModule } from 'app/features/member-ship/member-ship
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
+import { ProjetCsidUserAssignmentModule } from 'app/features/user-assignment/user-assignment.module';
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         ProjetCsidAdministrationModule,
         ProjetCsidMembershipModule,
         ProjetCsidFeatureModule,
+        ProjetCsidUserAssignmentModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         ProjetCsidEntityModule,
         ProjetCsidAppRoutingModule

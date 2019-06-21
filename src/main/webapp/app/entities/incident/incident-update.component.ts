@@ -10,8 +10,6 @@ import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from 'app/entities/user-app';
 import { AccountService } from 'app/core';
 import { formatDate } from '@angular/common';
-import { UserIncidentAssigmentService } from 'app/entities/user-incident-assigment';
-import { IUserIncidentAssigment } from 'app/shared/model/user-incident-assigment.model';
 
 @Component({
     selector: 'jhi-incident-update',
@@ -24,13 +22,11 @@ export class IncidentUpdateComponent implements OnInit {
     userAppsConnected: any;
     currentAccount: any;
     accountId: any;
-    userIncidentAssigment: IUserIncidentAssigment;
 
     constructor(
         protected accountService: AccountService,
         protected jhiAlertService: JhiAlertService,
         protected incidentService: IncidentService,
-        protected userIncidentAssigmentService: UserIncidentAssigmentService,
         protected userAppService: UserAppService,
         protected activatedRoute: ActivatedRoute
     ) {}
