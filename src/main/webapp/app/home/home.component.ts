@@ -229,7 +229,7 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
         this.incidentService
-            .query({ 'statut.equals': 'Resolu' })
+            .query({ 'statut.equals': 'Resolu', 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<any>) => res.ok),
                 map((res: HttpResponse<any>) => res.body)
@@ -256,7 +256,7 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
         this.incidentService
-            .query({ 'statut.equals': 'Non Resolu' })
+            .query({ 'statut.equals': 'Non Resolu', 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<any>) => res.ok),
                 map((res: HttpResponse<any>) => res.body)
@@ -284,7 +284,7 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
         this.incidentService
-            .query({ 'statut.equals': 'En Cours' })
+            .query({ 'statut.equals': 'En Cours', 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<any>) => res.ok),
                 map((res: HttpResponse<any>) => res.body)
