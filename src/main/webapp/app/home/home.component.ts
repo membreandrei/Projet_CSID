@@ -18,16 +18,22 @@ export class HomeComponent implements OnInit {
     modalRef: NgbModalRef;
     allIncidents: IIncident[];
     numberResolu: any;
+    Resolu: any;
     pourcentageResolu: any;
     nombreIncident: any;
     numberNonResolu: any;
+    NonResolu: any;
     numberEnCours: any;
+    EnCours: any;
     dataArea: any;
     optionsArea: any;
     dataDonut: any;
     optionsDonut: any;
     dataBar: any;
     optionsBar: any;
+    displayNonResolu: boolean;
+    displayEnCours: boolean;
+    displayResolu: boolean;
 
     constructor(
         private incidentService: IncidentService,
@@ -36,6 +42,18 @@ export class HomeComponent implements OnInit {
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager
     ) {}
+
+    showDialogNonResolu() {
+        this.displayNonResolu = true;
+    }
+
+    showDialogEnCours() {
+        this.displayEnCours = true;
+    }
+
+    showDialogResolu() {
+        this.displayResolu = true;
+    }
 
     chartArea() {
         this.dataArea = {
@@ -204,6 +222,18 @@ export class HomeComponent implements OnInit {
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+        this.incidentService
+            .query({ 'statut.equals': 'Resolu' })
+            .pipe(
+                filter((res: HttpResponse<any>) => res.ok),
+                map((res: HttpResponse<any>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.Resolu = res;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
     public incidentNonResolu() {
         this.incidentService
@@ -219,6 +249,19 @@ export class HomeComponent implements OnInit {
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+        this.incidentService
+            .query({ 'statut.equals': 'Non Resolu' })
+            .pipe(
+                filter((res: HttpResponse<any>) => res.ok),
+                map((res: HttpResponse<any>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.NonResolu = res;
+                    this.dataDonut.datasets[0].data[0] = this.numberNonResolu;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
     public incidentEnCours() {
         this.incidentService
@@ -230,6 +273,19 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberEnCours = res;
+                    this.dataDonut.datasets[0].data[1] = this.numberEnCours;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+        this.incidentService
+            .query({ 'statut.equals': 'En Cours' })
+            .pipe(
+                filter((res: HttpResponse<any>) => res.ok),
+                map((res: HttpResponse<any>) => res.body)
+            )
+            .subscribe(
+                (res: IIncident[]) => {
+                    this.EnCours = res;
                     this.dataDonut.datasets[0].data[1] = this.numberEnCours;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)

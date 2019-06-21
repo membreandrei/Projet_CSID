@@ -11,15 +11,15 @@ Main page styles
 }
 
 .hover-effect:hover .overlay-nonResolu {
-    opacity: 1;
+    opacity: 0.9;
 }
 
 .hover-effect:hover .overlay-enCours {
-    opacity: 1;
+    opacity: 0.9;
 }
 
 .hover-effect:hover .overlay-resolu {
-    opacity: 1;
+    opacity: 0.9;
 }
 
 .hover-effect:hover {
@@ -48,7 +48,7 @@ Main page styles
     width: 102%;
     border-radius: 5px;
     opacity: 0;
-    transition: 0.5s ease;
+    transition: 0.7s ease;
     background-color: #36b9cc;
 }
 
@@ -62,7 +62,7 @@ Main page styles
     width: 102%;
     border-radius: 5px;
     opacity: 0;
-    transition: 0.5s ease;
+    transition: 0.7s ease;
     background-color: #1cc88a;
 }
 
@@ -76,7 +76,7 @@ Main page styles
     width: 102%;
     border-radius: 5px;
     opacity: 0;
-    transition: 0.5s ease;
+    transition: 0.7s ease;
     background-color: #4e73df;
 }
 
