@@ -7,6 +7,8 @@ import { LoginModalService, AccountService, Account } from 'app/core';
 import { filter, map } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Chart } from 'chart.js';
+import { IUserApp } from 'app/shared/model/user-app.model';
+import { UserAppService } from 'app/entities/user-app';
 
 @Component({
     selector: 'jhi-home',
@@ -14,7 +16,7 @@ import { Chart } from 'chart.js';
     styleUrls: ['home.css']
 })
 export class HomeComponent implements OnInit {
-    account: Account;
+    account: any;
     modalRef: NgbModalRef;
     allIncidents: IIncident[];
     numberResolu: any;
@@ -28,8 +30,12 @@ export class HomeComponent implements OnInit {
     optionsDonut: any;
     dataBar: any;
     optionsBar: any;
+    accountId: any;
+    userAppId: any;
+    private incidents: IIncident[];
 
     constructor(
+        protected userAppService: UserAppService,
         private incidentService: IncidentService,
         private accountService: AccountService,
         protected jhiAlertService: JhiAlertService,
@@ -39,10 +45,10 @@ export class HomeComponent implements OnInit {
 
     chartArea() {
         this.dataArea = {
-            labels: ['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+            labels: ['Janv', 'Fév', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
             datasets: [
                 {
-                    label: 'Earnings',
+                    label: 'Demande',
                     lineTension: 0.3,
                     backgroundColor: 'rgba(78, 115, 223, 0.30)',
                     borderColor: 'rgba(78, 115, 223, 1)',
@@ -54,7 +60,7 @@ export class HomeComponent implements OnInit {
                     pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
                     pointHitRadius: 10,
                     pointBorderWidth: 1,
-                    data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000]
+                    data: [3, 5, 2, 7, 4, 6, 3]
                 }
             ]
         };
@@ -127,16 +133,16 @@ export class HomeComponent implements OnInit {
 
     chartBar() {
         this.dataBar = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: ['Janv', 'Fév', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
             datasets: [
                 {
-                    label: 'My First dataset',
+                    label: 'Incident Résolu',
                     backgroundColor: '#4e73df',
                     borderColor: '#1E88E5',
                     data: [65, 59, 80, 81, 56, 55, 40]
                 },
                 {
-                    label: 'My Second dataset',
+                    label: 'Incindent Non Résolu',
                     backgroundColor: '#1cc88a',
                     borderColor: '#7CB342',
                     data: [28, 48, 40, 19, 86, 27, 90]
@@ -177,9 +183,9 @@ export class HomeComponent implements OnInit {
         };
     }
 
-    public incidentResolu() {
+    public incidentResolu(val: any) {
         this.incidentService
-            .queryCount({ 'statut.equals': 'Resolu' })
+            .queryCount({ 'statut.equals': 'Resolu', 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<any>) => res.ok),
                 map((res: HttpResponse<any>) => res.body)
@@ -188,7 +194,7 @@ export class HomeComponent implements OnInit {
                 (res: IIncident[]) => {
                     this.numberResolu = res;
                     this.incidentService
-                        .queryCount()
+                        .queryCount({ 'userAppId.equals': val })
                         .pipe(
                             filter((res1: HttpResponse<any>) => res1.ok),
                             map((res1: HttpResponse<any>) => res1.body)
@@ -205,9 +211,9 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
-    public incidentNonResolu() {
+    public incidentNonResolu(val: any) {
         this.incidentService
-            .queryCount({ 'statut.equals': 'Non Resolu' })
+            .queryCount({ 'statut.equals': 'Non Resolu', 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<any>) => res.ok),
                 map((res: HttpResponse<any>) => res.body)
@@ -220,9 +226,9 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
-    public incidentEnCours() {
+    public incidentEnCours(val: any) {
         this.incidentService
-            .queryCount({ 'statut.equals': 'En Cours' })
+            .queryCount({ 'statut.equals': 'En Cours', 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<any>) => res.ok),
                 map((res: HttpResponse<any>) => res.body)
@@ -235,14 +241,35 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+    getUserAppId() {
+        this.userAppService
+            .query()
+            .pipe(
+                filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                map((res: HttpResponse<IUserApp[]>) => res.body)
+            )
+            .subscribe(
+                (res: IUserApp[]) => {
+                    const userApps = res;
+                    for (const userApp of userApps) {
+                        if (userApp.user.id === this.accountId) {
+                            this.userAppId = userApp.id;
+                        }
+                    }
+                    this.incidentResolu(this.userAppId);
+                    this.incidentEnCours(this.userAppId);
+                    this.incidentNonResolu(this.userAppId);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
     ngOnInit() {
-        this.accountService.identity().then((account: Account) => {
+        this.accountService.identity().then(account => {
             this.account = account;
+            this.accountId = account.id;
         });
+        this.getUserAppId();
         this.registerAuthenticationSuccess();
-        this.incidentResolu();
-        this.incidentNonResolu();
-        this.incidentEnCours();
         this.chartArea();
         this.chartDonut();
         this.chartBar();
