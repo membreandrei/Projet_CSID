@@ -13,6 +13,7 @@ import { IncidentService } from './incident.service';
 })
 export class IncidentDeleteDialogComponent {
     incident: IIncident;
+    id: String;
 
     constructor(protected incidentService: IncidentService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
@@ -20,14 +21,22 @@ export class IncidentDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: number) {
-        this.incidentService.delete(id).subscribe(response => {
-            this.eventManager.broadcast({
-                name: 'incidentListModification',
-                content: 'Deleted an incident'
-            });
-            this.activeModal.dismiss(true);
-        });
+    confirmDelete(idString: String) {
+        let x = '';
+        for (let i = 0; i < idString.length; i++) {
+            if (idString.charAt(i) !== ',') {
+                x += idString.charAt(i);
+            } else {
+                this.incidentService.delete(Number(x)).subscribe(response => {
+                    this.eventManager.broadcast({
+                        name: 'incidentListModification',
+                        content: 'Deleted an incident'
+                    });
+                    this.activeModal.dismiss(true);
+                });
+                x = '';
+            }
+        }
     }
 }
 
@@ -43,15 +52,19 @@ export class IncidentDeletePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ incident }) => {
             setTimeout(() => {
-                this.ngbModalRef = this.modalService.open(IncidentDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef = this.modalService.open(IncidentDeleteDialogComponent as Component, {
+                    size: 'lg',
+                    backdrop: 'static'
+                });
                 this.ngbModalRef.componentInstance.incident = incident;
+                this.ngbModalRef.componentInstance.id = this.activatedRoute.snapshot.paramMap.get('id');
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate(['/ticket', { outlets: { popup: null } }]);
+                        this.router.navigate(['/ticket']);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate(['/ticket', { outlets: { popup: null } }]);
+                        this.router.navigate(['/ticket']);
                         this.ngbModalRef = null;
                     }
                 );

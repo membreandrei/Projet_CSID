@@ -80,9 +80,6 @@ export const incidentPopupRoute: Routes = [
     {
         path: ':id/delete',
         component: IncidentDeletePopupComponent,
-        resolve: {
-            incident: IncidentResolve
-        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'projetCsidApp.incident.home.title'

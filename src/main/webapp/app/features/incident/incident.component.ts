@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -10,6 +10,9 @@ import { IncidentService } from './incident.service';
 import { UserAppService } from 'app/entities/user-app';
 import { IUserApp } from 'app/shared/model/user-app.model';
 import { formatDate } from '@angular/common';
+// @ts-ignore
+import { AgGridNg2 } from 'ag-grid-angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'jhi-incident',
@@ -17,6 +20,8 @@ import { formatDate } from '@angular/common';
     styles: []
 })
 export class IncidentComponent implements OnInit, OnDestroy {
+    @ViewChild('agGrid') agGrid: AgGridNg2;
+    gridApi;
     incidents: IIncident[];
     userAppId: any;
     accountId: any;
@@ -29,53 +34,245 @@ export class IncidentComponent implements OnInit, OnDestroy {
     show = true;
     incidentUpdate: IIncident;
     isSaving: boolean;
+    incidentSuppr: any;
+    columnDefs = [
+        {
+            headerName: 'ID',
+            field: 'ID',
+            sortable: true,
+            filter: true,
+            checkboxSelection: true,
+            resizable: true,
+            headerCheckboxSelection: true,
+            headerCheckboxSelectionFilteredOnly: true
+        },
+        { headerName: 'Titre', field: 'Titre', sortable: true, filter: true, resizable: true },
+        { headerName: 'Statut', field: 'Statut', sortable: true, filter: true, resizable: true },
+        { headerName: 'Priorite', field: 'Priorite', sortable: true, filter: true, resizable: true },
+        { headerName: 'Sujet', field: 'Sujet', sortable: true, filter: true, resizable: true },
+        { headerName: 'Categorie', field: 'Categorie', sortable: true, filter: true, resizable: true },
+        { headerName: 'Description', field: 'Description', sortable: true, filter: true, resizable: true },
+        { headerName: 'Date de début', field: 'DateDebut', sortable: true, filter: true, resizable: true },
+        { headerName: 'Date de fin', field: 'DateFin', sortable: true, filter: true, resizable: true },
+        { headerName: 'Utilisateur', field: 'UserApp', sortable: true, filter: true, resizable: true }
+    ];
+    rowData: any[];
+
     constructor(
         protected userAppService: UserAppService,
         private incidentService: IncidentService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
-        protected accountService: AccountService
+        protected accountService: AccountService,
+        protected router: Router
     ) {}
 
-    incident(event: any) {
-        this.user = event.target.value;
-        console.log(event);
-        if (this.user !== 'all') {
-            switch (this.user) {
-                case 'Majeure': {
-                    this.subscribePriorite('Majeure');
-                    break;
+    onRowSelected(event) {
+        this.router.navigate(['ticket/' + event.node.data.ID + '/edit']);
+    }
+
+    getSelectedRows() {
+        const selectedNodes = this.agGrid.api.getSelectedNodes();
+        const selectedData = selectedNodes.map(node => node.data);
+        const selectedDataStringPresentation = selectedData.map(node => node.ID + ',').join('');
+        this.incidentSuppr = selectedDataStringPresentation;
+    }
+
+    saveResolu() {
+        const selectedNodes = this.agGrid.api.getSelectedNodes();
+        const selectedData = selectedNodes.map(node => node.data);
+        const selectedDataStringPresentation = selectedData.map(node => node.ID + ',').join('');
+        let x = '';
+        for (let i = 0; i < selectedDataStringPresentation.length; i++) {
+            if (selectedDataStringPresentation.charAt(i) !== ',') {
+                x += selectedDataStringPresentation.charAt(i);
+            } else {
+                this.incidentService
+                    .find(Number(x))
+                    .pipe(
+                        filter((res: HttpResponse<IIncident>) => res.ok),
+                        map((res: HttpResponse<IIncident>) => res.body)
+                    )
+                    .subscribe(
+                        (res: IIncident) => {
+                            this.incidentUpdate = res;
+                            this.isSaving = true;
+                            this.incidentUpdate.statut = 'Resolu';
+                            this.incidentUpdate.dateFin = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
+                            this.subscribeToSaveResponse(this.incidentService.update(this.incidentUpdate));
+                        },
+                        (res: HttpErrorResponse) => this.onError(res.message)
+                    );
+                let tab = this.rowData;
+                this.rowData = [];
+                for (const incident of tab) {
+                    if (incident.id === Number(x)) {
+                        if (this.rowData === undefined) {
+                            this.rowData = [
+                                {
+                                    id: incident.id,
+                                    ID: incident.ID,
+                                    Titre: incident.Titre,
+                                    Statut: 'Resolu',
+                                    Priorite: incident.Priorite,
+                                    Sujet: incident.Sujet,
+                                    Categorie: incident.Categorie,
+                                    Description: incident.Description,
+                                    DateDebut: incident.DateDebut,
+                                    DateFin: incident.DateFin,
+                                    UserApp: incident.UserApp
+                                }
+                            ];
+                        } else {
+                            this.rowData.push({
+                                id: incident.id,
+                                ID: incident.ID,
+                                Titre: incident.Titre,
+                                Statut: 'Resolu',
+                                Priorite: incident.Priorite,
+                                Sujet: incident.Sujet,
+                                Categorie: incident.Categorie,
+                                Description: incident.Description,
+                                DateDebut: incident.DateDebut,
+                                DateFin: incident.DateFin,
+                                UserApp: incident.UserApp
+                            });
+                        }
+                    } else {
+                        if (this.rowData === undefined) {
+                            this.rowData = [
+                                {
+                                    id: incident.id,
+                                    ID: incident.ID,
+                                    Titre: incident.Titre,
+                                    Statut: incident.Statut,
+                                    Priorite: incident.Priorite,
+                                    Sujet: incident.Sujet,
+                                    Categorie: incident.Categorie,
+                                    Description: incident.Description,
+                                    DateDebut: incident.DateDebut,
+                                    DateFin: incident.DateFin,
+                                    UserApp: incident.UserApp
+                                }
+                            ];
+                        } else {
+                            this.rowData.push({
+                                id: incident.id,
+                                ID: incident.ID,
+                                Titre: incident.Titre,
+                                Statut: incident.Statut,
+                                Priorite: incident.Priorite,
+                                Sujet: incident.Sujet,
+                                Categorie: incident.Categorie,
+                                Description: incident.Description,
+                                DateDebut: incident.DateDebut,
+                                DateFin: incident.DateFin,
+                                UserApp: incident.UserApp
+                            });
+                        }
+                    }
                 }
-                case 'Elevee': {
-                    this.subscribePriorite('Elevee');
-                    break;
-                }
-                case 'Normale': {
-                    this.subscribePriorite('Normale');
-                    break;
-                }
-                case 'Basse': {
-                    this.subscribePriorite('Basse');
-                    break;
-                }
+                x = '';
             }
-        } else {
-            this.loadAll();
         }
     }
-    saveResolu(val: any) {
-        this.incidentUpdate = val;
-        this.isSaving = true;
-        this.incidentUpdate.statut = 'Resolu';
-        this.incidentUpdate.dateFin = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
-        this.subscribeToSaveResponse(this.incidentService.update(this.incidentUpdate));
-    }
-    saveNonResolu(val: any) {
-        this.incidentUpdate = val;
-        this.isSaving = true;
-        this.incidentUpdate.statut = 'Non Resolu';
-        this.incidentUpdate.dateFin = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
-        this.subscribeToSaveResponse(this.incidentService.update(this.incidentUpdate));
+    saveNonResolu() {
+        const selectedNodes = this.agGrid.api.getSelectedNodes();
+        const selectedData = selectedNodes.map(node => node.data);
+        const selectedDataStringPresentation = selectedData.map(node => node.ID + ',').join('');
+        let x = '';
+        for (let i = 0; i < selectedDataStringPresentation.length; i++) {
+            if (selectedDataStringPresentation.charAt(i) !== ',') {
+                x += selectedDataStringPresentation.charAt(i);
+            } else {
+                this.incidentService
+                    .find(Number(x))
+                    .pipe(
+                        filter((res: HttpResponse<IIncident>) => res.ok),
+                        map((res: HttpResponse<IIncident>) => res.body)
+                    )
+                    .subscribe(
+                        (res: IIncident) => {
+                            this.incidentUpdate = res;
+                            this.isSaving = true;
+                            this.incidentUpdate.statut = 'Non Resolu';
+                            this.incidentUpdate.dateFin = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
+                            this.subscribeToSaveResponse(this.incidentService.update(this.incidentUpdate));
+                        },
+                        (res: HttpErrorResponse) => this.onError(res.message)
+                    );
+                let tab = this.rowData;
+                this.rowData = [];
+                for (const incident of tab) {
+                    if (incident.id === Number(x)) {
+                        if (this.rowData === undefined) {
+                            this.rowData = [
+                                {
+                                    id: incident.id,
+                                    ID: incident.ID,
+                                    Titre: incident.Titre,
+                                    Statut: 'Non Resolu',
+                                    Priorite: incident.Priorite,
+                                    Sujet: incident.Sujet,
+                                    Categorie: incident.Categorie,
+                                    Description: incident.Description,
+                                    DateDebut: incident.DateDebut,
+                                    DateFin: incident.DateFin,
+                                    UserApp: incident.UserApp
+                                }
+                            ];
+                        } else {
+                            this.rowData.push({
+                                id: incident.id,
+                                ID: incident.ID,
+                                Titre: incident.Titre,
+                                Statut: 'Non Resolu',
+                                Priorite: incident.Priorite,
+                                Sujet: incident.Sujet,
+                                Categorie: incident.Categorie,
+                                Description: incident.Description,
+                                DateDebut: incident.DateDebut,
+                                DateFin: incident.DateFin,
+                                UserApp: incident.UserApp
+                            });
+                        }
+                    } else {
+                        if (this.rowData === undefined) {
+                            this.rowData = [
+                                {
+                                    id: incident.id,
+                                    ID: incident.ID,
+                                    Titre: incident.Titre,
+                                    Statut: incident.Statut,
+                                    Priorite: incident.Priorite,
+                                    Sujet: incident.Sujet,
+                                    Categorie: incident.Categorie,
+                                    Description: incident.Description,
+                                    DateDebut: incident.DateDebut,
+                                    DateFin: incident.DateFin,
+                                    UserApp: incident.UserApp
+                                }
+                            ];
+                        } else {
+                            this.rowData.push({
+                                id: incident.id,
+                                ID: incident.ID,
+                                Titre: incident.Titre,
+                                Statut: incident.Statut,
+                                Priorite: incident.Priorite,
+                                Sujet: incident.Sujet,
+                                Categorie: incident.Categorie,
+                                Description: incident.Description,
+                                DateDebut: incident.DateDebut,
+                                DateFin: incident.DateFin,
+                                UserApp: incident.UserApp
+                            });
+                        }
+                    }
+                }
+                x = '';
+            }
+        }
     }
 
     protected onSaveSuccess() {
@@ -88,43 +285,15 @@ export class IncidentComponent implements OnInit, OnDestroy {
     protected onSaveError() {
         this.isSaving = false;
     }
-    subscribePriorite(req: any) {
-        this.incidentService
-            .query({
-                'priorite.equals': req
-            })
-            .pipe(
-                filter((res: HttpResponse<IIncident[]>) => res.ok),
-                map((res: HttpResponse<IIncident[]>) => res.body)
-            )
-            .subscribe(
-                (res: IIncident[]) => {
-                    this.incidents = res;
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-    }
 
-    getSearchIncident(value) {
-        this.value = value;
+    gridReady(params) {
+        this.gridApi = params.api;
 
-        this.incidentService
-            .query({
-                'titre.contains': this.value
-            })
-            .pipe(
-                filter((res: HttpResponse<IIncident[]>) => res.ok),
-                map((res: HttpResponse<IIncident[]>) => res.body)
-            )
-            .subscribe(
-                (res: IIncident[]) => {
-                    this.incidents = res;
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.gridApi.sizeColumnsToFit();
     }
 
     loadAll() {
+        this.rowData = [];
         this.incidentService
             .query()
             .pipe(
@@ -134,104 +303,51 @@ export class IncidentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: IIncident[]) => {
                     this.incidents = res;
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-    }
 
-    incidentUser(event: any) {
-        this.user = event.target.value;
-        console.log(event);
-        if (this.user !== 'all') {
-            switch (this.user) {
-                case 'mesIncidents': {
-                    this.subscribeMesIncident();
-                    break;
-                }
-                case 'mesIncidentsResolu': {
-                    this.subscribeIncident('Resolu');
-                    break;
-                }
-                case 'mesIncidentsNonResolu': {
-                    this.subscribeIncident('Non Resolu');
-                    break;
-                }
-                case 'mesIncidentsCours': {
-                    this.subscribeIncident('En cours');
-                    break;
-                }
-            }
-        } else {
-            this.loadAll();
-        }
-    }
-    subscribeMesIncident() {
-        this.incidentService
-            .query({
-                'userAppId.equals': this.userAppId
-            })
-            .pipe(
-                filter((res: HttpResponse<IIncident[]>) => res.ok),
-                map((res: HttpResponse<IIncident[]>) => res.body)
-            )
-            .subscribe(
-                (res: IIncident[]) => {
-                    this.incidents = res;
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-    }
-
-    subscribeIncident(req: any) {
-        this.incidentService
-            .query({
-                'userAppId.equals': this.userAppId,
-                'statut.equals': req
-            })
-            .pipe(
-                filter((res: HttpResponse<IIncident[]>) => res.ok),
-                map((res: HttpResponse<IIncident[]>) => res.body)
-            )
-            .subscribe(
-                (res: IIncident[]) => {
-                    this.incidents = res;
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-    }
-
-    getUserAppId() {
-        this.userAppService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IUserApp[]>) => res.ok),
-                map((res: HttpResponse<IUserApp[]>) => res.body)
-            )
-            .subscribe(
-                (res: IUserApp[]) => {
-                    const userApps = res;
-                    for (const userApp of userApps) {
-                        if (userApp.user.id === this.accountId) {
-                            this.userAppId = userApp.id;
-                        }
+                    for (const incident of this.incidents) {
+                        this.loadData(incident);
                     }
-                    this.incidentService
-                        .query({
-                            'userAppId.equals': this.userAppId
-                        })
-                        .pipe(
-                            filter((res1: HttpResponse<IIncident[]>) => res1.ok),
-                            map((res1: HttpResponse<IIncident[]>) => res1.body)
-                        )
-                        .subscribe(
-                            (res1: IIncident[]) => {
-                                this.incidents = res1;
-                            },
-                            (res1: HttpErrorResponse) => this.onError(res1.message)
-                        );
+
+                    console.log(this.rowData);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    loadData(incident) {
+        if (this.rowData === undefined) {
+            this.rowData = [
+                {
+                    id: incident.id,
+                    ID: incident.id,
+                    Titre: incident.titre,
+                    Statut: incident.statut,
+                    Priorite: incident.priorite,
+                    Sujet: incident.sujet,
+                    Categorie: incident.categorie,
+                    Description: incident.description,
+                    DateDebut: incident.dateDebut,
+                    DateFin: incident.dateFin,
+                    UserApp: incident.userApp.user.firstName + ' - ' + incident.userApp.user.lastName
+                }
+            ];
+        } else {
+            this.rowData.push({
+                id: incident.id,
+                ID: incident.id,
+                Titre: incident.titre,
+                Statut: incident.statut,
+                Priorite: incident.priorite,
+                Sujet: incident.sujet,
+                Categorie: incident.categorie,
+                Description: incident.description,
+                DateDebut: incident.dateDebut,
+                DateFin: incident.dateFin,
+                UserApp: incident.userApp.user.firstName + ' - ' + incident.userApp.user.lastName
+            });
+        }
+
+        this.agGrid.api.setRowData(this.rowData);
     }
 
     isAuthenticated() {
@@ -244,8 +360,8 @@ export class IncidentComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
             this.accountId = account.id;
         });
+        this.loadAll();
         this.registerChangeInIncidents();
-        this.getUserAppId();
     }
 
     ngOnDestroy() {

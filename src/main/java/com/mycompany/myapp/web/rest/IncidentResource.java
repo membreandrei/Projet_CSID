@@ -124,6 +124,20 @@ public class IncidentResource {
     @DeleteMapping("/incidents/{id}")
     public ResponseEntity<Void> deleteIncident(@PathVariable Long id) {
         log.debug("REST request to delete Incident : {}", id);
+/*
+        String x = "";
+
+        for (int i = 0; i < id.length(); i++){
+            if(id.charAt(i) != ',') {
+                x += id.charAt(i);
+            }
+            else{
+                incidentService.delete(Long.parseLong(x));
+                x = "";
+            }
+
+        }*/
+
         incidentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
