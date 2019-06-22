@@ -103,7 +103,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         },
                         (res: HttpErrorResponse) => this.onError(res.message)
                     );
-                let tab = this.rowData;
+                const tab = this.rowData;
                 this.rowData = [];
                 for (const incident of tab) {
                     if (incident.id === Number(x)) {
@@ -176,6 +176,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
             }
         }
     }
+
     saveNonResolu() {
         const selectedNodes = this.agGrid.api.getSelectedNodes();
         const selectedData = selectedNodes.map(node => node.data);
@@ -201,7 +202,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         },
                         (res: HttpErrorResponse) => this.onError(res.message)
                     );
-                let tab = this.rowData;
+                const tab = this.rowData;
                 this.rowData = [];
                 for (const incident of tab) {
                     if (incident.id === Number(x)) {
@@ -278,6 +279,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
     protected onSaveSuccess() {
         this.isSaving = false;
     }
+
     protected subscribeToSaveResponse(result: Observable<HttpResponse<IIncident>>) {
         result.subscribe((res: HttpResponse<IIncident>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
