@@ -59,6 +59,8 @@
             rowSelection="multiple"
             (rowDoubleClicked)="onRowSelected($event)"
             (rowSelected)="getSelectedRows()"
+            [floatingFilter]="true"
+            [rowMultiSelectWithClick]="true"
             [enableCellChangeFlash]="true"
             (gridReady)="gridReady($event)"
         >

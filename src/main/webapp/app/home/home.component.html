@@ -34,59 +34,22 @@
                             </div>
 
                             <p-dialog header="Incident Non Résolus" [(visible)]="displayNonResolu" [modal]="true" [responsive]="true"
-                                      [style]="{width: '1000px', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
+                                      [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
                                 <p-header><a (click)="displayNonResolu=false" class="text-info float-right"><i class="fas fa-times"></i></a></p-header>
-
-                                <jhi-alert></jhi-alert>
-                                <br/>
-                                <div class="table-responsive col-sm" *ngIf="NonResolu">
-
-                                    <div>
-                                        <div class="table-responsive" *ngIf="NonResolu">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th><span jhiTranslate="global.field.id">ID</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.description">Description</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr *ngFor="let incident of (NonResolu | orderBy:'dateDebut');trackBy: trackId">
-                                                    <td><a [routerLink]="['/ticket', incident.id, 'view' ]">{{incident.id}}</a></td>
-                                                    <td>{{incident.titre}}</td>
-                                                    <td>{{incident.statut}}</td>
-                                                    <td>{{incident.priorite}}</td>
-                                                    <td>{{incident.sujet}}</td>
-                                                    <td>{{incident.categorie}}</td>
-                                                    <td>{{incident.description}}</td>
-                                                    <td>{{incident.dateDebut }}</td>
-                                                    <td>{{incident.dateFin }}</td>
-                                                    <td>
-                                                        <div *ngIf="incident.userApp">
-                                                            <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p-footer>
-                                    <button type="button" (click)="displayNonResolu=false" class="ui-button-secondary text-right"> Retour </button>
-                                </p-footer>
+                                <ag-grid-angular
+                                    #agGrid
+                                    style="width: 100%; height: 615px;"
+                                    class="ag-theme-balham"
+                                    [rowData]="IncidentNonResolu"
+                                    [columnDefs]="columnDefs"
+                                    rowSelection="multiple"
+                                    [floatingFilter]="true"
+                                    [rowMultiSelectWithClick]="true"
+                                    [enableCellChangeFlash]="true"
+                                    (gridReady)="gridReady($event)"
+                                >
+                                </ag-grid-angular>
                             </p-dialog>
-
 
                             <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-success shadow h-100 py-2 hover-effect">
@@ -112,56 +75,21 @@
                             </div>
 
                             <p-dialog header="Incidents En Cours" [(visible)]="displayEnCours" [modal]="true" [responsive]="true"
-                                      [style]="{width: '1000px', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
+                                      [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
                                 <p-header><a (click)="displayEnCours=false" class="text-success float-right"><i class="fas fa-times"></i></a></p-header>
-                                <jhi-alert></jhi-alert>
-                                <br/>
-                                <div class="table-responsive col-sm" *ngIf="EnCours">
-
-                                    <div>
-                                        <div class="table-responsive" *ngIf="EnCours">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th><span jhiTranslate="global.field.id">ID</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.description">Description</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr *ngFor="let incident of (EnCours | orderBy:'dateDebut');trackBy: trackId">
-                                                    <td><a [routerLink]="['/ticket', incident.id, 'view' ]">{{incident.id}}</a></td>
-                                                    <td>{{incident.titre}}</td>
-                                                    <td>{{incident.statut}}</td>
-                                                    <td>{{incident.priorite}}</td>
-                                                    <td>{{incident.sujet}}</td>
-                                                    <td>{{incident.categorie}}</td>
-                                                    <td>{{incident.description}}</td>
-                                                    <td>{{incident.dateDebut }}</td>
-                                                    <td>{{incident.dateFin }}</td>
-                                                    <td>
-                                                        <div *ngIf="incident.userApp">
-                                                            <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p-footer>
-                                    <button type="button" (click)="displayEnCours=false" class="ui-button-secondary text-right"> Retour </button>
-                                </p-footer>
+                                <ag-grid-angular
+                                    #agGrid
+                                    style="width: 100%; height: 615px;"
+                                    class="ag-theme-balham"
+                                    [rowData]="IncidentEnCours"
+                                    [columnDefs]="columnDefs"
+                                    rowSelection="multiple"
+                                    [floatingFilter]="true"
+                                    [rowMultiSelectWithClick]="true"
+                                    [enableCellChangeFlash]="true"
+                                    (gridReady)="gridReady($event)"
+                                >
+                                </ag-grid-angular>
                             </p-dialog>
 
                             <div class="col-xl-3 col-md-6 mb-4">
@@ -188,57 +116,22 @@
                             </div>
 
                             <p-dialog header="Incidents résolu" [(visible)]="displayResolu" [modal]="true" [responsive]="true"
-                                      [style]="{width: '1000px', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
+                                      [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
                                 <p-header><a (click)="displayResolu=false" class="text-primary float-right"><i class="fas fa-times"></i></a></p-header>
 
-                                <jhi-alert></jhi-alert>
-                                <br/>
-                                <div class="table-responsive col-sm" *ngIf="Resolu">
-
-                                    <div>
-                                        <div class="table-responsive" *ngIf="Resolu">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th><span jhiTranslate="global.field.id">ID</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.titre">Titre</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.statut">Statut</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.priorite">Priorite</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.sujet">Sujet</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.categorie">Categorie</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.description">Description</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.dateDebut">Date Debut</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.dateFin">Date Fin</span></th>
-                                                    <th><span jhiTranslate="projetCsidApp.incident.userApp">User App</span></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <tr *ngFor="let incident of (Resolu | orderBy:'dateDebut');trackBy: trackId">
-                                                    <td><a [routerLink]="['/ticket', incident.id, 'view' ]">{{incident.id}}</a></td>
-                                                    <td>{{incident.titre}}</td>
-                                                    <td>{{incident.statut}}</td>
-                                                    <td>{{incident.priorite}}</td>
-                                                    <td>{{incident.sujet}}</td>
-                                                    <td>{{incident.categorie}}</td>
-                                                    <td>{{incident.description}}</td>
-                                                    <td>{{incident.dateDebut }}</td>
-                                                    <td>{{incident.dateFin }}</td>
-                                                    <td>
-                                                        <div *ngIf="incident.userApp">
-                                                            <a [routerLink]="['../user-app', incident.userApp?.id, 'view' ]" >{{incident.userApp?.user.firstName}} - {{incident.userApp?.user.lastName}}</a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p-footer>
-                                    <button type="button" (click)="displayResolu=false" class="ui-button-secondary text-right"> Retour </button>
-                                </p-footer>
+                                <ag-grid-angular
+                                    #agGrid
+                                    style="width: 100%; height: 615px;"
+                                    class="ag-theme-balham"
+                                    [rowData]="IncidentResolu"
+                                    [columnDefs]="columnDefs"
+                                    rowSelection="multiple"
+                                    [floatingFilter]="true"
+                                    [rowMultiSelectWithClick]="true"
+                                    [enableCellChangeFlash]="true"
+                                    (gridReady)="gridReady($event)"
+                                >
+                                </ag-grid-angular>
                             </p-dialog>
 
                             <div class="col-xl-3 col-md-6 mb-4">

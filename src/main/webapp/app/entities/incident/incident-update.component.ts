@@ -59,7 +59,6 @@ export class IncidentUpdateComponent implements OnInit {
             this.accountId = account.id;
             this.loadAll();
         });
-        console.log(this.userapps);
     }
 
     previousState() {

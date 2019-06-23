@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { IIncident } from 'app/shared/model/incident.model';
@@ -9,6 +9,8 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Chart } from 'chart.js';
 import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from 'app/entities/user-app';
+// @ts-ignore
+import { AgGridNg2 } from 'ag-grid-angular';
 
 @Component({
     selector: 'jhi-home',
@@ -16,17 +18,24 @@ import { UserAppService } from 'app/entities/user-app';
     styleUrls: ['home.css']
 })
 export class HomeComponent implements OnInit {
+    @ViewChild('agGrid') agGrid: AgGridNg2;
+    gridApi;
+    gridColumnApi;
     account: any;
     modalRef: NgbModalRef;
     allIncidents: IIncident[];
     numberResolu: any;
     Resolu: any;
+    tab: any[];
+    IncidentResolu: any[];
     pourcentageResolu: any;
     nombreIncident: any;
     numberNonResolu: any;
     NonResolu: any;
+    IncidentNonResolu: any[];
     numberEnCours: any;
     EnCours: any;
+    IncidentEnCours: any[];
     dataArea: any;
     optionsArea: any;
     dataDonut: any;
@@ -39,6 +48,74 @@ export class HomeComponent implements OnInit {
     accountId: any;
     userAppId: any;
     private incidents: IIncident[];
+    columnDefs = [
+        {
+            headerName: 'ID',
+            field: 'ID',
+            width: 90,
+            sortable: true,
+            filter: true,
+            checkboxSelection: true,
+            resizable: true,
+            headerCheckboxSelection: true,
+            headerCheckboxSelectionFilteredOnly: true
+        },
+        { headerName: 'Titre', field: 'Titre', width: 80, sortable: true, filter: true, resizable: true },
+        { headerName: 'Statut', field: 'Statut', width: 120, sortable: true, filter: true, resizable: true },
+        { headerName: 'Priorite', field: 'Priorite', sortable: true, filter: true, resizable: true },
+        { headerName: 'Sujet', field: 'Sujet', sortable: true, filter: true, resizable: true },
+        { headerName: 'Categorie', field: 'Categorie', sortable: true, filter: true, resizable: true },
+        { headerName: 'Description', field: 'Description', sortable: true, filter: true, resizable: true },
+        {
+            headerName: 'Date de début',
+            field: 'DateDebut',
+            width: 145,
+            sortable: true,
+            resizable: true,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+                comparator: function(filterLocalDateAtMidnight, cellValue) {
+                    const dateAsString = cellValue;
+                    const dateParts = dateAsString.split('-');
+                    const cellDate = new Date(Number(dateParts[0]), Number(dateParts[1]) - 1, Number(dateParts[2]));
+                    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+                        return 0;
+                    }
+                    if (cellDate < filterLocalDateAtMidnight) {
+                        return -1;
+                    }
+                    if (cellDate > filterLocalDateAtMidnight) {
+                        return 1;
+                    }
+                }
+            }
+        },
+        {
+            headerName: 'Date de fin',
+            field: 'DateFin',
+            width: 145,
+            sortable: true,
+            resizable: true,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+                comparator: function(filterLocalDateAtMidnight, cellValue) {
+                    const dateAsString = cellValue;
+                    const dateParts = dateAsString.split('-');
+                    const cellDate = new Date(Number(dateParts[0]), Number(dateParts[1]) - 1, Number(dateParts[2]));
+                    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+                        return 0;
+                    }
+                    if (cellDate < filterLocalDateAtMidnight) {
+                        return -1;
+                    }
+                    if (cellDate > filterLocalDateAtMidnight) {
+                        return 1;
+                    }
+                }
+            }
+        },
+        { headerName: 'Utilisateur', field: 'UserApp', sortable: true, filter: true, resizable: true }
+    ];
 
     constructor(
         protected userAppService: UserAppService,
@@ -59,6 +136,18 @@ export class HomeComponent implements OnInit {
 
     showDialogResolu() {
         this.displayResolu = true;
+    }
+
+    gridReady(params) {
+        this.gridApi = params.api;
+        this.gridApi.sizeColumnsToFit();
+        /*
+        this.gridColumnApi = params.columnApi;
+        var allColumnIds = [];
+        this.gridColumnApi.getAllColumns().forEach(function(column) {
+            allColumnIds.push(column.colId);
+        });
+        this.gridColumnApi.autoSizeColumns(allColumnIds);*/
     }
 
     chartArea() {
@@ -236,11 +325,18 @@ export class HomeComponent implements OnInit {
             )
             .subscribe(
                 (res: IIncident[]) => {
+                    this.IncidentResolu = [];
                     this.Resolu = res;
+                    this.tab = [];
+
+                    for (const incident of this.Resolu) {
+                        this.loadData(incident, 2);
+                    }
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+
     public incidentNonResolu(val: any) {
         this.incidentService
             .queryCount({ 'statut.equals': 'Non Resolu', 'userAppId.equals': val })
@@ -263,12 +359,60 @@ export class HomeComponent implements OnInit {
             )
             .subscribe(
                 (res: IIncident[]) => {
+                    this.IncidentNonResolu = [];
+                    this.tab = [];
                     this.NonResolu = res;
+                    for (const incident of this.NonResolu) {
+                        this.loadData(incident, 1);
+                    }
                     this.dataDonut.datasets[0].data[0] = this.numberNonResolu;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+
+    loadData(incident, params) {
+        if (this.tab === undefined) {
+            this.tab = [
+                {
+                    ID: incident.id,
+                    Titre: incident.titre,
+                    Statut: incident.statut,
+                    Priorite: incident.priorite,
+                    Sujet: incident.sujet,
+                    Categorie: incident.categorie,
+                    Description: incident.description,
+                    DateDebut: incident.dateDebut,
+                    DateFin: incident.dateFin,
+                    UserApp: incident.userApp.user.firstName + ' - ' + incident.userApp.user.lastName
+                }
+            ];
+        } else {
+            this.tab.push({
+                ID: incident.id,
+                Titre: incident.titre,
+                Statut: incident.statut,
+                Priorite: incident.priorite,
+                Sujet: incident.sujet,
+                Categorie: incident.categorie,
+                Description: incident.description,
+                DateDebut: incident.dateDebut,
+                DateFin: incident.dateFin,
+                UserApp: incident.userApp.user.firstName + ' - ' + incident.userApp.user.lastName
+            });
+        }
+        if (params === 1) {
+            this.IncidentNonResolu = this.tab;
+            this.agGrid.api.setRowData(this.IncidentNonResolu);
+        } else if (params === 2) {
+            this.IncidentResolu = this.tab;
+            this.agGrid.api.setRowData(this.IncidentResolu);
+        } else {
+            this.IncidentEnCours = this.tab;
+            this.agGrid.api.setRowData(this.IncidentEnCours);
+        }
+    }
+
     public incidentEnCours(val: any) {
         this.incidentService
             .queryCount({ 'statut.equals': 'En Cours', 'userAppId.equals': val })
@@ -291,12 +435,19 @@ export class HomeComponent implements OnInit {
             )
             .subscribe(
                 (res: IIncident[]) => {
+                    this.IncidentEnCours = [];
+                    this.tab = [];
                     this.EnCours = res;
+
+                    for (const incident of this.EnCours) {
+                        this.loadData(incident, 3);
+                    }
                     this.dataDonut.datasets[0].data[1] = this.numberEnCours;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+
     getUserAppId() {
         this.userAppService
             .query()
@@ -319,6 +470,7 @@ export class HomeComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+
     ngOnInit() {
         this.accountService.identity().then(account => {
             this.account = account;
@@ -330,6 +482,7 @@ export class HomeComponent implements OnInit {
         this.chartDonut();
         this.chartBar();
     }
+
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }

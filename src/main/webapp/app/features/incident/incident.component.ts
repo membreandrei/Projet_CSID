@@ -22,6 +22,7 @@ import { Router } from '@angular/router';
 export class IncidentComponent implements OnInit, OnDestroy {
     @ViewChild('agGrid') agGrid: AgGridNg2;
     gridApi;
+    gridColumnApi;
     incidents: IIncident[];
     userAppId: any;
     accountId: any;
@@ -35,10 +36,12 @@ export class IncidentComponent implements OnInit, OnDestroy {
     incidentUpdate: IIncident;
     isSaving: boolean;
     incidentSuppr: any;
+
     columnDefs = [
         {
             headerName: 'ID',
             field: 'ID',
+            width: 90,
             sortable: true,
             filter: true,
             checkboxSelection: true,
@@ -46,14 +49,60 @@ export class IncidentComponent implements OnInit, OnDestroy {
             headerCheckboxSelection: true,
             headerCheckboxSelectionFilteredOnly: true
         },
-        { headerName: 'Titre', field: 'Titre', sortable: true, filter: true, resizable: true },
-        { headerName: 'Statut', field: 'Statut', sortable: true, filter: true, resizable: true },
+        { headerName: 'Titre', field: 'Titre', width: 80, sortable: true, filter: true, resizable: true },
+        { headerName: 'Statut', field: 'Statut', width: 120, sortable: true, filter: true, resizable: true },
         { headerName: 'Priorite', field: 'Priorite', sortable: true, filter: true, resizable: true },
         { headerName: 'Sujet', field: 'Sujet', sortable: true, filter: true, resizable: true },
         { headerName: 'Categorie', field: 'Categorie', sortable: true, filter: true, resizable: true },
         { headerName: 'Description', field: 'Description', sortable: true, filter: true, resizable: true },
-        { headerName: 'Date de début', field: 'DateDebut', sortable: true, filter: true, resizable: true },
-        { headerName: 'Date de fin', field: 'DateFin', sortable: true, filter: true, resizable: true },
+        {
+            headerName: 'Date de début',
+            field: 'DateDebut',
+            width: 145,
+            sortable: true,
+            resizable: true,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+                comparator: function(filterLocalDateAtMidnight, cellValue) {
+                    const dateAsString = cellValue;
+                    const dateParts = dateAsString.split('-');
+                    const cellDate = new Date(Number(dateParts[0]), Number(dateParts[1]) - 1, Number(dateParts[2]));
+                    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+                        return 0;
+                    }
+                    if (cellDate < filterLocalDateAtMidnight) {
+                        return -1;
+                    }
+                    if (cellDate > filterLocalDateAtMidnight) {
+                        return 1;
+                    }
+                }
+            }
+        },
+        {
+            headerName: 'Date de fin',
+            field: 'DateFin',
+            width: 145,
+            sortable: true,
+            resizable: true,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+                comparator: function(filterLocalDateAtMidnight, cellValue) {
+                    const dateAsString = cellValue;
+                    const dateParts = dateAsString.split('-');
+                    const cellDate = new Date(Number(dateParts[0]), Number(dateParts[1]) - 1, Number(dateParts[2]));
+                    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+                        return 0;
+                    }
+                    if (cellDate < filterLocalDateAtMidnight) {
+                        return -1;
+                    }
+                    if (cellDate > filterLocalDateAtMidnight) {
+                        return 1;
+                    }
+                }
+            }
+        },
         { headerName: 'Utilisateur', field: 'UserApp', sortable: true, filter: true, resizable: true }
     ];
     rowData: any[];
@@ -103,14 +152,14 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         },
                         (res: HttpErrorResponse) => this.onError(res.message)
                     );
+
                 const tab = this.rowData;
                 this.rowData = [];
                 for (const incident of tab) {
-                    if (incident.id === Number(x)) {
+                    if (incident.ID === Number(x)) {
                         if (this.rowData === undefined) {
                             this.rowData = [
                                 {
-                                    id: incident.id,
                                     ID: incident.ID,
                                     Titre: incident.Titre,
                                     Statut: 'Resolu',
@@ -125,7 +174,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                             ];
                         } else {
                             this.rowData.push({
-                                id: incident.id,
                                 ID: incident.ID,
                                 Titre: incident.Titre,
                                 Statut: 'Resolu',
@@ -142,7 +190,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         if (this.rowData === undefined) {
                             this.rowData = [
                                 {
-                                    id: incident.id,
                                     ID: incident.ID,
                                     Titre: incident.Titre,
                                     Statut: incident.Statut,
@@ -157,7 +204,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                             ];
                         } else {
                             this.rowData.push({
-                                id: incident.id,
                                 ID: incident.ID,
                                 Titre: incident.Titre,
                                 Statut: incident.Statut,
@@ -205,11 +251,10 @@ export class IncidentComponent implements OnInit, OnDestroy {
                 const tab = this.rowData;
                 this.rowData = [];
                 for (const incident of tab) {
-                    if (incident.id === Number(x)) {
+                    if (incident.ID === Number(x)) {
                         if (this.rowData === undefined) {
                             this.rowData = [
                                 {
-                                    id: incident.id,
                                     ID: incident.ID,
                                     Titre: incident.Titre,
                                     Statut: 'Non Resolu',
@@ -224,7 +269,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                             ];
                         } else {
                             this.rowData.push({
-                                id: incident.id,
                                 ID: incident.ID,
                                 Titre: incident.Titre,
                                 Statut: 'Non Resolu',
@@ -241,7 +285,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                         if (this.rowData === undefined) {
                             this.rowData = [
                                 {
-                                    id: incident.id,
                                     ID: incident.ID,
                                     Titre: incident.Titre,
                                     Statut: incident.Statut,
@@ -256,7 +299,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                             ];
                         } else {
                             this.rowData.push({
-                                id: incident.id,
                                 ID: incident.ID,
                                 Titre: incident.Titre,
                                 Statut: incident.Statut,
@@ -290,12 +332,17 @@ export class IncidentComponent implements OnInit, OnDestroy {
 
     gridReady(params) {
         this.gridApi = params.api;
-
         this.gridApi.sizeColumnsToFit();
+        /*
+        this.gridColumnApi = params.columnApi;
+        var allColumnIds = [];
+        this.gridColumnApi.getAllColumns().forEach(function(column) {
+            allColumnIds.push(column.colId);
+        });
+        this.gridColumnApi.autoSizeColumns(allColumnIds);*/
     }
 
     loadAll() {
-        this.rowData = [];
         this.incidentService
             .query()
             .pipe(
@@ -304,13 +351,12 @@ export class IncidentComponent implements OnInit, OnDestroy {
             )
             .subscribe(
                 (res: IIncident[]) => {
+                    this.rowData = [];
                     this.incidents = res;
 
                     for (const incident of this.incidents) {
                         this.loadData(incident);
                     }
-
-                    console.log(this.rowData);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -320,7 +366,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
         if (this.rowData === undefined) {
             this.rowData = [
                 {
-                    id: incident.id,
                     ID: incident.id,
                     Titre: incident.titre,
                     Statut: incident.statut,
@@ -335,7 +380,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
             ];
         } else {
             this.rowData.push({
-                id: incident.id,
                 ID: incident.id,
                 Titre: incident.titre,
                 Statut: incident.statut,
@@ -348,7 +392,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
                 UserApp: incident.userApp.user.firstName + ' - ' + incident.userApp.user.lastName
             });
         }
-
         this.agGrid.api.setRowData(this.rowData);
     }
 
