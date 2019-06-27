@@ -34,9 +34,9 @@ export class UserAssignmentComponent implements OnInit {
         protected accountService: AccountService
     ) {}
 
-    loadAll() {
+    loadAll(val: any) {
         this.userIncidentAssigmentService
-            .query()
+            .query({ 'userAppId.equals': val })
             .pipe(
                 filter((res: HttpResponse<IUserIncidentAssigment[]>) => res.ok),
                 map((res: HttpResponse<IUserIncidentAssigment[]>) => res.body)
@@ -62,28 +62,28 @@ export class UserAssignmentComponent implements OnInit {
                         if (userApp.user.id === this.accountId) {
                             this.userAppId = userApp.id;
                         }
+                        this.loadAll(this.userAppId);
+                        this.registerChangeInUserIncidentAssigments(this.userAppId);
                     }
-                    console.log('userrapp++++++++++++++++++++++++++ : ' + this.userAppId);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
 
     ngOnInit() {
-        this.loadAll();
         this.accountService.identity().then(account => {
             this.currentAccount = account;
             this.accountId = account.id;
         });
-        this.registerChangeInUserIncidentAssigments();
+        this.getUserAppId();
     }
 
     trackId(index: number, item: IUserIncidentAssigment) {
         return item.id;
     }
 
-    registerChangeInUserIncidentAssigments() {
-        this.eventSubscriber = this.eventManager.subscribe('userIncidentAssigmentListModification', response => this.loadAll());
+    registerChangeInUserIncidentAssigments(val: any) {
+        this.eventSubscriber = this.eventManager.subscribe('userIncidentAssigmentListModification', response => this.loadAll(val));
     }
 
     protected onError(errorMessage: string) {
