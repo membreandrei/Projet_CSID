@@ -19,7 +19,6 @@
                         <th><span >ID</span></th>
                         <th><span >Date</span></th>
                         <th><span >Commentaire</span></th>
-                        <th><span >Statut</span></th>
                         <th><span >Client</span></th>
                         <th><span >Incident</span></th>
                         <th></th>
@@ -30,7 +29,6 @@
                         <td><a [routerLink]="['/user-incident-assigment', userIncidentAssigment.id, 'view' ]">{{userIncidentAssigment.id}}</a></td>
                         <td>{{userIncidentAssigment.dateDebut}}</td>
                         <td>{{userIncidentAssigment.commentaire}}</td>
-                        <td>{{userIncidentAssigment.status}}</td>
                         <td>
                             <div *ngIf="userIncidentAssigment.userApp">
                                 <a [routerLink]="['../user-app', userIncidentAssigment.userApp?.id, 'view' ]" >{{userIncidentAssigment.userApp?.user.firstName}} {{userIncidentAssigment.userApp?.user.lastName}}</a>

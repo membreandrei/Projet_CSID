@@ -23,8 +23,11 @@ export class UserAssignmentComponent implements OnInit {
     userIncidentAssigments: IUserIncidentAssigment[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    private accountId: any;
+    private userAppId: number;
 
     constructor(
+        protected userAppService: UserAppService,
         protected userIncidentAssigmentService: UserIncidentAssigmentService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
@@ -45,11 +48,32 @@ export class UserAssignmentComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
+    getUserAppId() {
+        this.userAppService
+            .query()
+            .pipe(
+                filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                map((res: HttpResponse<IUserApp[]>) => res.body)
+            )
+            .subscribe(
+                (res: IUserApp[]) => {
+                    const userApps = res;
+                    for (const userApp of userApps) {
+                        if (userApp.user.id === this.accountId) {
+                            this.userAppId = userApp.id;
+                        }
+                    }
+                    console.log('userrapp++++++++++++++++++++++++++ : ' + this.userAppId);
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
 
     ngOnInit() {
         this.loadAll();
         this.accountService.identity().then(account => {
             this.currentAccount = account;
+            this.accountId = account.id;
         });
         this.registerChangeInUserIncidentAssigments();
     }

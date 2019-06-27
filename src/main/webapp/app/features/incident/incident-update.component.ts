@@ -80,7 +80,6 @@ export class IncidentUpdateComponent implements OnInit {
             this.incident.userApp = this.userAppsConnected;
             this.incident.dateDebut = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
             this.subscribeToSaveResponse(this.incidentService.create(this.incident));
-            this.nextState();
         }
     }
 
