@@ -38,8 +38,32 @@ export class HomeComponent implements OnInit {
     IncidentEnCours: any[];
     dataArea: any;
     optionsArea: any;
-    dataDonut: any;
-    optionsDonut: any;
+    dataDonut = {
+        labels: ['Incident Non résolu', 'Incident En Cours', 'Incident résolu'],
+        datasets: [
+            {
+                data: [this.numberNonResolu, this.numberEnCours, this.numberResolu],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: 'rgba(234, 236, 244, 1)'
+            }
+        ]
+    };
+
+    optionsDonut = {
+        tooltips: {
+            bodyFontColor: '#858796',
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            caretPadding: 10
+        },
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 80
+    };
     dataBar: any;
     optionsBar: any;
     displayNonResolu: boolean;
@@ -52,7 +76,7 @@ export class HomeComponent implements OnInit {
         {
             headerName: 'ID',
             field: 'ID',
-            width: 90,
+            width: 130,
             sortable: true,
             filter: true,
             checkboxSelection: true,
@@ -60,8 +84,8 @@ export class HomeComponent implements OnInit {
             headerCheckboxSelection: true,
             headerCheckboxSelectionFilteredOnly: true
         },
-        { headerName: 'Titre', field: 'Titre', width: 80, sortable: true, filter: true, resizable: true },
-        { headerName: 'Statut', field: 'Statut', width: 120, sortable: true, filter: true, resizable: true },
+        { headerName: 'Titre', field: 'Titre', width: 110, sortable: true, filter: true, resizable: true },
+        { headerName: 'Statut', field: 'Statut', width: 140, sortable: true, filter: true, resizable: true },
         { headerName: 'Priorite', field: 'Priorite', sortable: true, filter: true, resizable: true },
         { headerName: 'Sujet', field: 'Sujet', sortable: true, filter: true, resizable: true },
         { headerName: 'Categorie', field: 'Categorie', sortable: true, filter: true, resizable: true },
@@ -69,7 +93,7 @@ export class HomeComponent implements OnInit {
         {
             headerName: 'Date de début',
             field: 'DateDebut',
-            width: 145,
+            width: 210,
             sortable: true,
             resizable: true,
             filter: 'agDateColumnFilter',
@@ -93,7 +117,7 @@ export class HomeComponent implements OnInit {
         {
             headerName: 'Date de fin',
             field: 'DateFin',
-            width: 145,
+            width: 210,
             sortable: true,
             resizable: true,
             filter: 'agDateColumnFilter',
@@ -128,14 +152,17 @@ export class HomeComponent implements OnInit {
 
     showDialogNonResolu() {
         this.displayNonResolu = true;
+        this.incidentNonResolu(this.userAppId);
     }
 
     showDialogEnCours() {
         this.displayEnCours = true;
+        this.incidentEnCours(this.userAppId);
     }
 
     showDialogResolu() {
         this.displayResolu = true;
+        this.incidentResolu(this.userAppId);
     }
 
     gridReady(params) {
@@ -209,34 +236,7 @@ export class HomeComponent implements OnInit {
         };
     }
 
-    chartDonut() {
-        this.dataDonut = {
-            labels: ['Incident Non résolu', 'Incident En Cours', 'Incident résolu'],
-            datasets: [
-                {
-                    data: [55, 30, 15],
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                    hoverBorderColor: 'rgba(234, 236, 244, 1)'
-                }
-            ]
-        };
-
-        this.optionsDonut = {
-            tooltips: {
-                bodyFontColor: '#858796',
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                caretPadding: 10
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80
-        };
-    }
+    chartDonut() {}
 
     chartBar() {
         this.dataBar = {
@@ -347,7 +347,11 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberNonResolu = res;
+
+                    console.log(this.dataDonut);
                     this.dataDonut.datasets[0].data[0] = this.numberNonResolu;
+
+                    console.log(this.dataDonut);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -365,7 +369,6 @@ export class HomeComponent implements OnInit {
                     for (const incident of this.NonResolu) {
                         this.loadData(incident, 1);
                     }
-                    this.dataDonut.datasets[0].data[0] = this.numberNonResolu;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -401,7 +404,7 @@ export class HomeComponent implements OnInit {
                 UserApp: incident.userApp.user.firstName + ' - ' + incident.userApp.user.lastName
             });
         }
-        if (params === 1) {
+        if (params === 1 && this.agGrid.api !== undefined) {
             this.IncidentNonResolu = this.tab;
             this.agGrid.api.setRowData(this.IncidentNonResolu);
         } else if (params === 2) {
@@ -442,7 +445,6 @@ export class HomeComponent implements OnInit {
                     for (const incident of this.EnCours) {
                         this.loadData(incident, 3);
                     }
-                    this.dataDonut.datasets[0].data[1] = this.numberEnCours;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -463,9 +465,10 @@ export class HomeComponent implements OnInit {
                             this.userAppId = userApp.id;
                         }
                     }
-                    this.incidentResolu(this.userAppId);
-                    this.incidentEnCours(this.userAppId);
+
                     this.incidentNonResolu(this.userAppId);
+                    this.incidentEnCours(this.userAppId);
+                    this.incidentResolu(this.userAppId);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -476,11 +479,12 @@ export class HomeComponent implements OnInit {
             this.account = account;
             this.accountId = account.id;
         });
+
         this.getUserAppId();
         this.registerAuthenticationSuccess();
         this.chartArea();
-        this.chartDonut();
         this.chartBar();
+        this.chartDonut();
     }
 
     protected onError(errorMessage: string) {

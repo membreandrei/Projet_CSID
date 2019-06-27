@@ -23,7 +23,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a (click)="showDialogNonResolu()">
+                                    <a (click)="showDialogNonResolu($event)">
                                         <div class="overlay-nonResolu">
                                             <div class="text">
                                                 Détails +
@@ -33,23 +33,25 @@
                                 </div>
                             </div>
 
-                            <p-dialog header="Incident Non Résolus" [(visible)]="displayNonResolu" [modal]="true" [responsive]="true"
-                                      [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
-                                <p-header><a (click)="displayNonResolu=false" class="text-info float-right"><i class="fas fa-times"></i></a></p-header>
-                                <ag-grid-angular
-                                    #agGrid
-                                    style="width: 100%; height: 615px;"
-                                    class="ag-theme-balham"
-                                    [rowData]="IncidentNonResolu"
-                                    [columnDefs]="columnDefs"
-                                    rowSelection="multiple"
-                                    [floatingFilter]="true"
-                                    [rowMultiSelectWithClick]="true"
-                                    [enableCellChangeFlash]="true"
-                                    (gridReady)="gridReady($event)"
-                                >
-                                </ag-grid-angular>
-                            </p-dialog>
+                            <div *ngIf="displayNonResolu">
+                                <p-dialog header="Incident Non Résolus" [(visible)]="displayNonResolu" [modal]="true" [responsive]="true"
+                                          [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
+                                    <p-header><a (click)="displayNonResolu=false" class="text-info float-right"><i class="fas fa-times"></i></a></p-header>
+                                    <ag-grid-angular
+                                        #agGrid
+                                        style="width: 100%; height: 615px;"
+                                        class="ag-theme-balham"
+                                        [rowData]="IncidentNonResolu"
+                                        [columnDefs]="columnDefs"
+                                        rowSelection="multiple"
+                                        [floatingFilter]="true"
+                                        [rowMultiSelectWithClick]="true"
+                                        [enableCellChangeFlash]="true"
+                                        (gridReady)="gridReady($event)"
+                                    >
+                                    </ag-grid-angular>
+                                </p-dialog>
+                            </div>
 
                             <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-success shadow h-100 py-2 hover-effect">
@@ -73,25 +75,25 @@
                                     </a>
                                 </div>
                             </div>
-
-                            <p-dialog header="Incidents En Cours" [(visible)]="displayEnCours" [modal]="true" [responsive]="true"
-                                      [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
-                                <p-header><a (click)="displayEnCours=false" class="text-success float-right"><i class="fas fa-times"></i></a></p-header>
-                                <ag-grid-angular
-                                    #agGrid
-                                    style="width: 100%; height: 615px;"
-                                    class="ag-theme-balham"
-                                    [rowData]="IncidentEnCours"
-                                    [columnDefs]="columnDefs"
-                                    rowSelection="multiple"
-                                    [floatingFilter]="true"
-                                    [rowMultiSelectWithClick]="true"
-                                    [enableCellChangeFlash]="true"
-                                    (gridReady)="gridReady($event)"
-                                >
-                                </ag-grid-angular>
-                            </p-dialog>
-
+                            <div *ngIf="displayEnCours">
+                                <p-dialog header="Incidents En Cours" [(visible)]="displayEnCours" [modal]="true" [responsive]="true"
+                                          [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
+                                    <p-header><a (click)="displayEnCours=false" class="text-success float-right"><i class="fas fa-times"></i></a></p-header>
+                                    <ag-grid-angular
+                                        #agGrid
+                                        style="width: 100%; height: 615px;"
+                                        class="ag-theme-balham"
+                                        [rowData]="IncidentEnCours"
+                                        [columnDefs]="columnDefs"
+                                        rowSelection="multiple"
+                                        [floatingFilter]="true"
+                                        [rowMultiSelectWithClick]="true"
+                                        [enableCellChangeFlash]="true"
+                                        (gridReady)="gridReady($event)"
+                                    >
+                                    </ag-grid-angular>
+                                </p-dialog>
+                            </div>
                             <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-primary shadow h-100 py-2 hover-effect">
                                     <div class="card-body">
@@ -114,25 +116,27 @@
                                     </a>
                                 </div>
                             </div>
+                                <p-dialog header="Incidents résolu" [(visible)]="displayResolu" [modal]="true" [responsive]="true"
+                                          [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
+                                    <p-header><a (click)="displayResolu=false" class="text-primary float-right"><i class="fas fa-times"></i></a></p-header>
 
-                            <p-dialog header="Incidents résolu" [(visible)]="displayResolu" [modal]="true" [responsive]="true"
-                                      [style]="{width: '85%', minWidth: '500px'}" [minY]="70"  [maximizable]="true" [baseZIndex]="10000">
-                                <p-header><a (click)="displayResolu=false" class="text-primary float-right"><i class="fas fa-times"></i></a></p-header>
+                                    <div *ngIf="displayResolu">
+                                    <ag-grid-angular
+                                        #agGrid
+                                        style="width: 100%; height: 615px;"
+                                        class="ag-theme-balham"
+                                        [rowData]="IncidentResolu"
+                                        [columnDefs]="columnDefs"
+                                        rowSelection="multiple"
+                                        [floatingFilter]="true"
+                                        [rowMultiSelectWithClick]="true"
+                                        [enableCellChangeFlash]="true"
+                                        (gridReady)="gridReady($event)"
+                                    >
+                                    </ag-grid-angular>
 
-                                <ag-grid-angular
-                                    #agGrid
-                                    style="width: 100%; height: 615px;"
-                                    class="ag-theme-balham"
-                                    [rowData]="IncidentResolu"
-                                    [columnDefs]="columnDefs"
-                                    rowSelection="multiple"
-                                    [floatingFilter]="true"
-                                    [rowMultiSelectWithClick]="true"
-                                    [enableCellChangeFlash]="true"
-                                    (gridReady)="gridReady($event)"
-                                >
-                                </ag-grid-angular>
-                            </p-dialog>
+                                    </div>
+                                </p-dialog>
 
                             <div class="col-xl-3 col-md-6 mb-4">
                                 <div class="card border-left-warning shadow h-100 py-2">

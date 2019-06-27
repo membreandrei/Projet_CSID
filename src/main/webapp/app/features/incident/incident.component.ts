@@ -41,7 +41,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
         {
             headerName: 'ID',
             field: 'ID',
-            width: 90,
+            width: 130,
             sortable: true,
             filter: true,
             checkboxSelection: true,
@@ -49,8 +49,8 @@ export class IncidentComponent implements OnInit, OnDestroy {
             headerCheckboxSelection: true,
             headerCheckboxSelectionFilteredOnly: true
         },
-        { headerName: 'Titre', field: 'Titre', width: 80, sortable: true, filter: true, resizable: true },
-        { headerName: 'Statut', field: 'Statut', width: 120, sortable: true, filter: true, resizable: true },
+        { headerName: 'Titre', field: 'Titre', width: 110, sortable: true, filter: true, resizable: true },
+        { headerName: 'Statut', field: 'Statut', width: 140, sortable: true, filter: true, resizable: true },
         { headerName: 'Priorite', field: 'Priorite', sortable: true, filter: true, resizable: true },
         { headerName: 'Sujet', field: 'Sujet', sortable: true, filter: true, resizable: true },
         { headerName: 'Categorie', field: 'Categorie', sortable: true, filter: true, resizable: true },
@@ -58,7 +58,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
         {
             headerName: 'Date de début',
             field: 'DateDebut',
-            width: 145,
+            width: 210,
             sortable: true,
             resizable: true,
             filter: 'agDateColumnFilter',
@@ -82,7 +82,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
         {
             headerName: 'Date de fin',
             field: 'DateFin',
-            width: 145,
+            width: 210,
             sortable: true,
             resizable: true,
             filter: 'agDateColumnFilter',
