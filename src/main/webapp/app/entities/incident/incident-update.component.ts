@@ -81,7 +81,7 @@ export class IncidentUpdateComponent implements OnInit {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.previousState();
+        this.nextState();
     }
 
     protected onSaveError() {
@@ -94,5 +94,8 @@ export class IncidentUpdateComponent implements OnInit {
 
     trackUserAppById(index: number, item: IUserApp) {
         return item.id;
+    }
+    nextState() {
+        window.location.href = 'http://localhost:9000/#/user-incident-assigment';
     }
 }

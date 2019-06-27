@@ -5,16 +5,15 @@
                 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
                     <h2 id="jhi-user-incident-assigment-heading" >Create or edit a User Incident Assigment</h2>
                     <div>
-                        <jhi-alert-error></jhi-alert-error>
-                        <div class="form-group" [hidden]="!userIncidentAssigment.id">
-                            <label for="id" jhiTranslate="global.field.id">ID</label>
-                            <input type="text" class="form-control" id="id" name="id"
-                                [(ngModel)]="userIncidentAssigment.id" readonly />
-                        </div>
+                        <jhi-alert-error></jhi-alert-error>                        <div class="form-group" [hidden]="!userIncidentAssigment.id">
+                        <label for="id" jhiTranslate="global.field.id">ID</label>
+                        <input type="text" class="form-control" id="id" name="id"
+                               [(ngModel)]="userIncidentAssigment.id" readonly />
+                    </div>
                         <div class="form-group">
                             <label class="form-control-label"  for="field_commentaire">Commentaire</label>
                             <input type="text" class="form-control" name="commentaire" id="field_commentaire"
-                                [(ngModel)]="userIncidentAssigment.commentaire" />
+                                   [(ngModel)]="userIncidentAssigment.commentaire" />
                         </div>
                         <div class="form-group">
                             <label class="form-control-label"  for="field_status" >Statut</label>

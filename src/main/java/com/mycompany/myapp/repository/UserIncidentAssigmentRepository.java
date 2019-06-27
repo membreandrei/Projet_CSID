@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UserIncidentAssigmentRepository extends JpaRepository<UserIncidentAssigment, Long> {
+public interface UserIncidentAssigmentRepository extends JpaRepository<UserIncidentAssigment, Long>, JpaSpecificationExecutor<UserIncidentAssigment> {
 
 }

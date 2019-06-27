@@ -1,8 +1,10 @@
 package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.UserIncidentAssigment;
-import com.mycompany.myapp.repository.UserIncidentAssigmentRepository;
+import com.mycompany.myapp.service.UserIncidentAssigmentService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
+import com.mycompany.myapp.service.dto.UserIncidentAssigmentCriteria;
+import com.mycompany.myapp.service.UserIncidentAssigmentQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,13 @@ public class UserIncidentAssigmentResource {
 
     private static final String ENTITY_NAME = "userIncidentAssigment";
 
-    private final UserIncidentAssigmentRepository userIncidentAssigmentRepository;
+    private final UserIncidentAssigmentService userIncidentAssigmentService;
 
-    public UserIncidentAssigmentResource(UserIncidentAssigmentRepository userIncidentAssigmentRepository) {
-        this.userIncidentAssigmentRepository = userIncidentAssigmentRepository;
+    private final UserIncidentAssigmentQueryService userIncidentAssigmentQueryService;
+
+    public UserIncidentAssigmentResource(UserIncidentAssigmentService userIncidentAssigmentService, UserIncidentAssigmentQueryService userIncidentAssigmentQueryService) {
+        this.userIncidentAssigmentService = userIncidentAssigmentService;
+        this.userIncidentAssigmentQueryService = userIncidentAssigmentQueryService;
     }
 
     /**
@@ -45,7 +50,7 @@ public class UserIncidentAssigmentResource {
         if (userIncidentAssigment.getId() != null) {
             throw new BadRequestAlertException("A new userIncidentAssigment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserIncidentAssigment result = userIncidentAssigmentRepository.save(userIncidentAssigment);
+        UserIncidentAssigment result = userIncidentAssigmentService.save(userIncidentAssigment);
         return ResponseEntity.created(new URI("/api/user-incident-assigments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -66,7 +71,7 @@ public class UserIncidentAssigmentResource {
         if (userIncidentAssigment.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        UserIncidentAssigment result = userIncidentAssigmentRepository.save(userIncidentAssigment);
+        UserIncidentAssigment result = userIncidentAssigmentService.save(userIncidentAssigment);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userIncidentAssigment.getId().toString()))
             .body(result);
@@ -75,12 +80,26 @@ public class UserIncidentAssigmentResource {
     /**
      * GET  /user-incident-assigments : get all the userIncidentAssigments.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of userIncidentAssigments in body
      */
     @GetMapping("/user-incident-assigments")
-    public List<UserIncidentAssigment> getAllUserIncidentAssigments() {
-        log.debug("REST request to get all UserIncidentAssigments");
-        return userIncidentAssigmentRepository.findAll();
+    public ResponseEntity<List<UserIncidentAssigment>> getAllUserIncidentAssigments(UserIncidentAssigmentCriteria criteria) {
+        log.debug("REST request to get UserIncidentAssigments by criteria: {}", criteria);
+        List<UserIncidentAssigment> entityList = userIncidentAssigmentQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /user-incident-assigments/count : count all the userIncidentAssigments.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/user-incident-assigments/count")
+    public ResponseEntity<Long> countUserIncidentAssigments(UserIncidentAssigmentCriteria criteria) {
+        log.debug("REST request to count UserIncidentAssigments by criteria: {}", criteria);
+        return ResponseEntity.ok().body(userIncidentAssigmentQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -92,7 +111,7 @@ public class UserIncidentAssigmentResource {
     @GetMapping("/user-incident-assigments/{id}")
     public ResponseEntity<UserIncidentAssigment> getUserIncidentAssigment(@PathVariable Long id) {
         log.debug("REST request to get UserIncidentAssigment : {}", id);
-        Optional<UserIncidentAssigment> userIncidentAssigment = userIncidentAssigmentRepository.findById(id);
+        Optional<UserIncidentAssigment> userIncidentAssigment = userIncidentAssigmentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(userIncidentAssigment);
     }
 
@@ -105,7 +124,7 @@ public class UserIncidentAssigmentResource {
     @DeleteMapping("/user-incident-assigments/{id}")
     public ResponseEntity<Void> deleteUserIncidentAssigment(@PathVariable Long id) {
         log.debug("REST request to delete UserIncidentAssigment : {}", id);
-        userIncidentAssigmentRepository.deleteById(id);
+        userIncidentAssigmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

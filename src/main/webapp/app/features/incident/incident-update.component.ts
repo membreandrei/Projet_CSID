@@ -67,15 +67,20 @@ export class IncidentUpdateComponent implements OnInit {
     previousState() {
         window.history.back();
     }
+    nextState() {
+        window.location.href = 'http://localhost:9000/#/user-incident-assigment/new';
+    }
 
     save() {
         this.isSaving = true;
         if (this.incident.id !== undefined) {
             this.subscribeToSaveResponse(this.incidentService.update(this.incident));
+            this.previousState();
         } else {
             this.incident.userApp = this.userAppsConnected;
             this.incident.dateDebut = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
             this.subscribeToSaveResponse(this.incidentService.create(this.incident));
+            this.nextState();
         }
     }
 
@@ -85,7 +90,6 @@ export class IncidentUpdateComponent implements OnInit {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.previousState();
     }
 
     protected onSaveError() {
