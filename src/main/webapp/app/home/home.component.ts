@@ -347,11 +347,7 @@ export class HomeComponent implements OnInit {
             .subscribe(
                 (res: IIncident[]) => {
                     this.numberNonResolu = res;
-
-                    console.log(this.dataDonut);
                     this.dataDonut.datasets[0].data[0] = this.numberNonResolu;
-
-                    console.log(this.dataDonut);
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );

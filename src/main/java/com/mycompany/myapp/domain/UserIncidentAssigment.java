@@ -37,11 +37,11 @@ public class UserIncidentAssigment implements Serializable {
     private String status;
 
     @ManyToOne
-    @JsonIgnoreProperties("assigmentUsers")
+    @JsonIgnoreProperties("userIncidentAssigments")
     private UserApp userApp;
 
     @ManyToOne
-    @JsonIgnoreProperties("assigmentIncidents")
+    @JsonIgnoreProperties("userIncidentAssigments")
     private Incident incident;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

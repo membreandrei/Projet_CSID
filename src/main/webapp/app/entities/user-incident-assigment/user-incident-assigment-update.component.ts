@@ -10,7 +10,6 @@ import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from 'app/entities/user-app';
 import { IIncident } from 'app/shared/model/incident.model';
 import { IncidentService } from 'app/entities/incident';
-import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'jhi-user-incident-assigment-update',
@@ -62,7 +61,6 @@ export class UserIncidentAssigmentUpdateComponent implements OnInit {
         if (this.userIncidentAssigment.id !== undefined) {
             this.subscribeToSaveResponse(this.userIncidentAssigmentService.update(this.userIncidentAssigment));
         } else {
-            this.userIncidentAssigment.dateDebut = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
             this.subscribeToSaveResponse(this.userIncidentAssigmentService.create(this.userIncidentAssigment));
         }
     }

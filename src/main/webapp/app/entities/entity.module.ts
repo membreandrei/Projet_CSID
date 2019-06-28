@@ -43,6 +43,10 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'user-thirdparty-membership',
                 loadChildren: './user-thirdparty-membership/user-thirdparty-membership.module#ProjetCsidUserThirdpartyMembershipModule'
+            },
+            {
+                path: 'user-incident-assigment',
+                loadChildren: './user-incident-assigment/user-incident-assigment.module#ProjetCsidUserIncidentAssigmentModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])

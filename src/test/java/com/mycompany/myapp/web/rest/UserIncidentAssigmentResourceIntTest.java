@@ -3,8 +3,13 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.ProjetCsidApp;
 
 import com.mycompany.myapp.domain.UserIncidentAssigment;
+import com.mycompany.myapp.domain.UserApp;
+import com.mycompany.myapp.domain.Incident;
 import com.mycompany.myapp.repository.UserIncidentAssigmentRepository;
+import com.mycompany.myapp.service.UserIncidentAssigmentService;
 import com.mycompany.myapp.web.rest.errors.ExceptionTranslator;
+import com.mycompany.myapp.service.dto.UserIncidentAssigmentCriteria;
+import com.mycompany.myapp.service.UserIncidentAssigmentQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +61,12 @@ public class UserIncidentAssigmentResourceIntTest {
     private UserIncidentAssigmentRepository userIncidentAssigmentRepository;
 
     @Autowired
+    private UserIncidentAssigmentService userIncidentAssigmentService;
+
+    @Autowired
+    private UserIncidentAssigmentQueryService userIncidentAssigmentQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -77,7 +88,7 @@ public class UserIncidentAssigmentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UserIncidentAssigmentResource userIncidentAssigmentResource = new UserIncidentAssigmentResource(userIncidentAssigmentRepository);
+        final UserIncidentAssigmentResource userIncidentAssigmentResource = new UserIncidentAssigmentResource(userIncidentAssigmentService, userIncidentAssigmentQueryService);
         this.restUserIncidentAssigmentMockMvc = MockMvcBuilders.standaloneSetup(userIncidentAssigmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -182,6 +193,237 @@ public class UserIncidentAssigmentResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllUserIncidentAssigmentsByDateDebutIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where dateDebut equals to DEFAULT_DATE_DEBUT
+        defaultUserIncidentAssigmentShouldBeFound("dateDebut.equals=" + DEFAULT_DATE_DEBUT);
+
+        // Get all the userIncidentAssigmentList where dateDebut equals to UPDATED_DATE_DEBUT
+        defaultUserIncidentAssigmentShouldNotBeFound("dateDebut.equals=" + UPDATED_DATE_DEBUT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByDateDebutIsInShouldWork() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where dateDebut in DEFAULT_DATE_DEBUT or UPDATED_DATE_DEBUT
+        defaultUserIncidentAssigmentShouldBeFound("dateDebut.in=" + DEFAULT_DATE_DEBUT + "," + UPDATED_DATE_DEBUT);
+
+        // Get all the userIncidentAssigmentList where dateDebut equals to UPDATED_DATE_DEBUT
+        defaultUserIncidentAssigmentShouldNotBeFound("dateDebut.in=" + UPDATED_DATE_DEBUT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByDateDebutIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where dateDebut is not null
+        defaultUserIncidentAssigmentShouldBeFound("dateDebut.specified=true");
+
+        // Get all the userIncidentAssigmentList where dateDebut is null
+        defaultUserIncidentAssigmentShouldNotBeFound("dateDebut.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByDateFinIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where dateFin equals to DEFAULT_DATE_FIN
+        defaultUserIncidentAssigmentShouldBeFound("dateFin.equals=" + DEFAULT_DATE_FIN);
+
+        // Get all the userIncidentAssigmentList where dateFin equals to UPDATED_DATE_FIN
+        defaultUserIncidentAssigmentShouldNotBeFound("dateFin.equals=" + UPDATED_DATE_FIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByDateFinIsInShouldWork() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where dateFin in DEFAULT_DATE_FIN or UPDATED_DATE_FIN
+        defaultUserIncidentAssigmentShouldBeFound("dateFin.in=" + DEFAULT_DATE_FIN + "," + UPDATED_DATE_FIN);
+
+        // Get all the userIncidentAssigmentList where dateFin equals to UPDATED_DATE_FIN
+        defaultUserIncidentAssigmentShouldNotBeFound("dateFin.in=" + UPDATED_DATE_FIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByDateFinIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where dateFin is not null
+        defaultUserIncidentAssigmentShouldBeFound("dateFin.specified=true");
+
+        // Get all the userIncidentAssigmentList where dateFin is null
+        defaultUserIncidentAssigmentShouldNotBeFound("dateFin.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByCommentaireIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where commentaire equals to DEFAULT_COMMENTAIRE
+        defaultUserIncidentAssigmentShouldBeFound("commentaire.equals=" + DEFAULT_COMMENTAIRE);
+
+        // Get all the userIncidentAssigmentList where commentaire equals to UPDATED_COMMENTAIRE
+        defaultUserIncidentAssigmentShouldNotBeFound("commentaire.equals=" + UPDATED_COMMENTAIRE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByCommentaireIsInShouldWork() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where commentaire in DEFAULT_COMMENTAIRE or UPDATED_COMMENTAIRE
+        defaultUserIncidentAssigmentShouldBeFound("commentaire.in=" + DEFAULT_COMMENTAIRE + "," + UPDATED_COMMENTAIRE);
+
+        // Get all the userIncidentAssigmentList where commentaire equals to UPDATED_COMMENTAIRE
+        defaultUserIncidentAssigmentShouldNotBeFound("commentaire.in=" + UPDATED_COMMENTAIRE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByCommentaireIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where commentaire is not null
+        defaultUserIncidentAssigmentShouldBeFound("commentaire.specified=true");
+
+        // Get all the userIncidentAssigmentList where commentaire is null
+        defaultUserIncidentAssigmentShouldNotBeFound("commentaire.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByStatusIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where status equals to DEFAULT_STATUS
+        defaultUserIncidentAssigmentShouldBeFound("status.equals=" + DEFAULT_STATUS);
+
+        // Get all the userIncidentAssigmentList where status equals to UPDATED_STATUS
+        defaultUserIncidentAssigmentShouldNotBeFound("status.equals=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByStatusIsInShouldWork() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where status in DEFAULT_STATUS or UPDATED_STATUS
+        defaultUserIncidentAssigmentShouldBeFound("status.in=" + DEFAULT_STATUS + "," + UPDATED_STATUS);
+
+        // Get all the userIncidentAssigmentList where status equals to UPDATED_STATUS
+        defaultUserIncidentAssigmentShouldNotBeFound("status.in=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByStatusIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+
+        // Get all the userIncidentAssigmentList where status is not null
+        defaultUserIncidentAssigmentShouldBeFound("status.specified=true");
+
+        // Get all the userIncidentAssigmentList where status is null
+        defaultUserIncidentAssigmentShouldNotBeFound("status.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByUserAppIsEqualToSomething() throws Exception {
+        // Initialize the database
+        UserApp userApp = UserAppResourceIntTest.createEntity(em);
+        em.persist(userApp);
+        em.flush();
+        userIncidentAssigment.setUserApp(userApp);
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+        Long userAppId = userApp.getId();
+
+        // Get all the userIncidentAssigmentList where userApp equals to userAppId
+        defaultUserIncidentAssigmentShouldBeFound("userAppId.equals=" + userAppId);
+
+        // Get all the userIncidentAssigmentList where userApp equals to userAppId + 1
+        defaultUserIncidentAssigmentShouldNotBeFound("userAppId.equals=" + (userAppId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllUserIncidentAssigmentsByIncidentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Incident incident = IncidentResourceIntTest.createEntity(em);
+        em.persist(incident);
+        em.flush();
+        userIncidentAssigment.setIncident(incident);
+        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+        Long incidentId = incident.getId();
+
+        // Get all the userIncidentAssigmentList where incident equals to incidentId
+        defaultUserIncidentAssigmentShouldBeFound("incidentId.equals=" + incidentId);
+
+        // Get all the userIncidentAssigmentList where incident equals to incidentId + 1
+        defaultUserIncidentAssigmentShouldNotBeFound("incidentId.equals=" + (incidentId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultUserIncidentAssigmentShouldBeFound(String filter) throws Exception {
+        restUserIncidentAssigmentMockMvc.perform(get("/api/user-incident-assigments?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(userIncidentAssigment.getId().intValue())))
+            .andExpect(jsonPath("$.[*].dateDebut").value(hasItem(DEFAULT_DATE_DEBUT)))
+            .andExpect(jsonPath("$.[*].dateFin").value(hasItem(DEFAULT_DATE_FIN)))
+            .andExpect(jsonPath("$.[*].commentaire").value(hasItem(DEFAULT_COMMENTAIRE)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+
+        // Check, that the count call also returns 1
+        restUserIncidentAssigmentMockMvc.perform(get("/api/user-incident-assigments/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultUserIncidentAssigmentShouldNotBeFound(String filter) throws Exception {
+        restUserIncidentAssigmentMockMvc.perform(get("/api/user-incident-assigments?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restUserIncidentAssigmentMockMvc.perform(get("/api/user-incident-assigments/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
+
+    @Test
+    @Transactional
     public void getNonExistingUserIncidentAssigment() throws Exception {
         // Get the userIncidentAssigment
         restUserIncidentAssigmentMockMvc.perform(get("/api/user-incident-assigments/{id}", Long.MAX_VALUE))
@@ -192,7 +434,7 @@ public class UserIncidentAssigmentResourceIntTest {
     @Transactional
     public void updateUserIncidentAssigment() throws Exception {
         // Initialize the database
-        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+        userIncidentAssigmentService.save(userIncidentAssigment);
 
         int databaseSizeBeforeUpdate = userIncidentAssigmentRepository.findAll().size();
 
@@ -243,7 +485,7 @@ public class UserIncidentAssigmentResourceIntTest {
     @Transactional
     public void deleteUserIncidentAssigment() throws Exception {
         // Initialize the database
-        userIncidentAssigmentRepository.saveAndFlush(userIncidentAssigment);
+        userIncidentAssigmentService.save(userIncidentAssigment);
 
         int databaseSizeBeforeDelete = userIncidentAssigmentRepository.findAll().size();
 

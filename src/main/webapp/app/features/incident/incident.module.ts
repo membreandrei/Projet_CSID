@@ -9,11 +9,12 @@ import { IncidentComponent } from 'app/features/incident/incident.component';
 import { IncidentDeleteDialogComponent, IncidentDeletePopupComponent } from 'app/features/incident/incident-delete-dialog.component';
 import { incidentPopupRoute, incidentRoute } from 'app/features/incident/incident.route';
 import { AgGridModule } from 'ag-grid-angular';
+import { TabViewModule } from 'primeng/tabview';
 
 const ENTITY_STATES = [...incidentRoute, ...incidentPopupRoute];
 
 @NgModule({
-    imports: [ProjetCsidSharedModule, AgGridModule.withComponents([]), RouterModule.forChild(ENTITY_STATES)],
+    imports: [ProjetCsidSharedModule, TabViewModule, AgGridModule.withComponents([]), RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         IncidentComponent,
         IncidentDetailComponent,

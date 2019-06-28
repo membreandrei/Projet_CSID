@@ -51,6 +51,9 @@ public class IncidentResource {
             throw new BadRequestAlertException("A new incident cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Incident result = incidentService.save(incident);
+        log.debug("", ResponseEntity.created(new URI("/api/incidents/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result));
         return ResponseEntity.created(new URI("/api/incidents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
