@@ -33,7 +33,7 @@ export const userIncidentAssigmentRoute: Routes = [
         path: '',
         component: UserIncidentAssigmentComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userIncidentAssigment.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const userIncidentAssigmentRoute: Routes = [
             userIncidentAssigment: UserIncidentAssigmentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userIncidentAssigment.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const userIncidentAssigmentRoute: Routes = [
             userIncidentAssigment: UserIncidentAssigmentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userIncidentAssigment.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const userIncidentAssigmentRoute: Routes = [
             userIncidentAssigment: UserIncidentAssigmentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userIncidentAssigment.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const userIncidentAssigmentPopupRoute: Routes = [
             userIncidentAssigment: UserIncidentAssigmentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userIncidentAssigment.home.title'
         },
         canActivate: [UserRouteAccessService],

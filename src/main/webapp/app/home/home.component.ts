@@ -11,6 +11,7 @@ import { IUserApp } from 'app/shared/model/user-app.model';
 import { UserAppService } from 'app/entities/user-app';
 // @ts-ignore
 import { AgGridNg2 } from 'ag-grid-angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'jhi-home',
@@ -147,7 +148,8 @@ export class HomeComponent implements OnInit {
         private accountService: AccountService,
         protected jhiAlertService: JhiAlertService,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        protected router: Router
     ) {}
 
     showDialogNonResolu() {
@@ -337,6 +339,10 @@ export class HomeComponent implements OnInit {
             );
     }
 
+    onRowSelected(event) {
+        this.router.navigate(['ticket/' + event.node.data.ID + '/view']);
+    }
+
     public incidentNonResolu(val: any) {
         this.incidentService
             .queryCount({ 'statut.equals': 'Non Resolu', 'userAppId.equals': val })
@@ -474,13 +480,15 @@ export class HomeComponent implements OnInit {
         this.accountService.identity().then(account => {
             this.account = account;
             this.accountId = account.id;
+            if (this.accountService.isAuthenticated()) {
+                this.getUserAppId();
+                this.chartDonut();
+            }
         });
 
-        this.getUserAppId();
-        this.registerAuthenticationSuccess();
         this.chartArea();
         this.chartBar();
-        this.chartDonut();
+        this.registerAuthenticationSuccess();
     }
 
     protected onError(errorMessage: string) {

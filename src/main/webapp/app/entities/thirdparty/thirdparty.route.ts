@@ -33,7 +33,7 @@ export const thirdpartyRoute: Routes = [
         path: '',
         component: ThirdpartyComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.thirdparty.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const thirdpartyRoute: Routes = [
             thirdparty: ThirdpartyResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.thirdparty.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const thirdpartyRoute: Routes = [
             thirdparty: ThirdpartyResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.thirdparty.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const thirdpartyRoute: Routes = [
             thirdparty: ThirdpartyResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.thirdparty.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const thirdpartyPopupRoute: Routes = [
             thirdparty: ThirdpartyResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.thirdparty.home.title'
         },
         canActivate: [UserRouteAccessService],

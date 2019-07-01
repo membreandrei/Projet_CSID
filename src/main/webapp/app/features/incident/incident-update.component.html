@@ -6,99 +6,123 @@
                 <p-tabView>
                     <jhi-alert></jhi-alert>
                     <p-tabPanel header="Créer ou éditer un Incident">
-                        <form name="editFormIncident" role="form" novalidate (ngSubmit)="saveIncident()" #editForm="ngForm">
+                        <form name="editFormIncident" role="form" novalidate (ngSubmit)="saveIncident()"
+                              #editForm="ngForm">
                             <div>
                                 <jhi-alert-error></jhi-alert-error>
                                 <div class="form-group" hidden>
                                     <label for="id" jhiTranslate="global.field.id">ID</label>
                                     <input type="text" class="form-control" id="id" name="id"
-                                           [(ngModel)]="incident.id" readonly />
+                                           [(ngModel)]="incident.id" readonly/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.titre" for="field_titre">Titre</label>
+                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.titre"
+                                           for="field_titre">Titre</label>
                                     <input type="text" class="form-control" name="titre" id="field_titre"
-                                           [(ngModel)]="incident.titre" />
+                                           [(ngModel)]="incident.titre"/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.statut" for="field_statut">Statut</label>
-                                    <select class="form-control" id="field_statut" name="statut" [(ngModel)]="incident.statut" >
+                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.statut"
+                                           for="field_statut">Statut</label>
+                                    <select class="form-control" id="field_statut" name="statut"
+                                            [(ngModel)]="incident.statut">
                                         <option [ngValue]="'En cours'" selected>En cours</option>
-                                        <option [ngValue]="'Resolu'" >Résolu</option>
-                                        <option [ngValue]="'Non Resolu'" >Non Résolu</option>
+                                        <option [ngValue]="'Resolu'">Résolu</option>
+                                        <option [ngValue]="'Non Resolu'">Non Résolu</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.priorite" for="field_priorite">Priorite</label>
-                                    <select class="form-control" id="field_priorite" name="priorite" [(ngModel)]="incident.priorite" >
-                                        <option [ngValue]="'Majeure'" >Majeure</option>
-                                        <option [ngValue]="'Elevee'" >Élevée</option>
-                                        <option [ngValue]="'Normale'" >Normale</option>
-                                        <option [ngValue]="'Basse'" >Basse</option>
+                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.priorite"
+                                           for="field_priorite">Priorite</label>
+                                    <select class="form-control" id="field_priorite" name="priorite"
+                                            [(ngModel)]="incident.priorite">
+                                        <option [ngValue]="'Majeure'">Majeure</option>
+                                        <option [ngValue]="'Elevee'">Élevée</option>
+                                        <option [ngValue]="'Normale'">Normale</option>
+                                        <option [ngValue]="'Basse'">Basse</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.sujet" for="field_sujet">Sujet</label>
+                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.sujet"
+                                           for="field_sujet">Sujet</label>
                                     <input type="text" class="form-control" name="sujet" id="field_sujet"
-                                           [(ngModel)]="incident.sujet" />
+                                           [(ngModel)]="incident.sujet"/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.categorie" for="field_categorie">Categorie</label>
-                                    <select class="form-control" id="field_categorie" name="categorie" [(ngModel)]="incident.categorie" >
+                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.categorie"
+                                           for="field_categorie">Categorie</label>
+                                    <select class="form-control" id="field_categorie" name="categorie"
+                                            [(ngModel)]="incident.categorie">
                                         <option [ngValue]="null"></option>
-                                        <option [ngValue]="'Professionnel'" >Professionnel</option>
-                                        <option [ngValue]="'Particulier'" >Particulier</option>
+                                        <option [ngValue]="'Professionnel'">Professionnel</option>
+                                        <option [ngValue]="'Particulier'">Particulier</option>
 
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.description" for="field_description">Description</label>
-                                    <textarea id="story" name="story" rows="5" class="form-control" name="description" id="field_description"
+                                    <label class="form-control-label" jhiTranslate="projetCsidApp.incident.description"
+                                           for="field_description">Description</label>
+                                    <textarea id="story" name="story" rows="5" class="form-control" name="description"
+                                              id="field_description"
                                               [(ngModel)]="incident.description">
                                  </textarea>
 
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="form-control-label" for="field_userApp">User App</label>
+                                    <select class="form-control" id="field_userApp" name="userApp"
+                                            [(ngModel)]="incident.userApp">
+                                        <option [ngValue]="null"></option>
+                                        <option
+                                            [ngValue]="userAppOption.id === incident.userApp?.id ? incident.userApp : userAppOption"
+                                            *ngFor="let userAppOption of Alluserapps; trackBy: trackUserAppById">{{userAppOption.user.firstName}} - {{userAppOption.user.lastName}}</option>
+                                    </select>
+                                </div>
                             </div>
                             <div>
-                                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                                <button type="button" id="cancel-save" class="btn btn-secondary"
+                                        (click)="previousState()">
                                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                                 </button>
-                                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSavingIncident" class="btn btn-primary">
+                                <button type="submit" id="save-entity"
+                                        [disabled]="editForm.form.invalid || isSavingIncident" class="btn btn-primary">
                                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                                 </button>
                             </div>
                         </form>
                     </p-tabPanel>
 
-                    <p-tabPanel header="Créer ou éditer un User Incident Assignement" [disabled]="show">
+                    <p-tabPanel header="Créer un commentaire" [disabled]="show">
                         <div *ngIf="!show">
                             <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
                                 <div>
                                     <jhi-alert-error></jhi-alert-error>
                                     <div class="form-group" [hidden]="!userIncidentAssigment.id"></div>
                                     <h3>Commentaire</h3>
-                                    <p *ngFor="let userIncidentAssigment of userIncidentAssigmentTab">
-
-                                        {{userIncidentAssigment.commentaire}} -- {{userIncidentAssigment.dateDebut}}
+                                    <p class="card" *ngFor="let userIncidentAssigment of userIncidentAssigmentTab">
+                                        {{userIncidentAssigment.commentaire}} <br>
+                                        Créé le {{userIncidentAssigment.dateDebut}} <br>
+                                        Créé par {{userIncidentAssigment.userApp.user.firstName}}
+                                        -- {{userIncidentAssigment.userApp.user.lastName}}
                                     </p>
                                     <div class="form-group">
-                                        <label class="form-control-label"  for="field_commentaire">Commentaire</label>
-                                        <textarea type="text" class="form-control" name="commentaire" id="field_commentaire"
-                                                  [(ngModel)]="userIncidentAssigment.commentaire" ></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-control-label"  for="field_userApp">User App</label>
-                                        <select class="form-control" id="field_userApp" name="userApp" [(ngModel)]="userIncidentAssigment.userApp" >
-                                            <option [ngValue]="null"></option>
-                                            <option [ngValue]="userAppOption.id === userIncidentAssigment.userApp?.id ? userIncidentAssigment.userApp : userAppOption" *ngFor="let userAppOption of userapps; trackBy: trackUserAppById">{{userAppOption.user.firstName}} {{userAppOption.user.lastName}}</option>
-                                        </select>
+                                        <label class="form-control-label" for="field_commentaire">Commentaire</label>
+                                        <textarea type="text" class="form-control" name="commentaire"
+                                                  id="field_commentaire"
+                                                  [(ngModel)]="userIncidentAssigment.commentaire"></textarea>
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                                        <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                                    <button type="button" id="cancel-save" class="btn btn-secondary"
+                                            (click)="previousState()">
+                                        <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span
+                                        jhiTranslate="entity.action.cancel">Cancel</span>
                                     </button>
-                                    <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-                                        <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                                    <button type="submit" id="save-entity"
+                                            [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                                        <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span
+                                        jhiTranslate="entity.action.save">Save</span>
                                     </button>
                                 </div>
                             </form>

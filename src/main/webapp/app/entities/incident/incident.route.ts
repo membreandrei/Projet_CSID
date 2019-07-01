@@ -33,7 +33,7 @@ export const incidentRoute: Routes = [
         path: '',
         component: IncidentComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.incident.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const incidentRoute: Routes = [
             incident: IncidentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.incident.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const incidentRoute: Routes = [
             incident: IncidentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.incident.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const incidentRoute: Routes = [
             incident: IncidentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.incident.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const incidentPopupRoute: Routes = [
             incident: IncidentResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.incident.home.title'
         },
         canActivate: [UserRouteAccessService],

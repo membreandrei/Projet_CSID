@@ -33,7 +33,7 @@ export const userAppRoute: Routes = [
         path: '',
         component: UserAppComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userApp.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const userAppRoute: Routes = [
             userApp: UserAppResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userApp.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const userAppRoute: Routes = [
             userApp: UserAppResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userApp.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const userAppRoute: Routes = [
             userApp: UserAppResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userApp.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const userAppPopupRoute: Routes = [
             userApp: UserAppResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userApp.home.title'
         },
         canActivate: [UserRouteAccessService],

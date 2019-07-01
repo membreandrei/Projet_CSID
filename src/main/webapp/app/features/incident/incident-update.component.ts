@@ -24,6 +24,7 @@ export class IncidentUpdateComponent implements OnInit {
     isSavingIncident: boolean;
     isSaving: boolean;
     userapps: IUserApp[];
+    Alluserapps: IUserApp[];
     userAppsConnected: any;
     currentAccount: any;
     accountId: any;
@@ -58,6 +59,19 @@ export class IncidentUpdateComponent implements OnInit {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
 
+        this.userAppService
+            .query()
+            .pipe(
+                filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                map((res: HttpResponse<IUserApp[]>) => res.body)
+            )
+            .subscribe(
+                (res: IUserApp[]) => {
+                    this.Alluserapps = res;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+
         if (this.show === false) {
             this.UserAssignmentService.query({ 'incidentId.equals': this.incident.id })
                 .pipe(
@@ -67,7 +81,6 @@ export class IncidentUpdateComponent implements OnInit {
                 .subscribe(
                     (res: IUserIncidentAssigment[]) => {
                         this.userIncidentAssigmentTab = res;
-                        console.log(this.userIncidentAssigmentTab);
                     },
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );
@@ -109,7 +122,6 @@ export class IncidentUpdateComponent implements OnInit {
         if (this.incident.id !== undefined) {
             this.subscribeToSaveResponseIncidentUpdate(this.incidentService.update(this.incident));
         } else {
-            this.incident.userApp = this.userAppsConnected;
             this.incident.dateDebut = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
             this.subscribeToSaveResponseIncident(this.incidentService.create(this.incident));
         }
@@ -121,6 +133,7 @@ export class IncidentUpdateComponent implements OnInit {
         if (this.userIncidentAssigment.id !== undefined) {
             this.subscribeToSaveResponse(this.UserAssignmentService.update(this.userIncidentAssigment));
         } else {
+            this.userIncidentAssigment.userApp = this.userAppsConnected;
             this.userIncidentAssigment.dateDebut = formatDate(new Date(), 'yyyy-MM-dd', 'fr');
             this.userIncidentAssigmentTab.push(this.userIncidentAssigment);
             this.subscribeToSaveResponse(this.UserAssignmentService.create(this.userIncidentAssigment));

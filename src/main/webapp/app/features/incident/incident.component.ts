@@ -25,6 +25,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
     gridColumnApi;
     incidents: IIncident[];
     userAppId: any;
+    accountAuthorities: any;
     accountId: any;
     currentAccount: any;
     eventSubscriber: Subscription;
@@ -117,7 +118,14 @@ export class IncidentComponent implements OnInit, OnDestroy {
     ) {}
 
     onRowSelected(event) {
-        this.router.navigate(['ticket/' + event.node.data.ID + '/edit']);
+        for (const i of this.accountAuthorities) {
+            if (i === 'ROLE_USER') {
+                this.router.navigate(['ticket/' + event.node.data.ID + '/view']);
+                break;
+            } else {
+                this.router.navigate(['ticket/' + event.node.data.ID + '/edit']);
+            }
+        }
     }
 
     getSelectedRows() {
@@ -168,7 +176,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                                     Categorie: incident.Categorie,
                                     Description: incident.Description,
                                     DateDebut: incident.DateDebut,
-                                    DateFin: incident.DateFin,
+                                    DateFin: formatDate(new Date(), 'yyyy-MM-dd', 'fr'),
                                     UserApp: incident.UserApp
                                 }
                             ];
@@ -182,7 +190,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                                 Categorie: incident.Categorie,
                                 Description: incident.Description,
                                 DateDebut: incident.DateDebut,
-                                DateFin: incident.DateFin,
+                                DateFin: formatDate(new Date(), 'yyyy-MM-dd', 'fr'),
                                 UserApp: incident.UserApp
                             });
                         }
@@ -263,7 +271,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                                     Categorie: incident.Categorie,
                                     Description: incident.Description,
                                     DateDebut: incident.DateDebut,
-                                    DateFin: incident.DateFin,
+                                    DateFin: formatDate(new Date(), 'yyyy-MM-dd', 'fr'),
                                     UserApp: incident.UserApp
                                 }
                             ];
@@ -277,7 +285,7 @@ export class IncidentComponent implements OnInit, OnDestroy {
                                 Categorie: incident.Categorie,
                                 Description: incident.Description,
                                 DateDebut: incident.DateDebut,
-                                DateFin: incident.DateFin,
+                                DateFin: formatDate(new Date(), 'yyyy-MM-dd', 'fr'),
                                 UserApp: incident.UserApp
                             });
                         }
@@ -343,23 +351,60 @@ export class IncidentComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.incidentService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IIncident[]>) => res.ok),
-                map((res: HttpResponse<IIncident[]>) => res.body)
-            )
-            .subscribe(
-                (res: IIncident[]) => {
-                    this.rowData = [];
-                    this.incidents = res;
+        for (const i of this.accountAuthorities) {
+            if (i === 'ROLE_USER') {
+                this.userAppService
+                    .query({
+                        'userId.equals': this.accountId
+                    })
+                    .pipe(
+                        filter((res: HttpResponse<IUserApp[]>) => res.ok),
+                        map((res: HttpResponse<IUserApp[]>) => res.body)
+                    )
+                    .subscribe(
+                        (res: IUserApp[]) => {
+                            this.incidentService
+                                .query({ 'userAppId.equals': res[0].id })
+                                .pipe(
+                                    filter((res1: HttpResponse<IIncident[]>) => res1.ok),
+                                    map((res1: HttpResponse<IIncident[]>) => res1.body)
+                                )
+                                .subscribe(
+                                    (res1: IIncident[]) => {
+                                        this.rowData = [];
+                                        this.incidents = res1;
 
-                    for (const incident of this.incidents) {
-                        this.loadData(incident);
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+                                        for (const incident of this.incidents) {
+                                            this.loadData(incident);
+                                        }
+                                    },
+                                    (res1: HttpErrorResponse) => this.onError(res1.message)
+                                );
+                        },
+                        (res: HttpErrorResponse) => this.onError(res.message)
+                    );
+
+                break;
+            } else {
+                this.incidentService
+                    .query()
+                    .pipe(
+                        filter((res: HttpResponse<IIncident[]>) => res.ok),
+                        map((res: HttpResponse<IIncident[]>) => res.body)
+                    )
+                    .subscribe(
+                        (res: IIncident[]) => {
+                            this.rowData = [];
+                            this.incidents = res;
+
+                            for (const incident of this.incidents) {
+                                this.loadData(incident);
+                            }
+                        },
+                        (res: HttpErrorResponse) => this.onError(res.message)
+                    );
+            }
+        }
     }
 
     loadData(incident) {
@@ -404,8 +449,9 @@ export class IncidentComponent implements OnInit, OnDestroy {
         this.accountService.identity().then(account => {
             this.currentAccount = account;
             this.accountId = account.id;
+            this.accountAuthorities = account.authorities;
+            this.loadAll();
         });
-        this.loadAll();
         this.registerChangeInIncidents();
     }
 

@@ -2,10 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { IIncident } from 'app/shared/model/incident.model';
 import { IncidentService } from './incident.service';
+import { UserIncidentAssigmentService } from 'app/entities/user-incident-assigment';
+import { filter, map } from 'rxjs/operators';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { IUserIncidentAssigment } from 'app/shared/model/user-incident-assigment.model';
 
 @Component({
     selector: 'jhi-incident-delete-dialog',
@@ -14,8 +18,15 @@ import { IncidentService } from './incident.service';
 export class IncidentDeleteDialogComponent {
     incident: IIncident;
     id: String;
+    userIncidentAssigmentTab: any[];
 
-    constructor(protected incidentService: IncidentService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
+    constructor(
+        protected userIncidentAssigmentService: UserIncidentAssigmentService,
+        protected incidentService: IncidentService,
+        public activeModal: NgbActiveModal,
+        protected jhiAlertService: JhiAlertService,
+        protected eventManager: JhiEventManager
+    ) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -37,6 +48,10 @@ export class IncidentDeleteDialogComponent {
                 x = '';
             }
         }
+    }
+
+    protected onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }
 

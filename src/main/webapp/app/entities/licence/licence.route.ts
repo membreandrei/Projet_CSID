@@ -33,7 +33,7 @@ export const licenceRoute: Routes = [
         path: '',
         component: LicenceComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.licence.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const licenceRoute: Routes = [
             licence: LicenceResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.licence.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const licenceRoute: Routes = [
             licence: LicenceResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.licence.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const licenceRoute: Routes = [
             licence: LicenceResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.licence.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const licencePopupRoute: Routes = [
             licence: LicenceResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.licence.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -33,7 +33,7 @@ export const userThirdpartyMembershipRoute: Routes = [
         path: '',
         component: UserThirdpartyMembershipComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userThirdpartyMembership.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const userThirdpartyMembershipRoute: Routes = [
             userThirdpartyMembership: UserThirdpartyMembershipResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userThirdpartyMembership.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const userThirdpartyMembershipRoute: Routes = [
             userThirdpartyMembership: UserThirdpartyMembershipResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userThirdpartyMembership.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const userThirdpartyMembershipRoute: Routes = [
             userThirdpartyMembership: UserThirdpartyMembershipResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userThirdpartyMembership.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const userThirdpartyMembershipPopupRoute: Routes = [
             userThirdpartyMembership: UserThirdpartyMembershipResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'projetCsidApp.userThirdpartyMembership.home.title'
         },
         canActivate: [UserRouteAccessService],

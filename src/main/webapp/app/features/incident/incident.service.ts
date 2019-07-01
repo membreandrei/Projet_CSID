@@ -14,6 +14,8 @@ type EntityNumberResponseType = HttpResponse<any>;
 export class IncidentService {
     public resourceUrl = SERVER_API_URL + 'api/incidents';
 
+    public resourceUrlAssigmnent = SERVER_API_URL + 'api/user-incident-assigments';
+
     constructor(protected http: HttpClient) {}
 
     create(incident: IIncident): Observable<EntityResponseType> {
@@ -39,5 +41,8 @@ export class IncidentService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+    deleteAssignment(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrlAssigmnent}/${id}`, { observe: 'response' });
     }
 }
