@@ -27,7 +27,7 @@
         "ag-grid-enterprise": "^21.0.1",
         "angular-chart.js": "^1.1.1",
         "bootstrap": "^4.3.1",
-        "chart.js": "^2.8.0",
+        "chart.js": "^2.9.4",
         "core-js": "2.6.4",
         "moment": "2.24.0",
         "ng-jhipster": "0.9.1",

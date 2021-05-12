@@ -831,6 +831,21 @@ after@0.8.2:
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
+ag-grid-angular@^21.0.1:
+  version "21.2.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-angular/-/ag-grid-angular-21.2.2.tgz#7eb5fa6d8794ce6ab83bcb2a68f891436a8f1b1b"
+  integrity sha512-cd6mYMLn0ah1guISN+4SQZ6OFTLosbfFweaIsGWeVWN8mIOZGBNIpOy+GkuAJH53lkpsMqGgo9CEeUmTh/RhNg==
+
+ag-grid-community@^21.0.1:
+  version "21.2.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-21.2.2.tgz#a5696a303fa04d03d26e4c9e09e114d308ff4ad4"
+  integrity sha512-x8kQmynYM/7zoigs7wIe7DkK1TIlUP5N1TYrGPsK8vO2gN+rqOok9csGPy4YamggWTcSxpy7wji/Kcz/gUp8/w==
+
+ag-grid-enterprise@^21.0.1:
+  version "21.2.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-21.2.2.tgz#9e32b6cee5a13e644c9b174f245c96ff63b7b37b"
+  integrity sha512-tmJh9bjSuAFg4CtQ+o+ygl/uXqPZg13p+heR73DxT20WhkA+/WYljQRBzyNyjs4C1GbdkPqWj9pSIu2klOU6Bw==
+
 agent-base@4, agent-base@^4.1.0, agent-base@~4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.2.1.tgz#d89e5999f797875674c07d87f260fc41e83e8ca9"
@@ -1951,10 +1966,10 @@ chart.js@2.3.x:
     chartjs-color "^2.0.0"
     moment "^2.10.6"
 
-chart.js@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.8.0.tgz#b703b10d0f4ec5079eaefdcd6ca32dc8f826e0e9"
-  integrity sha512-Di3wUL4BFvqI5FB5K26aQ+hvWh8wnP9A3DWGvXHVkO13D3DSnaSsdZx29cXlEsYKVkn1E2az+ZYFS4t0zi8x0w==
+chart.js@^2.9.4:
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.4.tgz#0827f9563faffb2dc5c06562f8eb10337d5b9684"
+  integrity sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
