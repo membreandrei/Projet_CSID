@@ -86,12 +86,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/core@7.2.4":
-  version "7.2.4"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-7.2.4.tgz#a6c84940c8edcfa37158f666a1f99c6e4a97bf95"
-  integrity sha512-kfAxhIxl89PmB7y81FR/RAv0yWRFcEYxEnTwV+o8jKGfemAXtQ0g/Vh+lJR0SD/TBgFilMxotN1mhwH4A8GShw==
+"@angular/core@11.0.5":
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-11.0.5.tgz#b8c448c3cd4f6dae7327cc1ba4ee2aa29c8dbc26"
+  integrity sha512-XAXWQi7R3ucZXQwx9QK5jSKJeQyRJ53u2dQDpr7R5stzeCy1a5hrNOkZLg9zOTTPcth/6+FrOrRZP9SMdxtw3w==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.0.0"
 
 "@angular/forms@7.2.4":
   version "7.2.4"
@@ -830,6 +830,21 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
+
+ag-grid-angular@^21.0.1:
+  version "21.2.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-angular/-/ag-grid-angular-21.2.2.tgz#7eb5fa6d8794ce6ab83bcb2a68f891436a8f1b1b"
+  integrity sha512-cd6mYMLn0ah1guISN+4SQZ6OFTLosbfFweaIsGWeVWN8mIOZGBNIpOy+GkuAJH53lkpsMqGgo9CEeUmTh/RhNg==
+
+ag-grid-community@^21.0.1:
+  version "21.2.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-21.2.2.tgz#a5696a303fa04d03d26e4c9e09e114d308ff4ad4"
+  integrity sha512-x8kQmynYM/7zoigs7wIe7DkK1TIlUP5N1TYrGPsK8vO2gN+rqOok9csGPy4YamggWTcSxpy7wji/Kcz/gUp8/w==
+
+ag-grid-enterprise@^21.0.1:
+  version "21.2.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-21.2.2.tgz#9e32b6cee5a13e644c9b174f245c96ff63b7b37b"
+  integrity sha512-tmJh9bjSuAFg4CtQ+o+ygl/uXqPZg13p+heR73DxT20WhkA+/WYljQRBzyNyjs4C1GbdkPqWj9pSIu2klOU6Bw==
 
 agent-base@4, agent-base@^4.1.0, agent-base@~4.2.1:
   version "4.2.1"
@@ -10391,6 +10406,11 @@ tslib@1.9.3, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
+
+tslib@^2.0.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslint-config-prettier@1.18.0:
   version "1.18.0"
